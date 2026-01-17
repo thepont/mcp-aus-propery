@@ -34,9 +34,8 @@ class IndustrialPropertyMcpServer {
 
     this.scoutManager = new ScoutManager();
     
-    // Manually register scouts (auto-registration also works)
-    this.scoutManager.registerScout(new CbreScout());
-    this.scoutManager.registerScout(new CameronScout());
+    // Scouts are auto-registered from the scouts directory
+    // Manual registration is also supported: this.scoutManager.registerScout(new CbreScout());
 
     this.setupHandlers();
     this.setupErrorHandling();
@@ -152,8 +151,10 @@ class IndustrialPropertyMcpServer {
   async start(): Promise<void> {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
+    
     console.error('[MCP Server] Industrial Property Scout MCP Server running on stdio');
-    console.error(`[MCP Server] Registered scouts: ${this.scoutManager.getScoutNames().join(', ')}`);
+    const scoutNames = await this.scoutManager.getScoutNames();
+    console.error(`[MCP Server] Registered scouts: ${scoutNames.join(', ')}`);
   }
 }
 

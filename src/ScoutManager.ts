@@ -12,9 +12,20 @@ const __dirname = dirname(__filename);
  */
 export class ScoutManager {
   private scouts: BaseScout[] = [];
+  private initialized: boolean = false;
 
   constructor() {
-    this.registerScouts();
+    // Initialize synchronously - scouts will be registered on first use
+  }
+
+  /**
+   * Ensure scouts are registered (called automatically on first use)
+   */
+  private async ensureInitialized(): Promise<void> {
+    if (!this.initialized) {
+      await this.registerScouts();
+      this.initialized = true;
+    }
   }
 
   /**
@@ -27,7 +38,7 @@ export class ScoutManager {
       const files = readdirSync(scoutsDir);
       
       for (const file of files) {
-        if (file.endsWith('.ts') || file.endsWith('.js')) {
+        if (file.endsWith('.js') && !file.endsWith('.d.js')) {
           try {
             const modulePath = join(scoutsDir, file);
             const module = await import(modulePath);
@@ -67,6 +78,8 @@ export class ScoutManager {
    * Deduplicates by address and returns combined listings
    */
   async findIndustrialDeals(criteria: SearchParams): Promise<IndustrialListing[]> {
+    await this.ensureInitialized();
+    
     console.error(`[ScoutManager] Searching with ${this.scouts.length} scouts for: ${JSON.stringify(criteria)}`);
     
     // Execute all scouts in parallel using Promise.allSettled
@@ -134,7 +147,8 @@ export class ScoutManager {
   /**
    * Get list of registered scout names
    */
-  getScoutNames(): string[] {
+  async getScoutNames(): Promise<string[]> {
+    await this.ensureInitialized();
     return this.scouts.map(s => s.name);
   }
 
