@@ -8,6 +8,7 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import { ScoutManager } from './ScoutManager.js';
 import { CbreScout } from './scouts/CbreScout.js';
+import { CameronScout } from './scouts/CameronScout.js';
 import { SearchParams } from './types.js';
 
 /**
@@ -33,8 +34,9 @@ class IndustrialPropertyMcpServer {
 
     this.scoutManager = new ScoutManager();
     
-    // Manually register CBRE scout (auto-registration also works)
+    // Manually register scouts (auto-registration also works)
     this.scoutManager.registerScout(new CbreScout());
+    this.scoutManager.registerScout(new CameronScout());
 
     this.setupHandlers();
     this.setupErrorHandling();

@@ -27,6 +27,7 @@ A Model Context Protocol (MCP) server that searches for industrial properties ac
 ## Currently Supported Agencies
 
 - **CBRE Australia** (cbre.com.au) - API fetch with Playwright fallback
+- **Cameron Real Estate** (cameron.com.au) - Suburb-based property search
 
 ## Installation
 
