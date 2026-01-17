@@ -1,0 +1,108 @@
+{
+  "timestamp": "2026-01-17T21:29:59.237Z",
+  "environment": {
+    "node": "v20.19.6",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "tests": [
+    {
+      "name": "TypeScript Build",
+      "status": "PASS",
+      "details": "All compiled files exist",
+      "error": null,
+      "timestamp": "2026-01-17T21:29:59.239Z"
+    },
+    {
+      "name": "DNS Resolution: www.cbre.com.au",
+      "status": "FAIL",
+      "details": "DNS lookup failed - domain not resolvable in this environment",
+      "error": "getaddrinfo ENOTFOUND www.cbre.com.au",
+      "timestamp": "2026-01-17T21:29:59.258Z"
+    },
+    {
+      "name": "DNS Resolution: www.cameron.com.au",
+      "status": "FAIL",
+      "details": "DNS lookup failed - domain not resolvable in this environment",
+      "error": "getaddrinfo ENOTFOUND www.cameron.com.au",
+      "timestamp": "2026-01-17T21:29:59.261Z"
+    },
+    {
+      "name": "CBRE API: https://www.cbre.com.au/api/search/properties",
+      "status": "FAIL",
+      "details": "Cannot reach endpoint",
+      "error": "getaddrinfo ENOTFOUND www.cbre.com.au",
+      "timestamp": "2026-01-17T21:29:59.264Z"
+    },
+    {
+      "name": "CBRE API: https://www.cbre.com.au/api/properties",
+      "status": "FAIL",
+      "details": "Cannot reach endpoint",
+      "error": "getaddrinfo ENOTFOUND www.cbre.com.au",
+      "timestamp": "2026-01-17T21:29:59.266Z"
+    },
+    {
+      "name": "CBRE API: https://api.cbre.com.au/properties",
+      "status": "FAIL",
+      "details": "Cannot reach endpoint",
+      "error": "getaddrinfo ENOTFOUND api.cbre.com.au",
+      "timestamp": "2026-01-17T21:29:59.268Z"
+    },
+    {
+      "name": "CBRE API: https://www.cbre.com.au/api/v1/properties",
+      "status": "FAIL",
+      "details": "Cannot reach endpoint",
+      "error": "getaddrinfo ENOTFOUND www.cbre.com.au",
+      "timestamp": "2026-01-17T21:29:59.270Z"
+    },
+    {
+      "name": "Cameron API: https://www.cameron.com.au/api/properties",
+      "status": "FAIL",
+      "details": "Cannot reach endpoint",
+      "error": "getaddrinfo ENOTFOUND www.cameron.com.au",
+      "timestamp": "2026-01-17T21:29:59.272Z"
+    },
+    {
+      "name": "Cameron API: https://www.cameron.com.au/api/search",
+      "status": "FAIL",
+      "details": "Cannot reach endpoint",
+      "error": "getaddrinfo ENOTFOUND www.cameron.com.au",
+      "timestamp": "2026-01-17T21:29:59.274Z"
+    },
+    {
+      "name": "Cameron API: https://api.cameron.com.au/properties",
+      "status": "FAIL",
+      "details": "Cannot reach endpoint",
+      "error": "getaddrinfo ENOTFOUND api.cameron.com.au",
+      "timestamp": "2026-01-17T21:29:59.276Z"
+    },
+    {
+      "name": "CBRE Playwright Navigation",
+      "status": "FAIL",
+      "details": "Navigation failed",
+      "error": "page.goto: net::ERR_NAME_NOT_RESOLVED at https://www.cbre.com.au/properties/industrial-warehouse\nCall log:\n  - navigating to \"https://www.cbre.com.au/properties/industrial-warehouse\", waiting until \"networkidle\"\n",
+      "timestamp": "2026-01-17T21:29:59.375Z"
+    },
+    {
+      "name": "Cameron Playwright Navigation",
+      "status": "FAIL",
+      "details": "Navigation failed",
+      "error": "page.goto: net::ERR_NAME_NOT_RESOLVED at https://www.cameron.com.au/commercial/\nCall log:\n  - navigating to \"https://www.cameron.com.au/commercial/\", waiting until \"networkidle\"\n",
+      "timestamp": "2026-01-17T21:29:59.485Z"
+    },
+    {
+      "name": "Scout Registration",
+      "status": "PASS",
+      "details": "Registered 2 scouts: Cameron Real Estate, CBRE Australia",
+      "error": null,
+      "timestamp": "2026-01-17T21:29:59.512Z"
+    },
+    {
+      "name": "Scout Search Execution",
+      "status": "FAIL",
+      "details": "No listings found - network issues or website structure changed",
+      "error": null,
+      "timestamp": "2026-01-17T21:29:59.636Z"
+    }
+  ]
+}
