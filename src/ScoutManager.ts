@@ -21,7 +21,7 @@ export class ScoutManager {
    * Auto-register all scouts from the scouts directory
    */
   private async registerScouts(): Promise<void> {
-    const scoutsDir = join(__dirname, '../scouts');
+    const scoutsDir = join(__dirname, 'scouts');
     
     try {
       const files = readdirSync(scoutsDir);
