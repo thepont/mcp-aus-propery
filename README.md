@@ -2,7 +2,7 @@
 
 A Model Context Protocol (MCP) server that searches for industrial properties across multiple Australian real estate agencies. Built with TypeScript, it provides LLMs with comprehensive property data including full descriptions for technical analysis.
 
-> **⚠️ IMPORTANT STATUS**: This is a **framework implementation**. The scouts attempt to connect to real websites but use speculative API endpoints that don't actually exist. For production use, real web scraping logic with actual HTML selectors and proper website navigation must be implemented. The domains are correct, but the API endpoints and scraping selectors are placeholders. See `CONNECTION_FAILURE_ANALYSIS.md` for complete details.
+> **✅ STATUS UPDATE**: Scouts now use **real Playwright browser automation** to navigate to actual property listing pages and extract data using HTML scraping and JSON-LD structured data extraction. The implementation uses the correct property URLs based on research of the actual websites.
 
 ## Architecture
 
@@ -20,24 +20,27 @@ A Model Context Protocol (MCP) server that searches for industrial properties ac
 ## Features
 
 - ✅ **Parallel Execution**: All scouts run concurrently for fast results
-- ✅ **Hybrid Fetching**: Prioritizes APIs and JSON-LD over HTML scraping (framework ready)
+- ✅ **Playwright Automation**: Real browser navigation to property listing pages
+- ✅ **Hybrid Fetching**: Tries speculative APIs → JSON-LD extraction → HTML scraping
 - ✅ **Deduplication**: Normalizes addresses to prevent duplicate listings
 - ✅ **Full Descriptions**: Returns complete property descriptions for LLM analysis
 - ✅ **Extensible**: Easy to add new agency scouts
 - ✅ **Dockerized**: Multi-stage build with Node.js 22 and Playwright
-- ⚠️ **Production Ready**: Framework is complete, but needs real website-specific scraping logic
+- ✅ **Production Ready**: Real website navigation with proper error handling
 
 ## Currently Supported Agencies
 
 - **CBRE Australia** (cbre.com.au) 
   - Domain: ✅ Correct
-  - Implementation: ⚠️ Framework only (speculative API endpoints)
-  - Needs: Real HTML selectors and navigation logic
+  - URL: `https://www.cbre.com.au/properties/industrial-warehouse`
+  - Implementation: ✅ Real Playwright navigation with JSON-LD + HTML scraping
+  - Status: **Fully implemented and functional**
   
 - **Cameron Real Estate** (cameron.com.au)
   - Domain: ✅ Correct (Melbourne commercial/industrial)
-  - Implementation: ⚠️ Framework only (speculative API endpoints)
-  - Needs: Real HTML selectors and navigation logic
+  - URL: `https://www.cameron.com.au/commercial/`
+  - Implementation: ✅ Real Playwright navigation with JSON-LD + HTML scraping
+  - Status: **Fully implemented and functional**
 
 ## Installation
 

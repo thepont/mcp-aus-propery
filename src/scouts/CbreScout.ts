@@ -154,26 +154,31 @@ export class CbreScout extends BaseScout {
 
   /**
    * Build CBRE search URL from criteria
+   * Uses the actual CBRE properties page structure
    */
   private buildSearchUrl(criteria: SearchParams): string {
-    const baseUrl = 'https://www.cbre.com.au/properties';
+    // CBRE's actual industrial property listings URL
+    const baseUrl = 'https://www.cbre.com.au/properties/industrial-warehouse';
     const params = new URLSearchParams();
     
-    params.append('type', 'industrial');
+    // CBRE uses 'aspects' parameter for sale/lease
+    params.append('aspects', 'isSale,isLease');
     
+    // Location can be added as a search term
     if (criteria.location) {
-      params.append('location', criteria.location);
+      params.append('q', criteria.location);
     }
     
     if (criteria.minPrice) {
-      params.append('minPrice', criteria.minPrice.toString());
+      params.append('priceMin', criteria.minPrice.toString());
     }
     
     if (criteria.maxPrice) {
-      params.append('maxPrice', criteria.maxPrice.toString());
+      params.append('priceMax', criteria.maxPrice.toString());
     }
 
-    return `${baseUrl}?${params.toString()}`;
+    const url = `${baseUrl}${params.toString() ? '?' + params.toString() : ''}`;
+    return url;
   }
 
   /**

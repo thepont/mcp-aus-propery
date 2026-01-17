@@ -153,21 +153,32 @@ export class CameronScout extends BaseScout {
 
   /**
    * Build Cameron search URL from criteria
+   * Cameron uses /commercial/ for industrial and commercial listings
    */
   private buildSearchUrl(criteria: SearchParams): string {
-    // Cameron uses suburb-based URLs like /suburb/{suburb}/
-    // For now, try to search for industrial properties
-    const baseUrl = 'https://www.cameron.com.au';
+    // Cameron's actual commercial/industrial property listings URL
+    const baseUrl = 'https://www.cameron.com.au/commercial/';
+    const params = new URLSearchParams();
     
-    // Try to construct a search URL
-    // If location is provided, try suburb format
+    // Add property type filter for industrial
+    params.append('type', 'industrial');
+    params.append('type', 'warehouse');
+    
+    // Location search
     if (criteria.location) {
-      const suburb = criteria.location.toLowerCase().replace(/\s+/g, '-');
-      return `${baseUrl}/suburb/${suburb}/`;
+      params.append('q', criteria.location);
     }
     
-    // Fallback to general property search
-    return `${baseUrl}/properties/industrial/`;
+    if (criteria.minPrice) {
+      params.append('minPrice', criteria.minPrice.toString());
+    }
+    
+    if (criteria.maxPrice) {
+      params.append('maxPrice', criteria.maxPrice.toString());
+    }
+
+    const url = `${baseUrl}${params.toString() ? '?' + params.toString() : ''}`;
+    return url;
   }
 
   /**
