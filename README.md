@@ -2,6 +2,8 @@
 
 A Model Context Protocol (MCP) server that searches for industrial properties across multiple Australian real estate agencies. Built with TypeScript, it provides LLMs with comprehensive property data including full descriptions for technical analysis.
 
+> **⚠️ IMPORTANT STATUS**: This is a **framework implementation**. The scouts attempt to connect to real websites but use speculative API endpoints that don't actually exist. For production use, real web scraping logic with actual HTML selectors and proper website navigation must be implemented. The domains are correct, but the API endpoints and scraping selectors are placeholders. See `CONNECTION_FAILURE_ANALYSIS.md` for complete details.
+
 ## Architecture
 
 ### Registry Pattern
@@ -18,16 +20,24 @@ A Model Context Protocol (MCP) server that searches for industrial properties ac
 ## Features
 
 - ✅ **Parallel Execution**: All scouts run concurrently for fast results
-- ✅ **Hybrid Fetching**: Prioritizes APIs and JSON-LD over HTML scraping
+- ✅ **Hybrid Fetching**: Prioritizes APIs and JSON-LD over HTML scraping (framework ready)
 - ✅ **Deduplication**: Normalizes addresses to prevent duplicate listings
 - ✅ **Full Descriptions**: Returns complete property descriptions for LLM analysis
 - ✅ **Extensible**: Easy to add new agency scouts
 - ✅ **Dockerized**: Multi-stage build with Node.js 22 and Playwright
+- ⚠️ **Production Ready**: Framework is complete, but needs real website-specific scraping logic
 
 ## Currently Supported Agencies
 
-- **CBRE Australia** (cbre.com.au) - API fetch with Playwright fallback
-- **Cameron Real Estate** (cameron.com.au) - Suburb-based property search
+- **CBRE Australia** (cbre.com.au) 
+  - Domain: ✅ Correct
+  - Implementation: ⚠️ Framework only (speculative API endpoints)
+  - Needs: Real HTML selectors and navigation logic
+  
+- **Cameron Real Estate** (cameron.com.au)
+  - Domain: ✅ Correct (Melbourne commercial/industrial)
+  - Implementation: ⚠️ Framework only (speculative API endpoints)
+  - Needs: Real HTML selectors and navigation logic
 
 ## Installation
 
