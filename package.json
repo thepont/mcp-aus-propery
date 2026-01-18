@@ -11,8 +11,11 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "tsc && node dist/index.js",
-    "test": "npm run build && node tests/integration.test.js",
-    "test:quick": "node test-simple.js",
+    "test": "npm run build && node run-tests.js",
+    "test:unit": "npm run build && node tests/unit/framework.test.js",
+    "test:integration": "npm run build && node tests/integration/mcp-server.test.js",
+    "test:network": "npm run build && node tests/integration/website-assumptions.test.js",
+    "test:all": "npm run test:unit && npm run test:integration && npm run test:network",
     "prepare": "npm run build"
   },
   "keywords": [
