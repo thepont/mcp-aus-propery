@@ -1,6 +1,4 @@
 import { VaultREScout } from './VaultREScout.js';
-
-import { VaultREScout } from './VaultREScout.js';
 import type { SearchParams, IndustrialListing } from '../types.js';
 
 /**
