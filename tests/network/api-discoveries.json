@@ -1,0 +1,47 @@
+{
+  "cbre": {
+    "apis": [
+      {
+        "url": "https://www.cbre.com.au/api/properties",
+        "error": "ERR_BAD_REQUEST",
+        "working": false
+      },
+      {
+        "url": "https://www.cbre.com.au/api/search",
+        "error": "ERR_BAD_REQUEST",
+        "working": false
+      },
+      {
+        "url": "https://www.cbre.com.au/api/properties/search",
+        "error": "ERR_BAD_REQUEST",
+        "working": false
+      },
+      {
+        "url": "https://api.cbre.com.au/properties",
+        "error": "ENOTFOUND",
+        "working": false
+      }
+    ],
+    "tested_at": "2026-01-18T05:46:56.733Z"
+  },
+  "cameron": {
+    "apis": [
+      {
+        "url": "https://www.cameron.com.au/api/properties",
+        "error": "ERR_BAD_REQUEST",
+        "working": false
+      },
+      {
+        "url": "https://www.cameron.com.au/api/search",
+        "error": "ERR_BAD_REQUEST",
+        "working": false
+      },
+      {
+        "url": "https://api.cameron.com.au/properties",
+        "error": "ENOTFOUND",
+        "working": false
+      }
+    ],
+    "tested_at": "2026-01-18T05:46:56.733Z"
+  }
+}
