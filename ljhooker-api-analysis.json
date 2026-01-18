@@ -1,0 +1,172 @@
+{
+  "tokens": [],
+  "requests": [
+    {
+      "url": "https://assets.ljhooker.com/agentpoint-search-prod/css/lj-hooker.css",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://assets.ljhooker.com/agentpoint-search-prod/js/lj-hooker.js",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://app.hubspot.com/content-tools-menu/api/v1/tools-menu/has-permission-json?portalId=21262656",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=contact&propertyType=residential",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=buy",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=contact&propertyType=residential",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=buy",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=contact&propertyType=residential",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://api01.ljx.com.au/website/search-v1?searchOrigin=residential-au&searchProfile=sold&orderBy=date-desc&page=1&limit=4",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://api01.ljx.com.au/website/search-v1?searchOrigin=residential-au&searchProfile=rent&orderBy=date-desc&page=1&limit=4",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://api01.ljx.com.au/website/search-v1?searchOrigin=residential-au&searchProfile=buy&orderBy=date-desc&page=1&limit=4",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://api01.ljx.com.au/website/search-v1?searchOrigin=residential-au&searchProfile=leased&orderBy=date-desc&page=1&limit=4",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://api.hubapi.com/hs-script-loader-public/v2/config/pixels-and-events/json?portalId=21262656",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/878273914/?random=1768719823505&cv=11&fst=1768719823505&bg=ffffff&guid=ON&async=1&gtm=45be61e1v876939703z872375198za200zb72375198zd72375198xea&gcd=13r3r3r3r5l1&dma=0&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115616986~115938466~115938469~117041587&u_w=1280&u_h=720&url=https%3A%2F%2Fwww.ljhooker.com.au%2F&frm=0&tiba=Sell%2C%20Buy%2C%20Rent%20and%20Invest%20in%20Real%20Estate%20-%20LJ%20Hooker&did=dZTQ1Zm&gdid=dZTQ1Zm&hn=www.googleadservices.com&npa=0&pscdl=noapi&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&_tu=CA&rfmt=3&fmt=4",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/878273914/?random=1768719823514&cv=11&fst=1768719823514&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be61e1v876939703za200zb72375198zd72375198xec&gcd=13r3r3r3r5l1&dma=0&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115616986~115938466~115938469~117041587&u_w=1280&u_h=720&url=https%3A%2F%2Fwww.ljhooker.com.au%2F&frm=0&tiba=Sell%2C%20Buy%2C%20Rent%20and%20Invest%20in%20Real%20Estate%20-%20LJ%20Hooker&did=dZTQ1Zm&gdid=dZTQ1Zm&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=1957778298.1768719824&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&data=event%3Dgtag.config&rfmt=3&fmt=4",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://snip.properti.ai/api/snippet?mode=head-office&hoid=7d6ef205-e9a5-42bb-b6d0-8b019f9df60b",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://analytics.google.com/g/collect?v=2&tid=G-XBKVELJ214&gtm=45je61e1v871019788z872375198za20gzb72375198zd72375198&_p=1768719822877&_gaz=1&gcs=G111&gcd=13r3r3r3r5l1&npa=0&dma=0&gdid=dZTQ1Zm&cid=2112813729.1768719824&ecid=1667833364&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&are=1&frm=0&pscdl=noapi&ec_mode=a&_eu=AAAAAGA&_s=1&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391253~115616986~115938466~115938469~117041588&sid=1768719823&sct=1&seg=0&dl=https%3A%2F%2Fwww.ljhooker.com.au%2F&dt=Sell%2C%20Buy%2C%20Rent%20and%20Invest%20in%20Real%20Estate%20-%20LJ%20Hooker&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1543",
+      "method": "POST",
+      "headers": {}
+    },
+    {
+      "url": "https://www.google.com/pagead/1p-user-list/878273914/?random=1768719823505&cv=11&fst=1768719600000&bg=ffffff&guid=ON&async=1&gtm=45be61e1v876939703z872375198za200zb72375198zd72375198xea&gcd=13r3r3r3r5l1&dma=0&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115616986~115938466~115938469~117041587&u_w=1280&u_h=720&url=https%3A%2F%2Fwww.ljhooker.com.au%2F&frm=0&tiba=Sell%2C%20Buy%2C%20Rent%20and%20Invest%20in%20Real%20Estate%20-%20LJ%20Hooker&did=dZTQ1Zm&gdid=dZTQ1Zm&hn=www.googleadservices.com&npa=0&pscdl=noapi&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&_tu=CA&rfmt=3&fmt=3&is_vtc=1&cid=CAQSjQEA56J1eaHCwEXQzcJ-_n0N224auOmn43Rj9tbGwH-9ojcdKENjeu1IZ8D6UfuOnvjAfRMLqF-CcrQbc4K7lCKN7_3NbtEuuEPBs0UrIODO1MqnVn1TOCTNs0N18X7Nfeip6WDBLFk0_Hc07uuwDEKiMcbZaL5MpZUXqFEX3MCly8v0ii-d8nSeTtNif7o&random=57983641&rmt_tld=0&ipr=y",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://www.google.com/pagead/1p-user-list/878273914/?random=1768719823514&cv=11&fst=1768719600000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be61e1v876939703za200zb72375198zd72375198xec&gcd=13r3r3r3r5l1&dma=0&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115616986~115938466~115938469~117041587&u_w=1280&u_h=720&url=https%3A%2F%2Fwww.ljhooker.com.au%2F&frm=0&tiba=Sell%2C%20Buy%2C%20Rent%20and%20Invest%20in%20Real%20Estate%20-%20LJ%20Hooker&did=dZTQ1Zm&gdid=dZTQ1Zm&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=1957778298.1768719824&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&data=event%3Dgtag.config&rfmt=3&fmt=3&is_vtc=1&cid=CAQSjQEA56J1eYEvo4NPxPduBTK30iKZQt4cJGAvrfaHyzNfzHx-hScJDn49vt15tPXH4rAHYVRdjAKo1p4I5mEXAEeKEyne4nR3-1Tta9dXsr9NbbxYhO0vc3jkHkrDRXIGstdIhA12eoGVXVjcj8cNAKxQgJkJI4kKXhHY7jzZZ1oJDXm0m94OmN3dV-uA4Zg&random=3729204322&rmt_tld=0&ipr=y",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://ad.doubleclick.net/activity;src=6020747;type=retarg0;cat=rt46b0;ord=8588088295076;npa=0;auiddc=1957778298.1768719824;u1=https%3A%2F%2Fwww.ljhooker.com.au%2F;gdid=dZTQ1Zm;uaa=x86;uab=64;uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0;uamb=0;uam=;uap=Windows;uapv=10.0;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe61e1v9188134310z872375198za20gzb72375198zd72375198xea;gcs=G111;gcd=13r3r3r3r5l1;dma=0;dc_fmt=3;tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115938466~115938469~117041587;epver=2;dc_random=1768719823_YcOg44wKLdhiS0gLDGuejdNnCtf3wxm8pg;~oref=https%3A%2F%2Fwww.ljhooker.com.au%2F?",
+      "method": "POST",
+      "headers": {}
+    },
+    {
+      "url": "https://6020747.fls.doubleclick.net/activityi;src=6020747;type=retarg0;cat=rt46b0;ord=8588088295076;npa=0;auiddc=1957778298.1768719824;u1=https%3A%2F%2Fwww.ljhooker.com.au%2F;gdid=dZTQ1Zm;uaa=x86;uab=64;uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0;uamb=0;uam=;uap=Windows;uapv=10.0;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe61e1v9188134310z872375198za20gzb72375198zd72375198xea;gcs=G111;gcd=13r3r3r3r5l1;dma=0;dc_fmt=2;tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115938466~115938469~117041587;epver=2;dc_random=1768719823_YcOg44wKLdhiS0gLDGuejdNnCtf3wxm8pg;_dc_test=1;~oref=https%3A%2F%2Fwww.ljhooker.com.au%2F?",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://snip.properti.ai/api/event",
+      "method": "POST",
+      "headers": {}
+    },
+    {
+      "url": "https://6020747.fls.doubleclick.net/activityi;dc_pre=CPSjvebClJIDFaesOgUdDJIf2A;src=6020747;type=retarg0;cat=rt46b0;ord=8588088295076;npa=0;auiddc=1957778298.1768719824;u1=https%3A%2F%2Fwww.ljhooker.com.au%2F;gdid=dZTQ1Zm;uaa=x86;uab=64;uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0;uamb=0;uam=;uap=Windows;uapv=10.0;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe61e1v9188134310z872375198za20gzb72375198zd72375198xea;gcs=G111;gcd=13r3r3r3r5l1;dma=0;dc_fmt=2;tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115938466~115938469~117041587;epver=2;dc_random=1768719823_YcOg44wKLdhiS0gLDGuejdNnCtf3wxm8pg;_dc_test=1;~oref=https%3A%2F%2Fwww.ljhooker.com.au%2F?",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://adservice.google.com/ddm/fls/z/dc_pre=CPSjvebClJIDFaesOgUdDJIf2A;src=6020747;type=retarg0;cat=rt46b0;ord=8588088295076;npa=0;auiddc=*;u1=https%3A%2F%2Fwww.ljhooker.com.au%2F;gdid=dZTQ1Zm;uaa=x86;uab=64;uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0;uamb=0;uam=;uap=Windows;uapv=10.0;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe61e1v9188134310z872375198za20gzb72375198zd72375198xea;gcs=G111;gcd=13r3r3r3r5l1;dma=0;dc_fmt=2;tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115938466~115938469~117041587;epver=2;dc_random=1768719823_YcOg44wKLdhiS0gLDGuejdNnCtf3wxm8pg;_dc_test=1;~oref=https%3A%2F%2Fwww.ljhooker.com.au%2F",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://ad.doubleclick.net/activity;dc_pre=CLnzvebClJIDFWKzpgQdcl0nrQ;src=6020747;type=retarg0;cat=rt46b0;ord=8588088295076;npa=0;auiddc=1957778298.1768719824;u1=https%3A%2F%2Fwww.ljhooker.com.au%2F;gdid=dZTQ1Zm;uaa=x86;uab=64;uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0;uamb=0;uam=;uap=Windows;uapv=10.0;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe61e1v9188134310z872375198za20gzb72375198zd72375198xea;gcs=G111;gcd=13r3r3r3r5l1;dma=0;dc_fmt=3;tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115938466~115938469~117041587;epver=2;dc_random=1768719823_YcOg44wKLdhiS0gLDGuejdNnCtf3wxm8pg;~oref=https%3A%2F%2Fwww.ljhooker.com.au%2F?",
+      "method": "GET",
+      "headers": {}
+    },
+    {
+      "url": "https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa/GenerateIT",
+      "method": "POST",
+      "headers": {}
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2?family=Instrument%20Sans:wght@400;500;700&display=swap",
+      "method": "GET",
+      "headers": {}
+    }
+  ],
+  "endpoints": [
+    "https://assets.ljhooker.com/agentpoint-search-prod/css/lj-hooker.css",
+    "https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap",
+    "https://assets.ljhooker.com/agentpoint-search-prod/js/lj-hooker.js",
+    "https://app.hubspot.com/content-tools-menu/api/v1/tools-menu/has-permission-json?portalId=21262656",
+    "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=contact&propertyType=residential",
+    "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=buy",
+    "https://api01.ljx.com.au/website/search-v1?searchOrigin=residential-au&searchProfile=sold&orderBy=date-desc&page=1&limit=4",
+    "https://api01.ljx.com.au/website/search-v1?searchOrigin=residential-au&searchProfile=rent&orderBy=date-desc&page=1&limit=4",
+    "https://api01.ljx.com.au/website/search-v1?searchOrigin=residential-au&searchProfile=buy&orderBy=date-desc&page=1&limit=4",
+    "https://api01.ljx.com.au/website/search-v1?searchOrigin=residential-au&searchProfile=leased&orderBy=date-desc&page=1&limit=4",
+    "https://api.hubapi.com/hs-script-loader-public/v2/config/pixels-and-events/json?portalId=21262656",
+    "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/878273914/?random=1768719823505&cv=11&fst=1768719823505&bg=ffffff&guid=ON&async=1&gtm=45be61e1v876939703z872375198za200zb72375198zd72375198xea&gcd=13r3r3r3r5l1&dma=0&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115616986~115938466~115938469~117041587&u_w=1280&u_h=720&url=https%3A%2F%2Fwww.ljhooker.com.au%2F&frm=0&tiba=Sell%2C%20Buy%2C%20Rent%20and%20Invest%20in%20Real%20Estate%20-%20LJ%20Hooker&did=dZTQ1Zm&gdid=dZTQ1Zm&hn=www.googleadservices.com&npa=0&pscdl=noapi&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&_tu=CA&rfmt=3&fmt=4",
+    "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/878273914/?random=1768719823514&cv=11&fst=1768719823514&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be61e1v876939703za200zb72375198zd72375198xec&gcd=13r3r3r3r5l1&dma=0&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115616986~115938466~115938469~117041587&u_w=1280&u_h=720&url=https%3A%2F%2Fwww.ljhooker.com.au%2F&frm=0&tiba=Sell%2C%20Buy%2C%20Rent%20and%20Invest%20in%20Real%20Estate%20-%20LJ%20Hooker&did=dZTQ1Zm&gdid=dZTQ1Zm&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=1957778298.1768719824&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&data=event%3Dgtag.config&rfmt=3&fmt=4",
+    "https://snip.properti.ai/api/snippet?mode=head-office&hoid=7d6ef205-e9a5-42bb-b6d0-8b019f9df60b",
+    "https://analytics.google.com/g/collect?v=2&tid=G-XBKVELJ214&gtm=45je61e1v871019788z872375198za20gzb72375198zd72375198&_p=1768719822877&_gaz=1&gcs=G111&gcd=13r3r3r3r5l1&npa=0&dma=0&gdid=dZTQ1Zm&cid=2112813729.1768719824&ecid=1667833364&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&are=1&frm=0&pscdl=noapi&ec_mode=a&_eu=AAAAAGA&_s=1&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391253~115616986~115938466~115938469~117041588&sid=1768719823&sct=1&seg=0&dl=https%3A%2F%2Fwww.ljhooker.com.au%2F&dt=Sell%2C%20Buy%2C%20Rent%20and%20Invest%20in%20Real%20Estate%20-%20LJ%20Hooker&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1543",
+    "https://www.google.com/pagead/1p-user-list/878273914/?random=1768719823505&cv=11&fst=1768719600000&bg=ffffff&guid=ON&async=1&gtm=45be61e1v876939703z872375198za200zb72375198zd72375198xea&gcd=13r3r3r3r5l1&dma=0&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115616986~115938466~115938469~117041587&u_w=1280&u_h=720&url=https%3A%2F%2Fwww.ljhooker.com.au%2F&frm=0&tiba=Sell%2C%20Buy%2C%20Rent%20and%20Invest%20in%20Real%20Estate%20-%20LJ%20Hooker&did=dZTQ1Zm&gdid=dZTQ1Zm&hn=www.googleadservices.com&npa=0&pscdl=noapi&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&_tu=CA&rfmt=3&fmt=3&is_vtc=1&cid=CAQSjQEA56J1eaHCwEXQzcJ-_n0N224auOmn43Rj9tbGwH-9ojcdKENjeu1IZ8D6UfuOnvjAfRMLqF-CcrQbc4K7lCKN7_3NbtEuuEPBs0UrIODO1MqnVn1TOCTNs0N18X7Nfeip6WDBLFk0_Hc07uuwDEKiMcbZaL5MpZUXqFEX3MCly8v0ii-d8nSeTtNif7o&random=57983641&rmt_tld=0&ipr=y",
+    "https://www.google.com/pagead/1p-user-list/878273914/?random=1768719823514&cv=11&fst=1768719600000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be61e1v876939703za200zb72375198zd72375198xec&gcd=13r3r3r3r5l1&dma=0&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115616986~115938466~115938469~117041587&u_w=1280&u_h=720&url=https%3A%2F%2Fwww.ljhooker.com.au%2F&frm=0&tiba=Sell%2C%20Buy%2C%20Rent%20and%20Invest%20in%20Real%20Estate%20-%20LJ%20Hooker&did=dZTQ1Zm&gdid=dZTQ1Zm&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=1957778298.1768719824&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&data=event%3Dgtag.config&rfmt=3&fmt=3&is_vtc=1&cid=CAQSjQEA56J1eYEvo4NPxPduBTK30iKZQt4cJGAvrfaHyzNfzHx-hScJDn49vt15tPXH4rAHYVRdjAKo1p4I5mEXAEeKEyne4nR3-1Tta9dXsr9NbbxYhO0vc3jkHkrDRXIGstdIhA12eoGVXVjcj8cNAKxQgJkJI4kKXhHY7jzZZ1oJDXm0m94OmN3dV-uA4Zg&random=3729204322&rmt_tld=0&ipr=y",
+    "https://ad.doubleclick.net/activity;src=6020747;type=retarg0;cat=rt46b0;ord=8588088295076;npa=0;auiddc=1957778298.1768719824;u1=https%3A%2F%2Fwww.ljhooker.com.au%2F;gdid=dZTQ1Zm;uaa=x86;uab=64;uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0;uamb=0;uam=;uap=Windows;uapv=10.0;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe61e1v9188134310z872375198za20gzb72375198zd72375198xea;gcs=G111;gcd=13r3r3r3r5l1;dma=0;dc_fmt=3;tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115938466~115938469~117041587;epver=2;dc_random=1768719823_YcOg44wKLdhiS0gLDGuejdNnCtf3wxm8pg;~oref=https%3A%2F%2Fwww.ljhooker.com.au%2F?",
+    "https://6020747.fls.doubleclick.net/activityi;src=6020747;type=retarg0;cat=rt46b0;ord=8588088295076;npa=0;auiddc=1957778298.1768719824;u1=https%3A%2F%2Fwww.ljhooker.com.au%2F;gdid=dZTQ1Zm;uaa=x86;uab=64;uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0;uamb=0;uam=;uap=Windows;uapv=10.0;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe61e1v9188134310z872375198za20gzb72375198zd72375198xea;gcs=G111;gcd=13r3r3r3r5l1;dma=0;dc_fmt=2;tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115938466~115938469~117041587;epver=2;dc_random=1768719823_YcOg44wKLdhiS0gLDGuejdNnCtf3wxm8pg;_dc_test=1;~oref=https%3A%2F%2Fwww.ljhooker.com.au%2F?",
+    "https://snip.properti.ai/api/event",
+    "https://6020747.fls.doubleclick.net/activityi;dc_pre=CPSjvebClJIDFaesOgUdDJIf2A;src=6020747;type=retarg0;cat=rt46b0;ord=8588088295076;npa=0;auiddc=1957778298.1768719824;u1=https%3A%2F%2Fwww.ljhooker.com.au%2F;gdid=dZTQ1Zm;uaa=x86;uab=64;uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0;uamb=0;uam=;uap=Windows;uapv=10.0;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe61e1v9188134310z872375198za20gzb72375198zd72375198xea;gcs=G111;gcd=13r3r3r3r5l1;dma=0;dc_fmt=2;tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115938466~115938469~117041587;epver=2;dc_random=1768719823_YcOg44wKLdhiS0gLDGuejdNnCtf3wxm8pg;_dc_test=1;~oref=https%3A%2F%2Fwww.ljhooker.com.au%2F?",
+    "https://adservice.google.com/ddm/fls/z/dc_pre=CPSjvebClJIDFaesOgUdDJIf2A;src=6020747;type=retarg0;cat=rt46b0;ord=8588088295076;npa=0;auiddc=*;u1=https%3A%2F%2Fwww.ljhooker.com.au%2F;gdid=dZTQ1Zm;uaa=x86;uab=64;uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0;uamb=0;uam=;uap=Windows;uapv=10.0;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe61e1v9188134310z872375198za20gzb72375198zd72375198xea;gcs=G111;gcd=13r3r3r3r5l1;dma=0;dc_fmt=2;tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115938466~115938469~117041587;epver=2;dc_random=1768719823_YcOg44wKLdhiS0gLDGuejdNnCtf3wxm8pg;_dc_test=1;~oref=https%3A%2F%2Fwww.ljhooker.com.au%2F",
+    "https://ad.doubleclick.net/activity;dc_pre=CLnzvebClJIDFWKzpgQdcl0nrQ;src=6020747;type=retarg0;cat=rt46b0;ord=8588088295076;npa=0;auiddc=1957778298.1768719824;u1=https%3A%2F%2Fwww.ljhooker.com.au%2F;gdid=dZTQ1Zm;uaa=x86;uab=64;uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0;uamb=0;uam=;uap=Windows;uapv=10.0;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe61e1v9188134310z872375198za20gzb72375198zd72375198xea;gcs=G111;gcd=13r3r3r3r5l1;dma=0;dc_fmt=3;tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115938466~115938469~117041587;epver=2;dc_random=1768719823_YcOg44wKLdhiS0gLDGuejdNnCtf3wxm8pg;~oref=https%3A%2F%2Fwww.ljhooker.com.au%2F?",
+    "https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa/GenerateIT",
+    "https://fonts.googleapis.com/css2?family=Instrument%20Sans:wght@400;500;700&display=swap"
+  ]
+}
