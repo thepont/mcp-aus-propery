@@ -1,0 +1,44 @@
+{
+  "pageData": {
+    "listOnceConfig": null,
+    "apiCalls": [],
+    "propertyCards": [
+      {
+        "text": "Sign Up For Property Alerts",
+        "images": [],
+        "html": "<button class=\"hollow-btn open-property-alerts-modal\">Sign Up For Property Alerts</button>"
+      },
+      {
+        "text": "\n            \n  Any\n\n  House\n\n  Unit\n\n  Townhouse\n\n  Villa\n\n  Apartment\n\n  Flat\n\n  Studio\n\n  Warehouse\n\n  Duplex/Semi-detached\n\n  Alpine\n\n  Acreage/Semi-rural\n\n  Block Of Units\n\n  Terrace\n\n  Retiremen",
+        "images": [],
+        "html": "<div class=\"search-filters-modal__dropdown-container search-filters__property-type-wrappers search-filters__property-type-wrappers--active\" data-property-type=\"Any Residential Land HolidayRental Projects\">\n            <select name=\"residential_categories\" id=\"id_residential_categories\" multiple=\"\" tabindex=\"-1\" data-ssid=\"ss-38207\" style=\"display: none;\">\n  <option value=\"\">Any</option>\n\n  <option value=\"House\">House</option>\n\n  <option value=\"Unit\">Unit</option>\n\n  <option value=\"Townhouse\">Tow"
+      },
+      {
+        "text": "\n            \n  Select a commercial property type\n\n  Commercial Farming\n\n  Land/Development\n\n  Hotel/Leisure\n\n  Industrial/Warehouse\n\n  Medical/Consulting\n\n  Offices\n\n  Retail\n\n  Showrooms/Bulky Goods",
+        "images": [],
+        "html": "<div class=\"search-filters-modal__dropdown-container search-filters__property-type-wrappers\" data-property-type=\"Commercial Business\">\n            <select name=\"commercial_category\" class=\"search-form__select-field\" id=\"id_commercial_category\" tabindex=\"-1\" data-ssid=\"ss-1462\" style=\"display: none;\">\n  <option value=\"\" selected=\"\">Select a commercial property type</option>\n\n  <option value=\"Commercial Farming\">Commercial Farming</option>\n\n  <option value=\"Land/Development\">Land/Development</opti"
+      },
+      {
+        "text": "\n            \n  Any\n\n  Cropping\n\n  Dairy\n\n  Farmlet\n\n  Horticulture\n\n  Lifestyle\n\n  Livestock\n\n  Viticulture\n\n  Mixed Farming\n\n  Other\n\nSelect property typesAnyCroppingDairyFarmletHorticultureLifestyl",
+        "images": [],
+        "html": "<div class=\"search-filters-modal__dropdown-container search-filters__property-type-wrappers\" data-property-type=\"Rural\">\n            <select name=\"rural_categories\" id=\"id_rural_categories\" multiple=\"\" tabindex=\"-1\" data-ssid=\"ss-37038\" style=\"display: none;\">\n  <option value=\"\">Any</option>\n\n  <option value=\"Cropping\">Cropping</option>\n\n  <option value=\"Dairy\">Dairy</option>\n\n  <option value=\"Farmlet\">Farmlet</option>\n\n  <option value=\"Horticulture\">Horticulture</option>\n\n  <option value=\"Lifes"
+      },
+      {
+        "text": "\n    \n        \n            \n         \n        \n            \n                \n                    \n                    70\n                    Docwra\n                    Street\n                \n        ",
+        "images": [
+          "https://images.listonce.com.au/custom/488x/listings/70-docwra-street-magpie-vic-3352/776/01771776_img_01_488x.jpg?ycON60iwRho",
+          "https://www.prd.com.au/static/prd/icons/bed-icon.4d59610503ad.svg"
+        ],
+        "html": "<article class=\"property-card\" data-lat=\"-37.616854\" data-lon=\"143.844249\" data-url=\"/ballarat/property-search/1771776/70-docwra-street-magpie-vic-3352/\" data-bedrooms=\"4\" data-bathrooms=\"2\" data-parking=\"5\" data-img=\"https://images.listonce.com.au/custom/488x/listings/70-docwra-street-magpie-vic-3352/776/01771776_img_01_488x.jpg?ycON60iwRho\">\n    <a href=\"/ballarat/property-search/1771776/70-docwra-street-magpie-vic-3352/\" class=\"property-card__link\">\n        <div class=\"property-card__img-cont"
+      }
+    ],
+    "hasListOnceImages": true,
+    "pageTitle": "Property search | Ballarat, Creswick & surrounds",
+    "bodyClasses": "search-page"
+  },
+  "dataMatches": {
+    "clientId": null,
+    "apiUrl": null,
+    "listingsData": null
+  }
+}

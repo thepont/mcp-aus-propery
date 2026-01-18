@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-01-18T09:24:26.037Z",
+  "userToken": "405c9404-d63a-4abb-a2df-71fedf23858b",
+  "propertyAPIRequests": [
+    {
+      "url": "https://phoenix-propertydata-prod-flex.azurewebsites.net/api//llm-guardrail/WebConcierge?userToken=405c9404-d63a-4abb-a2df-71fedf23858b",
+      "method": "GET",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://harcourts.net/au",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "accept": "application/json, text/plain, */*",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      },
+      "postData": null
+    }
+  ],
+  "totalRequests": 278,
+  "recommendations": {
+    "viable": true,
+    "strategy": "playwright-token-extraction",
+    "tokenType": "session-based-uuid"
+  }
+}

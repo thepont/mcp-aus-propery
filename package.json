@@ -1,0 +1,41 @@
+{
+  "name": "mcp-industrial-property-scout",
+  "version": "1.0.0",
+  "description": "Universal Industrial Property Scout MCP Server for Australian properties",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "mcp-industrial-scout": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc && node dist/index.js",
+    "test": "npm run build && node run-tests.js",
+    "test:unit": "npm run build && node tests/unit/framework.test.js",
+    "test:integration": "npm run build && node tests/integration/mcp-server.test.js",
+    "test:network": "npm run build && node tests/integration/website-assumptions.test.js",
+    "test:all": "npm run test:unit && npm run test:integration && npm run test:network",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "industrial",
+    "property",
+    "real-estate",
+    "australia"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.2",
+    "axios": "^1.6.0",
+    "better-sqlite3": "^9.2.0",
+    "fast-xml-parser": "^5.3.3",
+    "playwright": "^1.40.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.30",
+    "typescript": "^5.3.0"
+  }
+}

@@ -1,0 +1,639 @@
+{
+  "cbre": [
+    {
+      "url": "https://cdn.cookielaw.org/consent/acb3d159-3546-4ac3-85ec-435457abddc2/acb3d159-3546-4ac3-85ec-435457abddc2.json",
+      "method": "GET",
+      "resourceType": "xhr",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location",
+      "method": "GET",
+      "resourceType": "xhr",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "accept": "application/json",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://www.cbre.com.au/coveo/rest/token?t=1768715414149",
+      "method": "GET",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-full-version-list": "\"HeadlessChrome\";v=\"143.0.7499.4\", \"Chromium\";v=\"143.0.7499.4\", \"Not A(Brand\";v=\"24.0.0.0\"",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/properties/industrial-warehouse",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-bitness": "\"64\"",
+        "sec-ch-ua-model": "\"\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-arch": "\"x86\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua-platform-version": "\"10.0\""
+      }
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dl=https%3A%2F%2Fwww.cbre.com.au%2Fproperties%2Findustrial-warehouse&scrsrc=www.googletagmanager.com&rnd=1487394284.1768715414&navt=n&npa=1&_tu=CA&gtm=45He61e1h1v841154692za200zd841154692xea&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~104527906~104528501~104684208~104684211~105391252~115938465~115938469~117041588&tft=1768715414226&tfd=330&apve=1&apvf=f",
+      "method": "POST",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://cdn.cookielaw.org/consent/acb3d159-3546-4ac3-85ec-435457abddc2/0198ec3a-5c65-7f97-ac95-5aa1ddb9974f/en.json",
+      "method": "GET",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://www.cbre.com.au/resources/cbre-search-spa/version.json",
+      "method": "GET",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-full-version-list": "\"HeadlessChrome\";v=\"143.0.7499.4\", \"Chromium\";v=\"143.0.7499.4\", \"Not A(Brand\";v=\"24.0.0.0\"",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/properties/industrial-warehouse",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-bitness": "\"64\"",
+        "sec-ch-ua-model": "\"\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-arch": "\"x86\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua-platform-version": "\"10.0\""
+      }
+    },
+    {
+      "url": "https://cdn.cookielaw.org/scripttemplates/202508.2.0/assets/otCenterRounded.json",
+      "method": "GET",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://cdn.cookielaw.org/scripttemplates/202508.2.0/assets/otCommonStyles.css",
+      "method": "GET",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://www.cbre.com.au/resources/cbre-search-spa-config/7.1.147/au-comm/config-results-industrial.json",
+      "method": "GET",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-full-version-list": "\"HeadlessChrome\";v=\"143.0.7499.4\", \"Chromium\";v=\"143.0.7499.4\", \"Not A(Brand\";v=\"24.0.0.0\"",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/properties/industrial-warehouse",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-bitness": "\"64\"",
+        "sec-ch-ua-model": "\"\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-arch": "\"x86\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua-platform-version": "\"10.0\""
+      }
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-J85Y04Q9H5&gtm=45je61e1h1v878351163z8841154692za20gzb841154692zd841154692&_p=1768715414030&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1157002543.1768715415&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=102015666~103116026~103200004~104527906~104528500~104684208~104684211~105391252~115495938~115938465~115938468~117041587&sid=1768715414&sct=1&seg=0&dl=https%3A%2F%2Fwww.cbre.com.au%2Fproperties%2Findustrial-warehouse&dt=Industrial%20Properties%20%7C%20CBRE%20Australia&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&ep.canonical_url=https%3A%2F%2Fwww.cbre.com.au%2Fproperties%2Findustrial-warehouse&tfd=672",
+      "method": "POST",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://www.cbre.com.au/resources/cbre-search-spa-v2/toggles/au-comm-prod.json",
+      "method": "GET",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-full-version-list": "\"HeadlessChrome\";v=\"143.0.7499.4\", \"Chromium\";v=\"143.0.7499.4\", \"Not A(Brand\";v=\"24.0.0.0\"",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/properties/industrial-warehouse",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-bitness": "\"64\"",
+        "sec-ch-ua-model": "\"\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-arch": "\"x86\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua-platform-version": "\"10.0\""
+      }
+    },
+    {
+      "url": "https://www.cbre.com.au/resources/configuration/channelData.json",
+      "method": "GET",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-full-version-list": "\"HeadlessChrome\";v=\"143.0.7499.4\", \"Chromium\";v=\"143.0.7499.4\", \"Not A(Brand\";v=\"24.0.0.0\"",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/properties/industrial-warehouse",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-bitness": "\"64\"",
+        "sec-ch-ua-model": "\"\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-arch": "\"x86\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua-platform-version": "\"10.0\""
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCTt2kFMT2_mqAdaFqUUqQoW78X0gh0HQE&channel=15&libraries=places&language=en-au",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps/api/mapsjs/gen_204?csp_test=true",
+      "method": "GET",
+      "resourceType": "xhr",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://caching.cbre.com/place/getaddress?address=Australia&countryCode=AU",
+      "method": "GET",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/62/13e/intl/en_au/common.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/62/13e/intl/en_au/util.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/62/13e/intl/en_au/geocoder.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/62/13e/intl/en_au/controls.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/62/13e/intl/en_au/places_impl.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://www.cbre.com.au/property-api/propertylistings/query?Site=au-comm&RadiusType=Kilometers&CurrencyCode=AUD&Unit=sqm&Interval=Annually&lon=133.775136&Lat=-25.274398&Lon=-0.12775829999998223&PolygonFilters=%5B%5B%22-0.6911343999999999%2C166.7429167%22%2C%22-51.66332320000001%2C166.7429167%22%2C%22-51.66332320000001%2C100.0911072%22%2C%22-0.6911343999999999%2C100.0911072%22%5D%5D&Common.Aspects=isLetting%2CisSale&Sort=desc(Common.LastUpdated)&Common.PropertyTypes=Industrial&Common.IsParent=true&PageSize=24&Page=1&_select=Dynamic.PrimaryImage,Common.ActualAddress,Common.Charges,Common.NumberOfBedrooms,Common.PrimaryKey,Common.UsageType,Common.Coordinate,Common.Aspects,Common.ListingCount,Common.IsParent,Common.HomeSite,Common.Agents,Common.PropertySubType,Common.PropertyTypes,Common.ContactGroup,Common.Highlights,Common.Walkthrough,Common.MinimumSize,Common.MaximumSize,Common.TotalSize,Common.GeoLocation,Common.Sizes,Common.LeaseTypes",
+      "method": "GET",
+      "resourceType": "xhr",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-full-version-list": "\"HeadlessChrome\";v=\"143.0.7499.4\", \"Chromium\";v=\"143.0.7499.4\", \"Not A(Brand\";v=\"24.0.0.0\"",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/properties/industrial-warehouse",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-bitness": "\"64\"",
+        "sec-ch-ua-model": "\"\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-arch": "\"x86\"",
+        "x-requested-with": "XMLHttpRequest",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "accept": "application/json, text/javascript, */*; q=0.01",
+        "sec-ch-ua-platform-version": "\"10.0\""
+      }
+    },
+    {
+      "url": "https://www.cbre.com.au/property-api/propertylistings/query?Site=au-comm&RadiusType=Kilometers&CurrencyCode=AUD&Unit=sqm&Interval=Annually&lon=133.775136&radius=12470.399806334804&Lat=-25.274398&Lon=-0.12775829999998223&Common.Aspects=isLetting%2CisSale&Sort=desc(Common.LastUpdated)&Common.PropertyTypes=Industrial&Common.IsParent=true&PageSize=1000000&Page=1&_select=Common.PrimaryKey,Common.Coordinate,Common.GeoLocation",
+      "method": "GET",
+      "resourceType": "xhr",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-full-version-list": "\"HeadlessChrome\";v=\"143.0.7499.4\", \"Chromium\";v=\"143.0.7499.4\", \"Not A(Brand\";v=\"24.0.0.0\"",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/properties/industrial-warehouse",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-bitness": "\"64\"",
+        "sec-ch-ua-model": "\"\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-arch": "\"x86\"",
+        "x-requested-with": "XMLHttpRequest",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "accept": "application/json, text/javascript, */*; q=0.01",
+        "sec-ch-ua-platform-version": "\"10.0\""
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps/api/js/AuthenticationService.Authenticate?1shttps%3A%2F%2Fwww.cbre.com.au%2Fproperties%2Findustrial-warehouse&3s15&4sAIzaSyCTt2kFMT2_mqAdaFqUUqQoW78X0gh0HQE&8b0&callback=_xdc_._t6hjmj&key=AIzaSyCTt2kFMT2_mqAdaFqUUqQoW78X0gh0HQE&channel=15&token=88550",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps/api/place/js/AutocompletionService.GetPredictionsJson?1sAustralia&4sen-AU&6m6&1m2&1d-26.944945852358565&2d130.4606895789848&2m2&1d-21.555054147641435&2d136.3726437610152&7scountry%3AAU&15e3&21m1&2e1&r_url=https%3A%2F%2Fwww.cbre.com.au%2Fproperties%2Findustrial-warehouse&callback=_xdc_._p2t7qi&key=AIzaSyCTt2kFMT2_mqAdaFqUUqQoW78X0gh0HQE&channel=15&token=123957",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://caching.cbre.com/place/getplace?placeId=ChIJ38WHZwf9KysRUhNblaFnglM&countryCode=AU",
+      "method": "GET",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-J85Y04Q9H5&gtm=45je61e1h1v878351163z8841154692za20gzb841154692zd841154692&_p=1768715414030&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&gdid=dYWJhMj&cid=1157002543.1768715415&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&are=1&frm=0&pscdl=denied&_s=2&tag_exp=102015666~103116026~103200004~104527906~104528500~104684208~104684211~105391252~115495938~115938465~115938468~117041587&sid=1768715414&sct=1&seg=0&dl=https%3A%2F%2Fwww.cbre.com.au%2Fproperties%2Findustrial-warehouse&dt=Properties%20sale%2Flease%20in%20Australia%20-%20CBRE%20Commercial&_tu=KA&en=gl_plp_pageview&ep.canonical_url=https%3A%2F%2Fwww.cbre.com.au%2Fproperties%2Findustrial-warehouse&ep.gl_listing_market_id=au-comm&ep.gl_listing_type=isLetting%2CisSale&ep.gl_listing_property_type=&_et=1367&tfd=2415",
+      "method": "POST",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-J85Y04Q9H5&gtm=45je61e1h1v878351163z8841154692za20gzb841154692zd841154692&_p=1768715414030&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&gdid=dYWJhMj&cid=1157002543.1768715415&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&are=1&frm=0&pscdl=denied&_prs=gs&_s=3&tag_exp=102015666~103116026~103200004~104527906~104528500~104684208~104684211~105391252~115495938~115938465~115938468~117041587&sid=1768715414&sct=1&seg=0&dl=https%3A%2F%2Fwww.cbre.com.au%2Fproperties%2Findustrial-warehouse&dt=Properties%20sale%2Flease%20in%20Australia%20-%20CBRE%20Commercial&_tu=CA&en=gl_search&_c=1&ep.canonical_url=https%3A%2F%2Fwww.cbre.com.au%2Fproperties%2Findustrial-warehouse&ep.gl_search_source=plpPage&ep.gl_listing_market_id=&ep.gl_search_term=&ep.gl_selected_suggestion=&ep.gl_place_id=&ep.gl_listing_property_type=&ep.gl_listing_type=&ep.gl_search_filter_additional=&ep.gl_search_destination_url=&ep.gl_filter_property_type=&ep.gl_filter_price_min=&ep.gl_filter_price_max=&ep.gl_filter_size_min=&ep.gl_filter_size_max=&ep.gl_filter_rent_price_min=&ep.gl_filter_rent_price_max=&ep.gl_search_url=%2Fproperties%2Findustrial-warehouse&ep.gl_search_firstpage_results=AU-GLDE-194600%2CAU-GLDE-189793%2CAU-GLDE-181975%2CAU-GLDE-185280%2CAU-GLDE-189457%2CAU-GLDE-189601%2CAU-7633963-1%2CAU-GLDE-183280%2CAU-GLDE-172838%2CAU-GLDE-191657%2CAU-GLDE-185826%2CAU-GLDE-179914%2CAU-GLDE-174039%2CAU-GLDE-174037%2CAU-GLDE-186455%2CAU-GLDE-174038%2CAU-GLDE-173232%2CAU-GLDE-154127%2CAU-GLDE-194523%2CAU-GLDE-183460%2CAU-GLDE-183685%2CAU-GLDE-194790%2CAU-GLDE-179303%2CAU-GLDE-191460&_et=373&tfd=2417",
+      "method": "POST",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/62/13e/intl/en_au/map.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/62/13e/intl/en_au/overlay.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/62/13e/intl/en_au/marker.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/62/13e/intl/en_au/log.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/62/13e/intl/en_au/onion.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps/api/js/StaticMapService.GetMapImage?1m2&1i3300&2i2094&2e1&3u4&4m2&1u560&2u573&5m6&1e0&5sen-AU&6sus&10b1&12b1&14i47083502&8e1&key=AIzaSyCTt2kFMT2_mqAdaFqUUqQoW78X0gh0HQE&channel=15&token=70862",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/$rpc/google.internal.maps.mapsjs.v1.MapsJsInternalService/GetViewportInfo",
+      "method": "POST",
+      "resourceType": "xhr",
+      "postData": "[[[-90,56.74871327737677],[43.6528563672129,-150.46628943737807]],4,null,\"en-AU\",0,\"m@762000000\",0,0,null,null,null,1,\"https://www.cbre.com.au/properties/industrial-warehouse\",1,null,null,\"641EDE9B-4777-45F3-8A76-55A63E095467\"]",
+      "headers": {
+        "x-goog-maps-api-signature": "83576",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "x-user-agent": "grpc-web-javascript/0.1",
+        "referer": "https://www.cbre.com.au/",
+        "x-goog-gmp-client-signals": "CAIqCDMuNjIuMTNlWg4SDAia6bHLBhCAu8KVAg==",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "x-goog-maps-channel-id": "15",
+        "sec-ch-ua-mobile": "?0",
+        "x-goog-api-key": "AIzaSyCTt2kFMT2_mqAdaFqUUqQoW78X0gh0HQE",
+        "x-goog-maps-api-salt": "mJ5xMBG7Rr",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "content-type": "application/json+protobuf",
+        "x-goog-maps-session-id": "42CE98F3-814A-4917-90FD-9DBDDEAF4109"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/62/13e/intl/en_au/geometry.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/62/13e/intl/en_au/poly.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cbre.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    }
+  ],
+  "cameron": [
+    {
+      "url": "https://maps.googleapis.com/maps/api/js?libraries=places%2Cgeometry&v=3.55&key=AIzaSyCIm0fX4ib0Ev9FB_knG2OUqogkuAARgpc&loading=async&callback=EPLAMINITMAP&ver=3.0.7",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cameron.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/geometry.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cameron.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/places.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cameron.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/main.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cameron.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps/api/mapsjs/gen_204?csp_test=true",
+      "method": "GET",
+      "resourceType": "xhr",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cameron.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-CK1TX4LJV5&gtm=45je61e1v9104627854za200zd9104627854&_p=1768715424675&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=501700804.1768715425&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~105391253~115938465~115938469~117041587&sid=1768715424&sct=1&seg=0&dl=https%3A%2F%2Fwww.cameron.com.au%2Fcommercial%2F&dt=Cameron%20%7C%20%7C%20Commercial%20Real%20Estate%20and%20Property%20Management&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=1494",
+      "method": "POST",
+      "resourceType": "fetch",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cameron.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/common.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cameron.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/util.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cameron.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/infowindow.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null,
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.cameron.com.au/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0"
+      }
+    }
+  ]
+}
