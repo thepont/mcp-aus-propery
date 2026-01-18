@@ -1,0 +1,513 @@
+[
+  {
+    "agency": "Ballarat Real Estate",
+    "url": "https://www.ballaratrealestate.com.au",
+    "searchUrl": "https://www.ballaratrealestate.com.au/buy",
+    "timestamp": "2026-01-18T08:08:44.418Z",
+    "apis": [
+      {
+        "url": "https://www.ballaratrealestate.com.au/wp-content/plugins/gravityforms/js/jquery.json.min.js",
+        "method": "GET",
+        "queryParams": "?ver=2.9.25",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.ballaratrealestate.com.au/buy/",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "script",
+        "category": "other"
+      },
+      {
+        "url": "https://www.google-analytics.com/g/collect",
+        "method": "POST",
+        "queryParams": "?v=2&tid=G-NM22KLL701&gtm=45je61e1v9107467924za200zd9107467924&_p=1768723727171&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1132187274.1768723728&ul=en-us&sr=1280x720&ir=1&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&are=1&frm=0&pscdl=noapi&_eu=EA&_s=1&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~105391253~115938466~115938468~117041588&sid=1768723728&sct=1&seg=0&dl=https%3A%2F%2Fwww.ballaratrealestate.com.au%2Fbuy%2F&dt=Buy%20-%20Ballarat%20Real%20Estate%20Pty%20Ltd&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=3659",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.ballaratrealestate.com.au/",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "fetch",
+        "category": "other"
+      }
+    ],
+    "technology": {
+      "wordpress": true,
+      "cms": null,
+      "frameworks": []
+    },
+    "authentication": {
+      "found": false,
+      "type": null,
+      "location": null
+    },
+    "errors": []
+  },
+  {
+    "agency": "Buxton Ballarat",
+    "url": "https://buxton.com.au",
+    "searchUrl": "https://buxton.com.au/vic/ballarat/buy",
+    "timestamp": "2026-01-18T08:09:24.174Z",
+    "apis": [],
+    "technology": {
+      "wordpress": false,
+      "cms": null,
+      "frameworks": []
+    },
+    "authentication": {
+      "found": false,
+      "type": null,
+      "location": null
+    },
+    "errors": []
+  },
+  {
+    "agency": "McGrath Ballarat",
+    "url": "https://www.mcgrath.com.au",
+    "searchUrl": "https://www.mcgrath.com.au/buy/vic/ballarat",
+    "timestamp": "2026-01-18T08:09:31.230Z",
+    "apis": [
+      {
+        "url": "https://www.mcgrath.com.au/.well-known/vercel/security/static/challenge.v2.wasm",
+        "method": "GET",
+        "queryParams": "",
+        "headers": {
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "referer": "https://www.mcgrath.com.au/.well-known/vercel/security/static/challenge.v2.min.js"
+        },
+        "type": "fetch",
+        "category": "other"
+      },
+      {
+        "url": "https://www.mcgrath.com.au/.well-known/vercel/security/request-challenge",
+        "method": "POST",
+        "queryParams": "",
+        "headers": {
+          "x-vercel-challenge-token": "2.1768723771.60.NGExNDgyMzQxMjcyZTQ0OGQxMTI4YTAzNmYzYTE3ZmU7YTU5YzUyYzc7MzcxZTA1NzUwNDdhNmYyMjg3ZDIxZjJkYjIyZGMwNmQxYmJhMGU2MjszO8DhO21bL/m+KJZMrI5wzJoL0rrZti6+3MUNoGleHMWvEjmEH8mztd+IenSqUxo=.b8a5c62db570c1b032fc100c24b2e46c",
+          "referer": "https://www.mcgrath.com.au/.well-known/vercel/security/static/challenge.v2.min.js",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "x-vercel-challenge-version": "2",
+          "x-vercel-challenge-solution": "2.1;c7256ea7388cc595;624a4b19e2356fe1;9276df926b7d7f34"
+        },
+        "type": "fetch",
+        "category": "other"
+      }
+    ],
+    "technology": {
+      "wordpress": false,
+      "cms": null,
+      "frameworks": []
+    },
+    "authentication": {
+      "found": false,
+      "type": null,
+      "location": null
+    },
+    "errors": []
+  },
+  {
+    "agency": "PRD Ballarat",
+    "url": "https://www.prd.com.au/ballarat",
+    "searchUrl": "https://www.prd.com.au/ballarat/property-search/",
+    "timestamp": "2026-01-18T08:09:37.140Z",
+    "apis": [
+      {
+        "url": "https://maps.googleapis.com/maps/api/js",
+        "method": "GET",
+        "queryParams": "?key=AIzaSyAe2OGrqXNEbfwrjqNarguCm_DX_ODPWc8&callback=initMap",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.prd.com.au/",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "script",
+        "category": "geospatial"
+      },
+      {
+        "url": "https://www.prd.com.au/listing-impression/",
+        "method": "POST",
+        "queryParams": "",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.prd.com.au/ballarat/property-search/",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "accept": "application/json, text/plain, */*",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "content-type": "multipart/form-data; boundary=----WebKitFormBoundary1ercTHzwHU6WKhHB",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "xhr",
+        "category": "property_data"
+      },
+      {
+        "url": "https://www.google-analytics.com/g/collect",
+        "method": "POST",
+        "queryParams": "?v=2&tid=G-75F3H4YSKD&gtm=45je61e1v9233138682za200&_p=1768723779049&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1597609576.1768723779&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~105391253~115495940~115938465~115938469~117041587&sid=1768723779&sct=1&seg=0&dl=https%3A%2F%2Fwww.prd.com.au%2Fballarat%2Fproperty-search%2F&dt=Property%20search%20%7C%20Ballarat%2C%20Creswick%20%26%20surrounds&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=2214",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.prd.com.au/",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "fetch",
+        "category": "property_data"
+      },
+      {
+        "url": "https://maps.googleapis.com/maps/api/mapsjs/gen_204",
+        "method": "GET",
+        "queryParams": "?csp_test=true",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.prd.com.au/",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "xhr",
+        "category": "geospatial"
+      },
+      {
+        "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/common.js",
+        "method": "GET",
+        "queryParams": "",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.prd.com.au/",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "script",
+        "category": "geospatial"
+      },
+      {
+        "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/util.js",
+        "method": "GET",
+        "queryParams": "",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.prd.com.au/",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "script",
+        "category": "geospatial"
+      },
+      {
+        "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/map.js",
+        "method": "GET",
+        "queryParams": "",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.prd.com.au/",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "script",
+        "category": "geospatial"
+      },
+      {
+        "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/marker.js",
+        "method": "GET",
+        "queryParams": "",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.prd.com.au/",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "script",
+        "category": "geospatial"
+      },
+      {
+        "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/overlay.js",
+        "method": "GET",
+        "queryParams": "",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.prd.com.au/",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "script",
+        "category": "geospatial"
+      },
+      {
+        "url": "https://analytics.google.com/g/collect",
+        "method": "POST",
+        "queryParams": "?v=2&tid=G-BFQWD67TKR&gtm=45je61e1v883803653z876229677za200&_p=1768723779049&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1597609576.1768723779&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&are=1&frm=0&pscdl=noapi&_eu=AAAAAGA&_s=1&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~105391253~115495939~115938465~115938468~116988316~117041588&sid=1768723779&sct=1&seg=0&dl=https%3A%2F%2Fwww.prd.com.au%2Fballarat%2Fproperty-search%2F&dt=Property%20search%20%7C%20Ballarat%2C%20Creswick%20%26%20surrounds&en=page_view&_fv=1&_ss=1&tfd=2402",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.prd.com.au/",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "fetch",
+        "category": "property_data"
+      },
+      {
+        "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/infowindow.js",
+        "method": "GET",
+        "queryParams": "",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.prd.com.au/",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "script",
+        "category": "geospatial"
+      },
+      {
+        "url": "https://v.clarity.ms/collect",
+        "method": "POST",
+        "queryParams": "",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.prd.com.au/",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "accept": "application/x-clarity-gzip",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "xhr",
+        "category": "other"
+      }
+    ],
+    "technology": {
+      "wordpress": false,
+      "cms": "Django",
+      "frameworks": []
+    },
+    "authentication": {
+      "found": false,
+      "type": null,
+      "location": null
+    },
+    "errors": []
+  },
+  {
+    "agency": "Fletchers Ballarat",
+    "url": "https://www.fletchersballarat.com.au",
+    "searchUrl": "https://www.fletchersballarat.com.au/buy",
+    "timestamp": "2026-01-18T08:10:16.441Z",
+    "apis": [],
+    "technology": {
+      "wordpress": false,
+      "cms": null,
+      "frameworks": []
+    },
+    "authentication": {
+      "found": false,
+      "type": null,
+      "location": null
+    },
+    "errors": [
+      "page.goto: net::ERR_NAME_NOT_RESOLVED at https://www.fletchersballarat.com.au/buy\nCall log:\n  - navigating to \"https://www.fletchersballarat.com.au/buy\", waiting until \"networkidle\"\n"
+    ]
+  },
+  {
+    "agency": "Ray White Ballarat",
+    "url": "https://www.raywhite.com",
+    "searchUrl": "https://www.raywhite.com/buy/in-ballarat,+vic+3350/list-1",
+    "timestamp": "2026-01-18T08:10:18.602Z",
+    "apis": [
+      {
+        "url": "https://maps.googleapis.com/maps/api/js",
+        "method": "GET",
+        "queryParams": "?key=AIzaSyCtOZVhBW6SDXWUeiEsFYbxblfn7aTU65s&loading=async&callback=googleMaps",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.raywhite.com/buy/in-ballarat,+vic+3350/list-1",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "script",
+        "category": "geospatial"
+      },
+      {
+        "url": "https://app-cf.bc0a.com/accounts/f00000000310422/config/www.raywhite.com/buy/in-ballarat2CXvicX3350/list-1/be_app.json",
+        "method": "GET",
+        "queryParams": "",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.raywhite.com/buy/in-ballarat,+vic+3350/list-1",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "content-type": "application/json",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "fetch",
+        "category": "other"
+      },
+      {
+        "url": "https://ixfd2-api.bc0a.com/api/ixf/1.0.0/get_capsule/f00000000310422/0482455535",
+        "method": "GET",
+        "queryParams": "?client=js_sdk&client_version=1.5.22",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.raywhite.com/buy/in-ballarat,+vic+3350/list-1",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "xhr",
+        "category": "other"
+      },
+      {
+        "url": "https://px.ads.linkedin.com/attribution_trigger",
+        "method": "GET",
+        "queryParams": "?pid=999707&time=1768723820186&url=https%3A%2F%2Fwww.raywhite.com%2Fbuy%2Fin-ballarat%2C%2Bvic%2B3350%2Flist-1",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.raywhite.com/buy/in-ballarat,+vic+3350/list-1",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "accept": "*",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "xhr",
+        "category": "other"
+      },
+      {
+        "url": "https://app-cdn.bc0a.com/page/create",
+        "method": "POST",
+        "queryParams": "",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.raywhite.com/buy/in-ballarat,+vic+3350/list-1",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "content-type": "application/json",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "fetch",
+        "category": "other"
+      },
+      {
+        "url": "https://analytics.google.com/g/collect",
+        "method": "POST",
+        "queryParams": "?v=2&tid=G-PZT8L9PVCE&gtm=45je61e1v9117393681z89126772327za20gzb9126772327zd9126772327&_p=1768723819923&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=61650007.1768723820&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&are=1&frm=0&pscdl=noapi&_eu=AAAAAGA&_s=1&tag_exp=103116026~103200004~104527907~104528500~104684208~104684211~105391253~115938466~115938468~117041587&sid=1768723820&sct=1&seg=0&dl=https%3A%2F%2Fwww.raywhite.com%2Fbuy%2Fin-ballarat%2C%2Bvic%2B3350%2Flist-1&dt=Australasia%27s%20largest%20real%20estate%20group%20%E2%80%A2%20Ray%20White&en=page_view&_fv=1&_nsi=1&_ss=1&ep.application=RAYW&ep.memberId=&ep.orgId=&ep.rwListingId=&tfd=1634",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.raywhite.com/buy/in-ballarat,+vic+3350/list-1",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "fetch",
+        "category": "property_data"
+      },
+      {
+        "url": "https://px.ads.linkedin.com/wa/",
+        "method": "POST",
+        "queryParams": "?medium=fetch&fmt=g",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.raywhite.com/buy/in-ballarat,+vic+3350/list-1",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "accept": "*",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "content-type": "text/plain;charset=UTF-8",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "fetch",
+        "category": "other"
+      },
+      {
+        "url": "https://www.raywhite.com/dist/sprite.svg",
+        "method": "GET",
+        "queryParams": "?v=d3040c9d8accbcf571f3b3497793e6e1",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.raywhite.com/buy/in-ballarat,+vic+3350/list-1",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "xhr",
+        "category": "other"
+      },
+      {
+        "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/main.js",
+        "method": "GET",
+        "queryParams": "",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.raywhite.com/buy/in-ballarat,+vic+3350/list-1",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "script",
+        "category": "geospatial"
+      },
+      {
+        "url": "https://maps.googleapis.com/maps/api/mapsjs/gen_204",
+        "method": "GET",
+        "queryParams": "?csp_test=true",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.raywhite.com/buy/in-ballarat,+vic+3350/list-1",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "xhr",
+        "category": "geospatial"
+      },
+      {
+        "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/common.js",
+        "method": "GET",
+        "queryParams": "",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.raywhite.com/buy/in-ballarat,+vic+3350/list-1",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "script",
+        "category": "geospatial"
+      },
+      {
+        "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/util.js",
+        "method": "GET",
+        "queryParams": "",
+        "headers": {
+          "sec-ch-ua-platform": "\"Windows\"",
+          "referer": "https://www.raywhite.com/buy/in-ballarat,+vic+3350/list-1",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "sec-ch-ua": "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+          "sec-ch-ua-mobile": "?0"
+        },
+        "type": "script",
+        "category": "geospatial"
+      }
+    ],
+    "technology": {
+      "wordpress": false,
+      "cms": null,
+      "frameworks": []
+    },
+    "authentication": {
+      "found": false,
+      "type": null,
+      "location": null
+    },
+    "errors": []
+  }
+]
