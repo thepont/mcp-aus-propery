@@ -261,7 +261,7 @@ await test('Tool call with missing required parameter returns error', async () =
 // Test 6: Test ScoutManager integration
 await test('ScoutManager integrates correctly with MCP server', async () => {
   console.log('   Loading ScoutManager...');
-  const { ScoutManager } = await import('../dist/ScoutManager.js');
+  const { ScoutManager } = await import('../../dist/ScoutManager.js');
   
   const manager = new ScoutManager();
   await manager.initialize();
@@ -295,7 +295,7 @@ await test('ScoutManager integrates correctly with MCP server', async () => {
 // Test 7: Deduplication works
 await test('Deduplication removes duplicate listings', async () => {
   console.log('   Loading ScoutManager...');
-  const { ScoutManager } = await import('../dist/ScoutManager.js');
+  const { ScoutManager } = await import('../../dist/ScoutManager.js');
   
   const manager = new ScoutManager();
   
@@ -331,7 +331,7 @@ await test('Deduplication removes duplicate listings', async () => {
 await test('Scout errors are handled gracefully', async () => {
   console.log('   Testing error handling with invalid search params...');
   
-  const { ScoutManager } = await import('../dist/ScoutManager.js');
+  const { ScoutManager } = await import('../../dist/ScoutManager.js');
   const manager = new ScoutManager();
   await manager.initialize();
   
@@ -353,7 +353,7 @@ await test('Scout errors are handled gracefully', async () => {
 await test('Scouts execute in parallel', async () => {
   console.log('   Testing parallel execution timing...');
   
-  const { ScoutManager } = await import('../dist/ScoutManager.js');
+  const { ScoutManager } = await import('../../dist/ScoutManager.js');
   const manager = new ScoutManager();
   await manager.initialize();
   
