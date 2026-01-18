@@ -31,46 +31,82 @@ export class CbreScout extends BaseScout {
 
   /**
    * Attempt to fetch properties via CBRE's internal API
+   * REAL API endpoint discovered via network analysis
    */
   private async searchViaApi(criteria: SearchParams): Promise<IndustrialListing[]> {
     const listings: IndustrialListing[] = [];
     
     try {
-      // CBRE uses various API endpoints, try the search API
-      const searchUrl = 'https://www.cbre.com.au/api/search/properties';
+      // REAL CBRE API endpoint: property-api/propertylistings/query
+      const searchUrl = 'https://www.cbre.com.au/property-api/propertylistings/query';
+      const params = new URLSearchParams({
+        'Site': 'au-comm',
+        'Common.Aspects': 'isLetting,isSale',
+        'Common.PropertyTypes': 'Industrial',
+        'Common.IsParent': 'true',
+        'PageSize': '50',
+        'Page': '1'
+      });
       
-      const response = await axios.post(searchUrl, {
-        propertyTypes: ['Industrial'],
-        location: criteria.location,
-        minPrice: criteria.minPrice,
-        maxPrice: criteria.maxPrice,
-        pageSize: 50
-      }, {
+      // Add location search if provided
+      if (criteria.location) {
+        params.append('Common.Locallity', criteria.location);
+      }
+      
+      const response = await axios.get(`${searchUrl}?${params.toString()}`, {
         headers: {
-          'Content-Type': 'application/json',
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'Accept': 'application/json'
         },
         timeout: 15000
       });
 
-      if (response.data && Array.isArray(response.data.properties)) {
-        for (const prop of response.data.properties) {
-          listings.push({
-            address: prop.address || prop.title || 'Address not available',
-            zoning: prop.zoning || undefined,
-            description: prop.description || prop.summary || '',
-            sourceUrl: prop.url || `https://www.cbre.com.au${prop.path || ''}`,
-            price: prop.price,
-            priceDisplay: prop.priceDisplay,
-            area: prop.area,
-            source: this.name,
-            metadata: prop
-          });
+      // CBRE API returns {Documents: [[{...}]], DocumentCount: N, Found: boolean}
+      if (response.data && response.data.DocumentCount > 0 && Array.isArray(response.data.Documents)) {
+        console.error(`[CBRE] API returned ${response.data.DocumentCount} total properties`);
+        
+        for (const docArray of response.data.Documents) {
+          if (!Array.isArray(docArray)) continue;
+          
+          for (const doc of docArray) {
+            try {
+              const addr = doc['Common.ActualAddress'];
+              const address = addr ? 
+                `${addr['Common.Line1'] || ''}, ${addr['Common.Locallity'] || ''} ${addr['Common.Region'] || ''} ${addr['Common.PostCode'] || ''}`.trim().replace(/\s+/g, ' ') :
+                'Address not available';
+              
+              // Extract highlights as description
+              const highlights = doc['Common.Highlights'] || [];
+              const description = highlights
+                .map((h: any) => h['Common.Highlight']?.[0]?.['Common.Text'])
+                .filter(Boolean)
+                .join('. ');
+              
+              const key = doc['Common.PrimaryKey'];
+              const sourceUrl = key ? `https://www.cbre.com.au/properties/${key}` : '';
+              
+              listings.push({
+                address,
+                zoning: doc['Common.Zoning'] || undefined,
+                description: description || 'No description available',
+                sourceUrl,
+                price: doc['Common.Charges']?.[0]?.['Common.Value'],
+                priceDisplay: doc['Common.Charges']?.[0]?.['Common.FormattedValue'],
+                area: doc['Common.TotalSize']?.['Common.Value'],
+                source: this.name,
+                metadata: doc
+              });
+            } catch (err) {
+              console.error('[CBRE] Failed to parse property:', err);
+              continue;
+            }
+          }
         }
+        
+        console.error(`[CBRE] Successfully parsed ${listings.length} properties from API`);
       }
     } catch (error) {
-      // API might not exist or have different structure - fail silently
-      if (axios.isAxiosError(error) && error.response?.status !== 404) {
+      if (axios.isAxiosError(error)) {
         console.error(`[CBRE] API error: ${error.message}`);
       }
     }

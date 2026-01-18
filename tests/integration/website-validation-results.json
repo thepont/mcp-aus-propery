@@ -1,5 +1,5 @@
 {
-  "test_date": "2026-01-18T05:47:31.270Z",
+  "test_date": "2026-01-18T05:58:13.889Z",
   "environment": "unknown",
   "cbre": {
     "assumptions": [
@@ -14,6 +14,12 @@
         "url": "https://www.cbre.com.au/properties/industrial-warehouse?aspects=isSale,isLease",
         "status": 200,
         "title": "Industrial Properties | CBRE Australia"
+      },
+      {
+        "assumption": "Page contains property listings",
+        "validated": true,
+        "keywords_found": 3,
+        "keywords_total": 7
       },
       {
         "assumption": "Page has JSON-LD",

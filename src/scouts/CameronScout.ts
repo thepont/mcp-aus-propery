@@ -219,50 +219,47 @@ export class CameronScout extends BaseScout {
 
   /**
    * Scrape HTML listings from Cameron website
+   * REAL selectors discovered from actual website: a.card.listing
    */
   private async scrapeHtmlListings(page: Page, criteria: SearchParams): Promise<IndustrialListing[]> {
     const listings: IndustrialListing[] = [];
     
     try {
-      // Cameron.com.au property card selectors
-      const propertyCards = await page.$$('.property-card, .listing-item, article.property, .property-listing');
+      // REAL Cameron selector: a.card.listing (discovered via HTML analysis)
+      const propertyCards = await page.$$('a.card.listing');
       
       console.error(`[Cameron] Found ${propertyCards.length} property cards to scrape`);
       
       for (const card of propertyCards) {
         try {
-          // Extract address
-          const address = await card.$eval('.property-address, .address, h2, h3, .property-title', 
-            el => el.textContent?.trim() || '').catch(() => '');
+          // Extract address from .listing-address
+          const addressParts = await card.$$eval('.listing-address span', 
+            spans => spans.map(s => s.textContent?.trim()).filter(Boolean).join(' ')
+          ).catch(() => '');
           
-          // Extract description
-          const description = await card.$eval('.property-description, .description, p, .property-summary', 
-            el => el.textContent?.trim() || '').catch(() => '');
+          // Clean up address formatting
+          const cleanAddress = addressParts.replace(/\s+/g, ' ').trim();
           
-          // Extract link
-          const linkElement = await card.$('a[href]');
-          const href = linkElement ? await linkElement.getAttribute('href') : '';
-          const url = href?.startsWith('http') ? href : `https://www.cameron.com.au${href}`;
+          // Extract description (the <p> after listing-address)
+          const description = await card.$eval('.contents p', 
+            el => el.textContent?.trim().replace(/\s+/g, ' ') || '').catch(() => '');
+          
+          // Extract href from the <a> tag itself
+          const href = await card.getAttribute('href') || '';
+          const url = href.startsWith('http') ? href : `https://www.cameron.com.au${href}`;
 
-          // Extract price
-          const priceText = await card.$eval('.price, .property-price, .price-display', 
-            el => el.textContent?.trim() || '').catch(() => '');
+          // Extract price from .listing-price
+          const priceText = await card.$eval('.listing-price', 
+            el => el.textContent?.trim().replace(/\s+/g, ' ') || '').catch(() => '');
 
-          // Extract property type/category to filter for industrial
-          const propertyType = await card.$eval('.property-type, .category, .type', 
-            el => el.textContent?.trim().toLowerCase() || '').catch(() => '');
+          // Extract details (land area, building area, etc)
+          const details = await card.$eval('.details', 
+            el => el.textContent?.trim().replace(/\s+/g, ' ') || '').catch(() => '');
 
-          // Only include if it's industrial or warehouse related
-          const isIndustrial = propertyType.includes('industrial') || 
-                               propertyType.includes('warehouse') ||
-                               propertyType.includes('factory') ||
-                               address.toLowerCase().includes('industrial') ||
-                               description.toLowerCase().includes('industrial');
-
-          if (address && isIndustrial) {
+          if (cleanAddress) {
             listings.push({
-              address,
-              description,
+              address: cleanAddress,
+              description: `${description}${details ? ' | ' + details : ''}`.trim(),
               sourceUrl: url,
               priceDisplay: priceText,
               source: this.name,
@@ -275,8 +272,10 @@ export class CameronScout extends BaseScout {
         }
       }
 
-      // If we found properties but none were industrial, try pagination
-      if (listings.length === 0) {
+      // If we found properties, log success
+      if (listings.length > 0) {
+        console.error(`[Cameron] Successfully scraped ${listings.length} listings`);
+      } else {
         console.error('[Cameron] No industrial properties found, checking if we can paginate...');
         
         // Try to click "next page" or load more if available

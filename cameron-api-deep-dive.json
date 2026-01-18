@@ -1,0 +1,666 @@
+{
+  "summary": {
+    "totalRequests": 98,
+    "potentialAPIs": 10,
+    "jsonResponses": 1
+  },
+  "allRequests": [
+    {
+      "url": "https://www.cameron.com.au/commercial/",
+      "method": "GET",
+      "resourceType": "document",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/themes/c23/style.css",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.12/featherlight.min.css",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.12/featherlight.gallery.min.css",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://use.fontawesome.com/69edd7cb59.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/plugins/formidable/css/formidableforms.css?ver=1121315",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/plugins/epl-advanced-mapping/public/css/style.css?ver=3.0.7",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/plugins/epl-advanced-mapping//css/font-awesome.min.css?ver=4.7.0",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/plugins/epl-advanced-mapping/css/infobox-default.css?ver=3.0.7",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/themes/c23/build/app.min.css?ver=1.0.0",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/themes/c23/build/custom-blocks.min.css?ver=1.0.0",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://use.typekit.net/nii5flt.css?ver=1.0",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/themes/c23/fonts/icomoon/style.css?ver=1.0",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.min.css?ver=2.2.2",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/nouislider@15.6.1/dist/nouislider.min.css?ver=15.6.1",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/swiper@9.2.0/swiper-bundle.min.css?ver=9.2.0",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/tiny-slider@2.9.4/dist/tiny-slider.min.css?ver=2.9.4",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/plugins/easy-property-listings/lib/assets/js/epl.min.js?ver=3.5.15",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/plugins/easy-property-listings/lib/assets/js/jquery-front-scripts.min.js?ver=3.5.15",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/plugins/epl-advanced-mapping/js/loader.js?ver=3.0.7",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps/api/js?libraries=places%2Cgeometry&v=3.55&key=AIzaSyCIm0fX4ib0Ev9FB_knG2OUqogkuAARgpc&loading=async&callback=EPLAMINITMAP&ver=3.0.7",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/plugins/epl-advanced-mapping/js/oms.min.js?ver=3.0.7",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js?ver=5.3.0-alpha1",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js?ver=2.2.2",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/nouislider@15.6.1/dist/nouislider.min.js?ver=15.6.1",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/autonumeric@4.6.2/dist/autoNumeric.min.js?ver=4.6.2",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/swiper@9.2.0/swiper-bundle.min.js?ver=9.2.0",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/tiny-slider@2.9.4/dist/min/tiny-slider.min.js?ver=2.9.4",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.2/imagesloaded.min.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.2/jquery.matchHeight-min.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.12/featherlight.min.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.12/featherlight.gallery.min.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/themes/c23/js/parallax.min.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/themes/c23/js/jquery.inview.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/themes/c23/js/script.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.googletagmanager.com/gtag/js?id=G-CK1TX4LJV5",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2026/01/16f0d114-204d-43ce-9035-5b7412a7a6b4-DANDENONG-1-300x200.jpeg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2026/01/4fabaaef-e645-46a8-8b7d-73432815ad54-CROYDON-SOUTH-1-300x200.jpeg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2026/01/b6c98a2e-2525-48d3-a84c-ecaf95ca9f66-WARRAGUL-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2026/01/e39d49f4-16ad-4d91-9830-c43aae4b6136-DANDENONG-SOUTH-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2026/01/d40dede8-cf7b-4544-a5ea-801201a5545a-DROUIN-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2026/01/01b60453-a89a-4095-956a-b6fd63a020ec-BAYSWATER-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2026/01/73750c36-7bbf-417f-89e6-f44038bf1f36-DANDENONG-SOUTH-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2026/01/48c44994-b96d-4d8a-b55a-9ccd8080d6e5-BAYSWATER-1-300x200.png",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2025/12/835d8470-fb85-43f3-b186-20a7d36c41bd-DANDENONG-SOUTH-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2025/12/ff9fd78a-1822-4f19-ba7f-046a67790984-SEAFORD-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2026/01/f8e34e0e-b657-401d-b334-f75a38d1c290-DINGLEY-VILLAGE-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2025/12/2e30ccc7-888d-4cd1-8084-713a6e56153d-DANDENONG-SOUTH-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2025/12/69fa6bab-1b6c-48a1-8880-4649aee68ac7-BORONIA-1-300x200.jpeg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2026/01/58e37b35-c23b-40ba-871d-d93df1ea6322-CARRUM-DOWNS-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2025/12/28177599-a4f9-42ff-9ee4-ad7ffe6a051e-PAKENHAM-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2025/12/18299012-7e25-4fcc-8f9d-9d979531ac21-WARRAGUL-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2025/12/c9cc2d87-0f69-441a-8ce1-d851d2a3e080-DANDENONG-SOUTH-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2026/01/7db9dca9-c2d6-48a8-9f22-d3bbf6407371-HALLAM-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2025/12/837287d6-b8b4-450a-84ae-3f8aa1203775-CRANBOURNE-WEST-1-300x200.jpeg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2026/01/b0228b52-e5e6-4e75-b1f4-d397b1c9fb20-MORDIALLOC-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2025/12/f57c3d59-96c8-4d76-bebe-9f6fc111161b-CRANBOURNE-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2025/12/78550f17-3b8f-4b57-93f9-7b0204a3ee26-HALLAM-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2025/12/20244b1a-435b-42df-a437-797be89e8ad3-PAKENHAM-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/uploads/2025/12/a8d01489-ecf0-4030-a536-27b5234d93ab-BAYSWATER-1-300x200.jpg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/plugins/all-in-one-seo-pack/dist/Lite/assets/table-of-contents.95d0dfce.js?ver=4.9.0",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-includes/js/jquery/ui/core.min.js?ver=1.13.3",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-includes/js/jquery/ui/mouse.min.js?ver=1.13.3",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-includes/js/jquery/ui/slider.min.js?ver=1.13.3",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-includes/js/jquery/jquery.ui.touch-punch.js?ver=0.2.2",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js?ver=3.12.2",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.3/ScrollTrigger.min.js?ver=3.10.3",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/themes/c23/build/js/scripts.js?ver=1.0",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/themes/c23/build/js/blocks.min.js?ver=1.0",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/plugins/formidable-pro/js/frm.min.js?ver=6.25.1-jquery",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/themes/c23/print.css",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://use.fontawesome.com/69edd7cb59.css",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://p.typekit.net/p.css?s=1&k=nii5flt&ht=tk&f=137.138.139.140.169.170.171.172.173.174.175.176.5474.5475.25136.25137&a=6354808&app=typekit&e=css",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://use.fontawesome.com/releases/v4.7.0/css/font-awesome-css.min.css",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "postData": null
+    },
+    {
+      "url": "https://use.fontawesome.com/releases/v4.7.0/fonts/fontawesome-webfont.woff2",
+      "method": "GET",
+      "resourceType": "font",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/places.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/geometry.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/main.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/themes/c23/img/cameron-logo-green.svg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/themes/c23/img/cameron-logo-white.svg",
+      "method": "GET",
+      "resourceType": "image",
+      "postData": null
+    },
+    {
+      "url": "https://use.typekit.net/af/78aca8/00000000000000007735e60d/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n6&v=3",
+      "method": "GET",
+      "resourceType": "font",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/themes/c23/fonts/icomoon/fonts/icomoon.ttf?2bb3f7",
+      "method": "GET",
+      "resourceType": "font",
+      "postData": null
+    },
+    {
+      "url": "https://use.typekit.net/af/efe4a5/00000000000000007735e609/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3",
+      "method": "GET",
+      "resourceType": "font",
+      "postData": null
+    },
+    {
+      "url": "https://use.typekit.net/af/23e139/00000000000000007735e605/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n5&v=3",
+      "method": "GET",
+      "resourceType": "font",
+      "postData": null
+    },
+    {
+      "url": "https://use.typekit.net/af/2555e1/00000000000000007735e603/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3",
+      "method": "GET",
+      "resourceType": "font",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps/api/mapsjs/gen_204?csp_test=true",
+      "method": "GET",
+      "resourceType": "xhr",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/plugins/epl-advanced-mapping/js/infobox.min.js?v=3.0.7",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/plugins/epl-advanced-mapping/js/markerclusterer.js?v=3.0.7",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/plugins/epl-advanced-mapping/js/richmarker-compiled.js?v=3.0.7",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-content/plugins/epl-advanced-mapping/js/scripts-legacy.js?v=3.0.7",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-CK1TX4LJV5&gtm=45je61e1v9104627854za200zd9104627854&_p=1768715702504&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=632051932.1768715703&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Linux&uapv=6.11.0&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115495938~115938466~115938469~116744866~117041587&sid=1768715702&sct=1&seg=0&dl=https%3A%2F%2Fwww.cameron.com.au%2Fcommercial%2F&dt=Cameron%20%7C%20%7C%20Commercial%20Real%20Estate%20and%20Property%20Management&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=1575",
+      "method": "POST",
+      "resourceType": "fetch",
+      "postData": null
+    },
+    {
+      "url": "blob:https://www.cameron.com.au/0d293f1e-a429-4eb9-9d4e-cfe76ee7775f",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://www.cameron.com.au/wp-includes/js/wp-emoji-release.min.js?ver=f02394e6c44a9913a052e1e278e43578",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/common.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/util.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/infowindow.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    }
+  ],
+  "apiRequests": [
+    {
+      "url": "https://www.cameron.com.au/commercial/",
+      "method": "GET",
+      "resourceType": "document",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps/api/js?libraries=places%2Cgeometry&v=3.55&key=AIzaSyCIm0fX4ib0Ev9FB_knG2OUqogkuAARgpc&loading=async&callback=EPLAMINITMAP&ver=3.0.7",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/places.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/geometry.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/main.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps/api/mapsjs/gen_204?csp_test=true",
+      "method": "GET",
+      "resourceType": "xhr",
+      "postData": null
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-CK1TX4LJV5&gtm=45je61e1v9104627854za200zd9104627854&_p=1768715702504&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=632051932.1768715703&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Linux&uapv=6.11.0&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115495938~115938466~115938469~116744866~117041587&sid=1768715702&sct=1&seg=0&dl=https%3A%2F%2Fwww.cameron.com.au%2Fcommercial%2F&dt=Cameron%20%7C%20%7C%20Commercial%20Real%20Estate%20and%20Property%20Management&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=1575",
+      "method": "POST",
+      "resourceType": "fetch",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/common.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/util.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    },
+    {
+      "url": "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/infowindow.js",
+      "method": "GET",
+      "resourceType": "script",
+      "postData": null
+    }
+  ],
+  "ajaxResponses": [
+    {
+      "url": "https://maps.googleapis.com/maps/api/mapsjs/gen_204?csp_test=true",
+      "status": 200,
+      "data": {}
+    }
+  ]
+}
