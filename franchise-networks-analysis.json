@@ -1,0 +1,520 @@
+[
+  {
+    "name": "Ray White",
+    "domain": "raywhite.com",
+    "techStack": {
+      "detected": {
+        "frameworks": {
+          "react": false,
+          "vue": false,
+          "angular": false,
+          "nextjs": false,
+          "nuxt": false,
+          "gatsby": false
+        },
+        "cms": {
+          "wordpress": false,
+          "aem": false,
+          "drupal": false,
+          "contentful": false
+        },
+        "scripts": [
+          "https://www.gstatic.com/recaptcha/releases/PoyoqOPhxBO7pBk68S4YbpHZ/recaptcha__en.js",
+          "https://snap.licdn.com/li.lms-analytics/insight.min.js",
+          "https://connect.facebook.net/signals/config/1552012015042710?v=2.9.250&r=stable&domain=www.raywhite.com&hme=842ba5a67bc11ec88742f1d93fdc2338abd91b60fc0531689cc660af96e193d9&ex_m=94%2C156%2C134%2C20%2C66%2C67%2C127%2C62%2C42%2C128%2C71%2C61%2C10%2C141%2C80%2C15%2C93%2C122%2C115%2C69%2C72%2C121%2C138%2C102%2C143%2C7%2C3%2C4%2C6%2C5%2C2%2C81%2C91%2C144%2C223%2C167%2C56%2C225%2C226%2C49%2C182%2C27%2C68%2C231%2C230%2C170%2C29%2C55%2C9%2C58%2C87%2C88%2C89%2C95%2C118%2C28%2C26%2C120%2C117%2C116%2C135%2C70%2C137%2C136%2C44%2C54%2C111%2C14%2C140%2C39%2C212%2C214%2C177%2C23%2C24%2C25%2C17%2C18%2C38%2C34%2C36%2C35%2C76%2C82%2C86%2C100%2C126%2C129%2C40%2C101%2C21%2C19%2C107%2C63%2C32%2C131%2C130%2C132%2C123%2C22%2C31%2C53%2C99%2C139%2C64%2C16%2C133%2C104%2C75%2C30%2C192%2C163%2C282%2C210%2C154%2C195%2C188%2C164%2C97%2C119%2C74%2C109%2C48%2C41%2C43%2C103%2C108%2C114%2C52%2C59%2C113%2C47%2C50%2C46%2C90%2C142%2C0%2C112%2C13%2C110%2C11%2C1%2C51%2C83%2C57%2C60%2C106%2C79%2C78%2C145%2C146%2C84%2C85%2C8%2C92%2C45%2C124%2C77%2C73%2C65%2C105%2C96%2C37%2C125%2C33%2C98%2C12%2C147",
+          "https://connect.facebook.net/en_US/fbevents.js",
+          "https://www.googletagmanager.com/gtag/js?id=G-PZT8L9PVCE&cx=c&gtm=4e61e1",
+          "https://www.googletagmanager.com/gtag/js?id=G-2W1ZR0KBNW&cx=c&gtm=4e61e1",
+          "https://www.googletagmanager.com/gtm.js?id=GTM-TRKQ89H",
+          "https://cdn.bc0a.com/autopilot/f00000000310422/autopilot_sdk.js",
+          "https://maps.googleapis.com/maps-api-v3/api/js/63/10a/main.js",
+          "https://www.raywhite.com/dist/manifest.js?v=b815dfb163c0395229f0a24e864154fa"
+        ]
+      },
+      "framework": null,
+      "renderingMethod": null
+    },
+    "apis": {
+      "endpoints": [
+        {
+          "url": "https://app-cf.bc0a.com/accounts/f00000000310422/config/www.raywhite.com/listing/be_app.json",
+          "method": "GET",
+          "type": "fetch"
+        },
+        {
+          "url": "https://ixfd2-api.bc0a.com/api/ixf/1.0.0/get_capsule/f00000000310422/0297744243?client=js_sdk&client_version=1.5.22",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://raywhiteapi.ep.dynamics.net/v1/listings?apiKey=6625c417-067a-4a8e-8c1d-85c812d0fb25",
+          "method": "POST",
+          "type": "xhr"
+        },
+        {
+          "url": "https://maps.googleapis.com/maps/api/mapsjs/gen_204?csp_test=true",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://px.ads.linkedin.com/attribution_trigger?pid=999707&time=1768725536190&url=https%3A%2F%2Fwww.raywhite.com%2Flisting%3Ftype%3Dbuy%26address%3D",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://maps.googleapis.com/maps/api/mapsjs/gen_204?csp_test=true",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://analytics.google.com/g/collect?v=2&tid=G-2W1ZR0KBNW&gtm=45je61e1v9129562574z89126772327za20gzb9126772327zd9126772327&_p=1768725535864&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1321084192.1768725531&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&are=1&frm=0&pscdl=noapi&_eu=AAAAAGQ&_s=1&tag_exp=103116026~103200004~104527906~104528501~104684208~104684211~105391253~115616985~115938466~115938468~116744866~116988315~117041587&sid=1768725531&sct=1&seg=1&dl=https%3A%2F%2Fwww.raywhite.com%2Flisting%3Ftype%3Dbuy%26address%3D&dt=Listing%20-%20Properties%20%E2%80%A2%20Ray%20White&en=page_view&tfd=6680",
+          "method": "POST",
+          "type": "fetch"
+        },
+        {
+          "url": "https://analytics.google.com/g/collect?v=2&tid=G-PZT8L9PVCE&gtm=45je61e1v9117393681z89126772327za20gzb9126772327zd9126772327&_p=1768725535864&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1321084192.1768725531&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&are=1&frm=0&pscdl=noapi&_eu=AAAAAGQ&_s=1&tag_exp=103116026~103200004~104527906~104528501~104684208~104684211~105391252~115616985~115938466~115938468~116744866~117041587&sid=1768725531&sct=1&seg=1&dl=https%3A%2F%2Fwww.raywhite.com%2Flisting%3Ftype%3Dbuy%26address%3D&dt=Listing%20-%20Properties%20%E2%80%A2%20Ray%20White&en=page_view&ep.application=RAYW&ep.memberId=&ep.orgId=&ep.rwListingId=&tfd=6728",
+          "method": "POST",
+          "type": "fetch"
+        }
+      ],
+      "patterns": [
+        "https://app-cf.bc0a.com/accounts/f00000000310422/config/www.raywhite.com/listing/be_app.json",
+        "https://ixfd2-api.bc0a.com/api/ixf/1.0.0/get_capsule/f00000000310422/0297744243",
+        "https://raywhiteapi.ep.dynamics.net/v1/listings",
+        "https://maps.googleapis.com/maps/api/mapsjs/gen_204",
+        "https://px.ads.linkedin.com/attribution_trigger",
+        "https://analytics.google.com/g/collect"
+      ]
+    },
+    "offMarketSignals": [],
+    "sitemap": {
+      "totalUrls": 0,
+      "propertyUrls": 0,
+      "sitemapUrl": null
+    },
+    "darkPages": {
+      "detected": false,
+      "examples": []
+    }
+  },
+  {
+    "name": "LJ Hooker",
+    "domain": "ljhooker.com.au",
+    "techStack": {
+      "detected": {
+        "frameworks": {
+          "react": false,
+          "vue": false,
+          "angular": false,
+          "nextjs": false,
+          "nuxt": false,
+          "gatsby": false
+        },
+        "cms": {
+          "wordpress": false,
+          "aem": false,
+          "drupal": false,
+          "contentful": false
+        },
+        "scripts": [
+          "https://assets.ljhooker.com/scripts/ljhanalytics/analytics.js",
+          "https://rules.quantcount.com/rules-p-pT-yw6V55K8K7.js",
+          "https://www.googletagmanager.com/gtag/destination?id=DC-6020747&cx=c&gtm=4e61e1",
+          "https://www.googletagmanager.com/gtag/js?id=AW-878273914&cx=c&gtm=4e61e1",
+          "https://cdn.properti.ai/code/snippet.js",
+          "https://secure.quantserve.com/quant.js",
+          "https://connect.facebook.net/signals/config/1061680051380767?v=2.9.250&r=stable&domain=www.ljhooker.com.au&hme=842ba5a67bc11ec88742f1d93fdc2338abd91b60fc0531689cc660af96e193d9&ex_m=94%2C156%2C134%2C20%2C66%2C67%2C127%2C62%2C42%2C128%2C71%2C61%2C10%2C141%2C80%2C15%2C93%2C122%2C115%2C69%2C72%2C121%2C138%2C102%2C143%2C7%2C3%2C4%2C6%2C5%2C2%2C81%2C91%2C144%2C223%2C167%2C56%2C225%2C226%2C49%2C182%2C27%2C68%2C231%2C230%2C170%2C29%2C55%2C9%2C58%2C87%2C88%2C89%2C95%2C118%2C28%2C26%2C120%2C117%2C116%2C135%2C70%2C137%2C136%2C44%2C54%2C111%2C14%2C140%2C39%2C212%2C214%2C177%2C23%2C24%2C25%2C17%2C18%2C38%2C34%2C36%2C35%2C76%2C82%2C86%2C100%2C126%2C129%2C40%2C101%2C21%2C19%2C107%2C63%2C32%2C131%2C130%2C132%2C123%2C22%2C31%2C53%2C99%2C139%2C64%2C16%2C133%2C104%2C75%2C30%2C192%2C163%2C282%2C210%2C154%2C195%2C188%2C164%2C97%2C119%2C74%2C109%2C48%2C41%2C43%2C103%2C108%2C114%2C52%2C59%2C113%2C47%2C50%2C46%2C90%2C142%2C0%2C112%2C13%2C110%2C11%2C1%2C51%2C83%2C57%2C60%2C106%2C79%2C78%2C145%2C146%2C84%2C85%2C8%2C92%2C45%2C124%2C77%2C73%2C65%2C105%2C96%2C37%2C125%2C33%2C98%2C12%2C147%2C238%2C237%2C239%2C244%2C245%2C246%2C242%2C233%2C169%2C218%2C284%2C211%2C208%2C232%2C234%2C228%2C157%2C202%2C184%2C165%2C281%2C151%2C173%2C158%2C190%2C261%2C260%2C257%2C224%2C258%2C259%2C148%2C204%2C251%2C150%2C178%2C200",
+          "https://connect.facebook.net/signals/config/579022422261594?v=2.9.250&r=stable&domain=www.ljhooker.com.au&hme=842ba5a67bc11ec88742f1d93fdc2338abd91b60fc0531689cc660af96e193d9&ex_m=94%2C156%2C134%2C20%2C66%2C67%2C127%2C62%2C42%2C128%2C71%2C61%2C10%2C141%2C80%2C15%2C93%2C122%2C115%2C69%2C72%2C121%2C138%2C102%2C143%2C7%2C3%2C4%2C6%2C5%2C2%2C81%2C91%2C144%2C223%2C167%2C56%2C225%2C226%2C49%2C182%2C27%2C68%2C231%2C230%2C170%2C29%2C55%2C9%2C58%2C87%2C88%2C89%2C95%2C118%2C28%2C26%2C120%2C117%2C116%2C135%2C70%2C137%2C136%2C44%2C54%2C111%2C14%2C140%2C39%2C212%2C214%2C177%2C23%2C24%2C25%2C17%2C18%2C38%2C34%2C36%2C35%2C76%2C82%2C86%2C100%2C126%2C129%2C40%2C101%2C21%2C19%2C107%2C63%2C32%2C131%2C130%2C132%2C123%2C22%2C31%2C53%2C99%2C139%2C64%2C16%2C133%2C104%2C75%2C30%2C192%2C163%2C282%2C210%2C154%2C195%2C188%2C164%2C97%2C119%2C74%2C109%2C48%2C41%2C43%2C103%2C108%2C114%2C52%2C59%2C113%2C47%2C50%2C46%2C90%2C142%2C0%2C112%2C13%2C110%2C11%2C1%2C51%2C83%2C57%2C60%2C106%2C79%2C78%2C145%2C146%2C84%2C85%2C8%2C92%2C45%2C124%2C77%2C73%2C65%2C105%2C96%2C37%2C125%2C33%2C98%2C12%2C147%2C238%2C237%2C239%2C244%2C245%2C246%2C242%2C233%2C169%2C218%2C284%2C211%2C208%2C232%2C234%2C228%2C157%2C202%2C184%2C165%2C281%2C151%2C173%2C158%2C190%2C261%2C260%2C257%2C224%2C258%2C259%2C148%2C204%2C251%2C150%2C178%2C200",
+          "https://connect.facebook.net/signals/config/1372152890092163?v=2.9.250&r=stable&domain=www.ljhooker.com.au&hme=842ba5a67bc11ec88742f1d93fdc2338abd91b60fc0531689cc660af96e193d9&ex_m=94%2C156%2C134%2C20%2C66%2C67%2C127%2C62%2C42%2C128%2C71%2C61%2C10%2C141%2C80%2C15%2C93%2C122%2C115%2C69%2C72%2C121%2C138%2C102%2C143%2C7%2C3%2C4%2C6%2C5%2C2%2C81%2C91%2C144%2C223%2C167%2C56%2C225%2C226%2C49%2C182%2C27%2C68%2C231%2C230%2C170%2C29%2C55%2C9%2C58%2C87%2C88%2C89%2C95%2C118%2C28%2C26%2C120%2C117%2C116%2C135%2C70%2C137%2C136%2C44%2C54%2C111%2C14%2C140%2C39%2C212%2C214%2C177%2C23%2C24%2C25%2C17%2C18%2C38%2C34%2C36%2C35%2C76%2C82%2C86%2C100%2C126%2C129%2C40%2C101%2C21%2C19%2C107%2C63%2C32%2C131%2C130%2C132%2C123%2C22%2C31%2C53%2C99%2C139%2C64%2C16%2C133%2C104%2C75%2C30%2C192%2C163%2C282%2C210%2C154%2C195%2C188%2C164%2C97%2C119%2C74%2C109%2C48%2C41%2C43%2C103%2C108%2C114%2C52%2C59%2C113%2C47%2C50%2C46%2C90%2C142%2C0%2C112%2C13%2C110%2C11%2C1%2C51%2C83%2C57%2C60%2C106%2C79%2C78%2C145%2C146%2C84%2C85%2C8%2C92%2C45%2C124%2C77%2C73%2C65%2C105%2C96%2C37%2C125%2C33%2C98%2C12%2C147%2C238%2C237%2C239%2C244%2C245%2C246%2C242%2C233%2C169%2C218%2C284%2C211%2C208%2C232%2C234%2C228%2C157%2C202%2C184%2C165%2C281%2C151%2C173%2C158%2C190%2C261%2C260%2C257%2C224%2C258%2C259%2C148%2C204%2C251%2C150%2C178%2C200",
+          "https://connect.facebook.net/signals/config/1846735372067910?v=2.9.250&r=stable&domain=www.ljhooker.com.au&hme=842ba5a67bc11ec88742f1d93fdc2338abd91b60fc0531689cc660af96e193d9&ex_m=94%2C156%2C134%2C20%2C66%2C67%2C127%2C62%2C42%2C128%2C71%2C61%2C10%2C141%2C80%2C15%2C93%2C122%2C115%2C69%2C72%2C121%2C138%2C102%2C143%2C7%2C3%2C4%2C6%2C5%2C2%2C81%2C91%2C144%2C223%2C167%2C56%2C225%2C226%2C49%2C182%2C27%2C68%2C231%2C230%2C170%2C29%2C55%2C9%2C58%2C87%2C88%2C89%2C95%2C118%2C28%2C26%2C120%2C117%2C116%2C135%2C70%2C137%2C136%2C44%2C54%2C111%2C14%2C140%2C39%2C212%2C214%2C177%2C23%2C24%2C25%2C17%2C18%2C38%2C34%2C36%2C35%2C76%2C82%2C86%2C100%2C126%2C129%2C40%2C101%2C21%2C19%2C107%2C63%2C32%2C131%2C130%2C132%2C123%2C22%2C31%2C53%2C99%2C139%2C64%2C16%2C133%2C104%2C75%2C30%2C192%2C163%2C282%2C210%2C154%2C195%2C188%2C164%2C97%2C119%2C74%2C109%2C48%2C41%2C43%2C103%2C108%2C114%2C52%2C59%2C113%2C47%2C50%2C46%2C90%2C142%2C0%2C112%2C13%2C110%2C11%2C1%2C51%2C83%2C57%2C60%2C106%2C79%2C78%2C145%2C146%2C84%2C85%2C8%2C92%2C45%2C124%2C77%2C73%2C65%2C105%2C96%2C37%2C125%2C33%2C98%2C12%2C147%2C238%2C237%2C239%2C244%2C245%2C246%2C242%2C233%2C169%2C218%2C284%2C211%2C208%2C232%2C234%2C228%2C157%2C202%2C184%2C165%2C281%2C151%2C173%2C158%2C190%2C261%2C260%2C257%2C224%2C258%2C259%2C148%2C204%2C251%2C150%2C178%2C200"
+        ]
+      },
+      "framework": null,
+      "renderingMethod": null
+    },
+    "apis": {
+      "endpoints": [
+        {
+          "url": "https://www.youtube.com/api/stats/atr?ns=yt&el=embedded&cpn=RiNZYoqlsmseGNs_&ver=2&cmt=0&fs=0&rt=0&euri=https%3A%2F%2Fwww.ljhooker.com.au%2F&lact=5273&cl=852306146&mos=0&volume=100&cbrand=generic&c=WEB_EMBEDDED_PLAYER&cver=1.20260116.01.00&cplayer=UNIPLAYER&cmodel=windows%20app&cos=Windows&cosver=10.0&cplatform=DESKTOP&epm=1&hl=en_US&cr=US&len=30&fexp=v1%2C24004644%2C27005591%2C53408%2C34656%2C106030%2C18644%2C117689%2C9252%2C3479%2C13030%2C6256%2C16950%2C15179%2C2%2C20221%2C59191%2C6109%2C9720%2C5385%2C25059%2C4174%2C25717%2C4729%2C1258%2C12260%2C4932%2C256%2C1734%2C563%2C19140%2C137%2C4434%2C1628%2C3610%2C5800%2C198%2C1285%2C495%2C9404%2C4780%2C1903%2C8861%2C543%2C7880%2C10634%2C5312%2C9500%2C1840%2C799%2C6%2C6167%2C553%2C563%2C1025%2C895%2C2597%2C512%2C413%2C3745%2C3860%2C546%2C2%2C4058%2C1984%2C71%2C1303%2C575%2C61%2C1226%2C3011%2C1937%2C179%2C37%2C4475%2C2211%2C9137%2C3469%2C2301%2C1608%2C49%2C1686&feature=oembed&muted=0&docid=_pGcf1l5gPM",
+          "method": "POST",
+          "type": "xhr"
+        },
+        {
+          "url": "https://app.hubspot.com/content-tools-menu/api/v1/tools-menu/has-permission-json?portalId=21262656",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=contact&propertyType=residential",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=buy",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=contact&propertyType=residential",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=buy",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=contact&propertyType=residential",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://api01.ljx.com.au/website/search-v1?searchOrigin=residential-au&searchProfile=buy&orderBy=date-desc&page=1&limit=4",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://api01.ljx.com.au/website/search-v1?searchOrigin=residential-au&searchProfile=sold&orderBy=date-desc&page=1&limit=4",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://snip.properti.ai/api/snippet?mode=head-office&hoid=7d6ef205-e9a5-42bb-b6d0-8b019f9df60b",
+          "method": "GET",
+          "type": "fetch"
+        },
+        {
+          "url": "https://snip.properti.ai/api/event",
+          "method": "POST",
+          "type": "fetch"
+        },
+        {
+          "url": "https://app.hubspot.com/content-tools-menu/api/v1/tools-menu/has-permission-json?portalId=21262656",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=contact&propertyType=residential",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=buy",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://api01.ljx.com.au/website/search-v1/config?searchOrigin=residential-au&searchProfile=contact&propertyType=residential",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://snip.properti.ai/api/snippet?mode=head-office&hoid=7d6ef205-e9a5-42bb-b6d0-8b019f9df60b",
+          "method": "GET",
+          "type": "fetch"
+        },
+        {
+          "url": "https://snip.properti.ai/api/event",
+          "method": "POST",
+          "type": "fetch"
+        }
+      ],
+      "patterns": [
+        "https://www.youtube.com/api/stats/atr",
+        "https://app.hubspot.com/content-tools-menu/api/v1/tools-menu/has-permission-json",
+        "https://api01.ljx.com.au/website/search-v1/config",
+        "https://api01.ljx.com.au/website/search-v1",
+        "https://snip.properti.ai/api/snippet",
+        "https://snip.properti.ai/api/event"
+      ]
+    },
+    "offMarketSignals": [],
+    "sitemap": {
+      "totalUrls": 642,
+      "propertyUrls": 200,
+      "sitemapUrl": "https://www.ljhooker.com.au/sitemap.xml"
+    },
+    "darkPages": {
+      "detected": false,
+      "examples": []
+    }
+  },
+  {
+    "name": "McGrath",
+    "domain": "mcgrath.com.au",
+    "techStack": {
+      "detected": {
+        "frameworks": {
+          "react": false,
+          "vue": false,
+          "angular": false,
+          "nextjs": false,
+          "nuxt": false,
+          "gatsby": false
+        },
+        "cms": {
+          "wordpress": false,
+          "aem": false,
+          "drupal": false,
+          "contentful": false
+        },
+        "scripts": []
+      },
+      "framework": null,
+      "renderingMethod": null
+    },
+    "apis": {
+      "endpoints": [],
+      "patterns": []
+    },
+    "offMarketSignals": [],
+    "sitemap": {
+      "totalUrls": 0,
+      "propertyUrls": 0,
+      "sitemapUrl": null
+    },
+    "darkPages": {
+      "detected": false,
+      "examples": []
+    }
+  },
+  {
+    "name": "Harcourts",
+    "domain": "harcourts.com.au",
+    "techStack": {
+      "detected": {
+        "frameworks": {
+          "react": false,
+          "vue": false,
+          "angular": false,
+          "nextjs": false,
+          "nuxt": false,
+          "gatsby": false
+        },
+        "cms": {
+          "wordpress": false,
+          "aem": true,
+          "drupal": false,
+          "contentful": false
+        },
+        "scripts": [
+          "https://www.googletagmanager.com/gtag/destination?id=AW-10899683822&cx=c&gtm=4e61e1",
+          "https://script.crazyegg.com/pages/versioned/common-scripts/41a6a8d4fbac8ef63846164d03d46faf.js",
+          "https://tags.srv.stackadapt.com/events.js",
+          "https://snap.licdn.com/li.lms-analytics/insight.min.js",
+          "https://www.googletagmanager.com/gtag/js?id=G-D67YY57NJ7&cx=c&gtm=4e61e1",
+          "https://www.gstatic.com/recaptcha/releases/PoyoqOPhxBO7pBk68S4YbpHZ/recaptcha__en.js",
+          "https://www.googletagmanager.com/gtag/js?id=AW-10996063566&cx=c&gtm=4e61e1h1",
+          "https://www.googletagmanager.com/gtag/js?id=G-VWD8Q6TLFH&cx=c&gtm=4e61e1h1",
+          "https://www.googletagmanager.com/gtag/js?id=G-THKESB98LG&cx=c&gtm=4e61e1h1",
+          "https://www.googletagmanager.com/gtag/js?id=G-YFBWL2X7RJ&cx=c&gtm=4e61e1h1"
+        ]
+      },
+      "framework": null,
+      "renderingMethod": null
+    },
+    "apis": {
+      "endpoints": [
+        {
+          "url": "https://maps.googleapis.com/maps/api/mapsjs/gen_204?csp_test=true",
+          "method": "GET",
+          "type": "xhr"
+        },
+        {
+          "url": "https://phoenix-botinteraction-prod-flex.azurewebsites.net/api/v2/Bot/GetChatConfig",
+          "method": "POST",
+          "type": "xhr"
+        },
+        {
+          "url": "https://phoenix-propertydata-prod-flex.azurewebsites.net/api//llm-guardrail/WebConcierge?userToken=fd6f9fb7-f4cb-42a8-ace6-fa375039140c",
+          "method": "GET",
+          "type": "xhr"
+        }
+      ],
+      "patterns": [
+        "https://maps.googleapis.com/maps/api/mapsjs/gen_204",
+        "https://phoenix-botinteraction-prod-flex.azurewebsites.net/api/v2/Bot/GetChatConfig",
+        "https://phoenix-propertydata-prod-flex.azurewebsites.net/api//llm-guardrail/WebConcierge"
+      ]
+    },
+    "offMarketSignals": [],
+    "sitemap": {
+      "totalUrls": 0,
+      "propertyUrls": 0,
+      "sitemapUrl": null
+    },
+    "darkPages": {
+      "detected": false,
+      "examples": []
+    }
+  },
+  {
+    "name": "Raine & Horne",
+    "domain": "rh.com.au",
+    "techStack": {
+      "detected": {
+        "frameworks": {
+          "react": false,
+          "vue": false,
+          "angular": false,
+          "nextjs": false,
+          "nuxt": false,
+          "gatsby": false
+        },
+        "cms": {
+          "wordpress": false,
+          "aem": false,
+          "drupal": false,
+          "contentful": false
+        },
+        "scripts": [
+          "https://www.googletagmanager.com/gtag/destination?id=AW-16526761283&cx=c&gtm=4e61e1",
+          "https://www.googletagmanager.com/gtag/destination?id=AW-10825095011&cx=c&gtm=4e61e1",
+          "https://tags.srv.stackadapt.com/events.js",
+          "https://www.google-analytics.com/analytics.js",
+          "https://www.googletagmanager.com/gtag/js?id=G-J7JRK2H6CD&cx=c&gtm=4e61e1",
+          "https://www.googletagmanager.com/gtag/js?id=G-F7CWE8MF7K&cx=c&gtm=4e61e1",
+          "https://connect.facebook.net/signals/config/1919185491662595?v=2.9.250&r=stable&domain=www.raineandhorne.com.au&hme=842ba5a67bc11ec88742f1d93fdc2338abd91b60fc0531689cc660af96e193d9&ex_m=94%2C156%2C134%2C20%2C66%2C67%2C127%2C62%2C42%2C128%2C71%2C61%2C10%2C141%2C80%2C15%2C93%2C122%2C115%2C69%2C72%2C121%2C138%2C102%2C143%2C7%2C3%2C4%2C6%2C5%2C2%2C81%2C91%2C144%2C223%2C167%2C56%2C225%2C226%2C49%2C182%2C27%2C68%2C231%2C230%2C170%2C29%2C55%2C9%2C58%2C87%2C88%2C89%2C95%2C118%2C28%2C26%2C120%2C117%2C116%2C135%2C70%2C137%2C136%2C44%2C54%2C111%2C14%2C140%2C39%2C212%2C214%2C177%2C23%2C24%2C25%2C17%2C18%2C38%2C34%2C36%2C35%2C76%2C82%2C86%2C100%2C126%2C129%2C40%2C101%2C21%2C19%2C107%2C63%2C32%2C131%2C130%2C132%2C123%2C22%2C31%2C53%2C99%2C139%2C64%2C16%2C133%2C104%2C75%2C30%2C192%2C163%2C282%2C210%2C154%2C195%2C188%2C164%2C97%2C119%2C74%2C109%2C48%2C41%2C43%2C103%2C108%2C114%2C52%2C59%2C113%2C47%2C50%2C46%2C90%2C142%2C0%2C112%2C13%2C110%2C11%2C1%2C51%2C83%2C57%2C60%2C106%2C79%2C78%2C145%2C146%2C84%2C85%2C8%2C92%2C45%2C124%2C77%2C73%2C65%2C105%2C96%2C37%2C125%2C33%2C98%2C12%2C147%2C238%2C237%2C239%2C244%2C245%2C246%2C242%2C233%2C169%2C171%2C218%2C284%2C211%2C208%2C232%2C234%2C228%2C157%2C202%2C184%2C165%2C281%2C151%2C162%2C173%2C158%2C190%2C261%2C260%2C257%2C224%2C258%2C259%2C148%2C204%2C251%2C150%2C178%2C200",
+          "https://connect.facebook.net/signals/config/288960479089715?v=2.9.250&r=stable&domain=www.raineandhorne.com.au&hme=842ba5a67bc11ec88742f1d93fdc2338abd91b60fc0531689cc660af96e193d9&ex_m=94%2C156%2C134%2C20%2C66%2C67%2C127%2C62%2C42%2C128%2C71%2C61%2C10%2C141%2C80%2C15%2C93%2C122%2C115%2C69%2C72%2C121%2C138%2C102%2C143%2C7%2C3%2C4%2C6%2C5%2C2%2C81%2C91%2C144%2C223%2C167%2C56%2C225%2C226%2C49%2C182%2C27%2C68%2C231%2C230%2C170%2C29%2C55%2C9%2C58%2C87%2C88%2C89%2C95%2C118%2C28%2C26%2C120%2C117%2C116%2C135%2C70%2C137%2C136%2C44%2C54%2C111%2C14%2C140%2C39%2C212%2C214%2C177%2C23%2C24%2C25%2C17%2C18%2C38%2C34%2C36%2C35%2C76%2C82%2C86%2C100%2C126%2C129%2C40%2C101%2C21%2C19%2C107%2C63%2C32%2C131%2C130%2C132%2C123%2C22%2C31%2C53%2C99%2C139%2C64%2C16%2C133%2C104%2C75%2C30%2C192%2C163%2C282%2C210%2C154%2C195%2C188%2C164%2C97%2C119%2C74%2C109%2C48%2C41%2C43%2C103%2C108%2C114%2C52%2C59%2C113%2C47%2C50%2C46%2C90%2C142%2C0%2C112%2C13%2C110%2C11%2C1%2C51%2C83%2C57%2C60%2C106%2C79%2C78%2C145%2C146%2C84%2C85%2C8%2C92%2C45%2C124%2C77%2C73%2C65%2C105%2C96%2C37%2C125%2C33%2C98%2C12%2C147",
+          "https://connect.facebook.net/en_US/fbevents.js",
+          "https://www.googletagmanager.com/gtm.js?id=GTM-TMQK4M"
+        ]
+      },
+      "framework": null,
+      "renderingMethod": null
+    },
+    "apis": {
+      "endpoints": [
+        {
+          "url": "https://www.youtube.com/api/stats/atr?ns=yt&el=embedded&cpn=TkTNyZnvWeRsgj8R&ver=2&cmt=0&fs=0&rt=0&euri=https%3A%2F%2Fwww.raineandhorne.com.au%2F&lact=3536&cl=852306146&mos=0&volume=100&cbrand=generic&c=WEB_EMBEDDED_PLAYER&cver=1.20260116.01.00&cplayer=UNIPLAYER&cmodel=windows%20app&cos=Windows&cosver=10.0&cplatform=DESKTOP&epm=1&hl=en_US&cr=US&len=62&fexp=v1%2C23848211%2C156433%2C27005591%2C53408%2C34656%2C106030%2C18644%2C117689%2C9252%2C3479%2C13030%2C6258%2C16948%2C15179%2C2%2C20220%2C59192%2C6109%2C9720%2C2887%2C2498%2C25059%2C4174%2C25717%2C4729%2C1258%2C12259%2C4933%2C256%2C1734%2C563%2C19140%2C137%2C4435%2C1627%2C3608%2C5801%2C199%2C1780%2C9404%2C2019%2C2761%2C1903%2C9404%2C5382%2C2498%2C10634%2C5312%2C5971%2C3529%2C1840%2C799%2C6%2C6721%2C562%2C1921%2C2596%2C512%2C413%2C3745%2C3860%2C546%2C2%2C1892%2C2165%2C1985%2C71%2C1303%2C420%2C216%2C1226%2C3011%2C1622%2C315%2C216%2C15822%2C3470%2C2300%2C1611%2C46%2C1687&muted=0&docid=P7L5VGYS1R0",
+          "method": "POST",
+          "type": "xhr"
+        },
+        {
+          "url": "https://www.youtube.com/api/stats/atr?ns=yt&el=embedded&cpn=PAk8wvIYtyAPBs1O&ver=2&cmt=0&fs=0&rt=0&euri=https%3A%2F%2Fwww.raineandhorne.com.au%2F&lact=3430&cl=852306146&mos=0&volume=100&cbrand=generic&c=WEB_EMBEDDED_PLAYER&cver=1.20260116.01.00&cplayer=UNIPLAYER&cmodel=windows%20app&cos=Windows&cosver=10.0&cplatform=DESKTOP&epm=1&hl=en_US&cr=US&len=62&fexp=v1%2C23848211%2C156433%2C27005591%2C53408%2C34656%2C106030%2C18644%2C117689%2C9252%2C3479%2C13030%2C23206%2C15179%2C2%2C20220%2C59192%2C6109%2C9720%2C2887%2C2498%2C25059%2C4174%2C25717%2C4729%2C1258%2C12259%2C4933%2C256%2C1734%2C563%2C19140%2C137%2C4435%2C1627%2C3608%2C5801%2C199%2C1780%2C9404%2C2019%2C2761%2C1903%2C9404%2C5382%2C2498%2C10634%2C5312%2C5971%2C3529%2C1840%2C799%2C6%2C6721%2C562%2C1921%2C2596%2C512%2C413%2C3745%2C3860%2C546%2C2%2C1892%2C2165%2C1985%2C71%2C1303%2C420%2C216%2C1226%2C3011%2C1622%2C315%2C216%2C15822%2C3470%2C2300%2C1611%2C46%2C1687&muted=0&docid=P7L5VGYS1R0",
+          "method": "POST",
+          "type": "xhr"
+        },
+        {
+          "url": "https://www.youtube.com/api/stats/atr?ns=yt&el=embedded&cpn=JRAcJ-Y4hdTl3ia5&ver=2&cmt=0&fs=0&rt=0&euri=https%3A%2F%2Fwww.raineandhorne.com.au%2F&lact=3650&cl=852306146&mos=0&volume=100&cbrand=generic&c=WEB_EMBEDDED_PLAYER&cver=1.20260116.01.00&cplayer=UNIPLAYER&cmodel=windows%20app&cos=Windows&cosver=10.0&cplatform=DESKTOP&epm=1&hl=en_US&cr=US&len=71&fexp=v1%2C23848211%2C156433%2C27005591%2C53408%2C34656%2C106030%2C18644%2C117689%2C9252%2C3479%2C13030%2C23206%2C15179%2C2%2C20220%2C59192%2C6109%2C9720%2C2887%2C2498%2C25059%2C4174%2C25717%2C4729%2C1258%2C12259%2C4933%2C256%2C1734%2C563%2C19140%2C137%2C4435%2C1627%2C3608%2C5801%2C199%2C1780%2C9404%2C2019%2C2761%2C1903%2C9404%2C5382%2C2498%2C10634%2C5312%2C5971%2C3529%2C1840%2C799%2C6%2C6721%2C562%2C1921%2C2596%2C512%2C413%2C3745%2C3860%2C546%2C2%2C1892%2C2165%2C1985%2C71%2C1303%2C420%2C216%2C1226%2C3011%2C1622%2C315%2C216%2C15822%2C3470%2C2300%2C1611%2C46%2C1687&muted=0&docid=u4ZFyotRkvU",
+          "method": "POST",
+          "type": "xhr"
+        },
+        {
+          "url": "https://www.youtube.com/api/stats/atr?ns=yt&el=embedded&cpn=zr1-2NK5NOlH6LX6&ver=2&cmt=0&fs=0&rt=0&euri=https%3A%2F%2Fwww.raineandhorne.com.au%2F&lact=3536&cl=852306146&mos=0&volume=100&cbrand=generic&c=WEB_EMBEDDED_PLAYER&cver=1.20260116.01.00&cplayer=UNIPLAYER&cmodel=windows%20app&cos=Windows&cosver=10.0&cplatform=DESKTOP&epm=1&hl=en_US&cr=US&len=71&fexp=v1%2C23848211%2C156433%2C27005591%2C53408%2C34656%2C106030%2C18644%2C117689%2C9252%2C3479%2C13030%2C23206%2C15179%2C2%2C20220%2C59192%2C6109%2C9720%2C2887%2C2498%2C25059%2C4174%2C25717%2C4729%2C1258%2C12259%2C4933%2C256%2C1734%2C563%2C19140%2C137%2C4435%2C1627%2C3608%2C5801%2C199%2C1780%2C9404%2C2019%2C2761%2C1903%2C9404%2C5382%2C2498%2C10634%2C5312%2C5971%2C3529%2C1840%2C799%2C6%2C6721%2C562%2C1921%2C2596%2C512%2C413%2C3745%2C3860%2C546%2C2%2C1892%2C2165%2C1985%2C71%2C1303%2C420%2C216%2C1226%2C3011%2C1622%2C315%2C216%2C15822%2C3470%2C2300%2C1611%2C46%2C1687&muted=0&docid=u4ZFyotRkvU",
+          "method": "POST",
+          "type": "xhr"
+        },
+        {
+          "url": "https://maps.googleapis.com/maps/api/mapsjs/gen_204?csp_test=true",
+          "method": "GET",
+          "type": "xhr"
+        }
+      ],
+      "patterns": [
+        "https://www.youtube.com/api/stats/atr",
+        "https://maps.googleapis.com/maps/api/mapsjs/gen_204"
+      ]
+    },
+    "offMarketSignals": [],
+    "sitemap": {
+      "totalUrls": 0,
+      "propertyUrls": 0,
+      "sitemapUrl": null
+    },
+    "darkPages": {
+      "detected": false,
+      "examples": []
+    }
+  },
+  {
+    "name": "Belle Property",
+    "domain": "belleproperty.com",
+    "techStack": {
+      "detected": {
+        "frameworks": {
+          "react": false,
+          "vue": false,
+          "angular": false,
+          "nextjs": false,
+          "nuxt": false,
+          "gatsby": false
+        },
+        "cms": {
+          "wordpress": false,
+          "aem": false,
+          "drupal": false,
+          "contentful": false
+        },
+        "scripts": [
+          "https://static.hotjar.com/c/hotjar-6490615.js?sv=7",
+          "https://connect.facebook.net/signals/config/25329196536773461?v=2.9.250&r=stable&domain=www.belleproperty.com&hme=842ba5a67bc11ec88742f1d93fdc2338abd91b60fc0531689cc660af96e193d9&ex_m=94%2C156%2C134%2C20%2C66%2C67%2C127%2C62%2C42%2C128%2C71%2C61%2C10%2C141%2C80%2C15%2C93%2C122%2C115%2C69%2C72%2C121%2C138%2C102%2C143%2C7%2C3%2C4%2C6%2C5%2C2%2C81%2C91%2C144%2C223%2C167%2C56%2C225%2C226%2C49%2C182%2C27%2C68%2C231%2C230%2C170%2C29%2C55%2C9%2C58%2C87%2C88%2C89%2C95%2C118%2C28%2C26%2C120%2C117%2C116%2C135%2C70%2C137%2C136%2C44%2C54%2C111%2C14%2C140%2C39%2C212%2C214%2C177%2C23%2C24%2C25%2C17%2C18%2C38%2C34%2C36%2C35%2C76%2C82%2C86%2C100%2C126%2C129%2C40%2C101%2C21%2C19%2C107%2C63%2C32%2C131%2C130%2C132%2C123%2C22%2C31%2C53%2C99%2C139%2C64%2C16%2C133%2C104%2C75%2C30%2C192%2C163%2C282%2C210%2C154%2C195%2C188%2C164%2C97%2C119%2C74%2C109%2C48%2C41%2C43%2C103%2C108%2C114%2C52%2C59%2C113%2C47%2C50%2C46%2C90%2C142%2C0%2C112%2C13%2C110%2C11%2C1%2C51%2C83%2C57%2C60%2C106%2C79%2C78%2C145%2C146%2C84%2C85%2C8%2C92%2C45%2C124%2C77%2C73%2C65%2C105%2C96%2C37%2C125%2C33%2C98%2C12%2C147%2C238%2C237%2C239%2C244%2C245%2C246%2C242%2C233%2C169%2C218%2C284%2C211%2C208%2C232%2C234%2C228%2C157%2C202%2C184%2C165%2C281%2C151%2C173%2C158%2C190%2C261%2C260%2C257%2C224%2C258%2C259%2C148%2C204%2C251%2C150%2C178%2C200",
+          "https://connect.facebook.net/signals/config/1008863042477569?v=2.9.250&r=stable&domain=www.belleproperty.com&hme=842ba5a67bc11ec88742f1d93fdc2338abd91b60fc0531689cc660af96e193d9&ex_m=94%2C156%2C134%2C20%2C66%2C67%2C127%2C62%2C42%2C128%2C71%2C61%2C10%2C141%2C80%2C15%2C93%2C122%2C115%2C69%2C72%2C121%2C138%2C102%2C143%2C7%2C3%2C4%2C6%2C5%2C2%2C81%2C91%2C144%2C223%2C167%2C56%2C225%2C226%2C49%2C182%2C27%2C68%2C231%2C230%2C170%2C29%2C55%2C9%2C58%2C87%2C88%2C89%2C95%2C118%2C28%2C26%2C120%2C117%2C116%2C135%2C70%2C137%2C136%2C44%2C54%2C111%2C14%2C140%2C39%2C212%2C214%2C177%2C23%2C24%2C25%2C17%2C18%2C38%2C34%2C36%2C35%2C76%2C82%2C86%2C100%2C126%2C129%2C40%2C101%2C21%2C19%2C107%2C63%2C32%2C131%2C130%2C132%2C123%2C22%2C31%2C53%2C99%2C139%2C64%2C16%2C133%2C104%2C75%2C30%2C192%2C163%2C282%2C210%2C154%2C195%2C188%2C164%2C97%2C119%2C74%2C109%2C48%2C41%2C43%2C103%2C108%2C114%2C52%2C59%2C113%2C47%2C50%2C46%2C90%2C142%2C0%2C112%2C13%2C110%2C11%2C1%2C51%2C83%2C57%2C60%2C106%2C79%2C78%2C145%2C146%2C84%2C85%2C8%2C92%2C45%2C124%2C77%2C73%2C65%2C105%2C96%2C37%2C125%2C33%2C98%2C12%2C147",
+          "https://connect.facebook.net/en_US/fbevents.js",
+          "https://snap.licdn.com/li.lms-analytics/insight.min.js",
+          "https://www.googletagmanager.com/gtag/js?id=G-XLN6D5T885&cx=c&gtm=4e61e1",
+          "https://www.googletagmanager.com/gtag/js?id=AW-1015107273&cx=c&gtm=4e61e1",
+          "https://www.googletagmanager.com/gtag/js?id=AW-929776688&cx=c&gtm=4e61e1",
+          "https://www.googletagmanager.com/gtm.js?id=GTM-TPQDJ45",
+          "https://www.belleproperty.com/data/globals"
+        ]
+      },
+      "framework": null,
+      "renderingMethod": null
+    },
+    "apis": {
+      "endpoints": [
+        {
+          "url": "https://analytics.google.com/g/collect?v=2&tid=G-XLN6D5T885&gtm=45je61e1v890500212za20gzb864444075zd864444075&_p=1768725678620&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1390840407.1768725679&ecid=324483302&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&are=1&frm=0&pscdl=noapi&_eu=AAAAAGQ&_s=2&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115616985~115938466~115938468~116682877~117041588&sid=1768725679&sct=1&seg=0&dl=https%3A%2F%2Fwww.belleproperty.com%2F&dt=&_tu=CA&en=user_engagement&_et=4786&tfd=6616",
+          "method": "POST",
+          "type": "fetch"
+        },
+        {
+          "url": "https://www.belleproperty.com/data/featured-listings",
+          "method": "POST",
+          "type": "xhr"
+        },
+        {
+          "url": "https://www.belleproperty.com/data/suburb-guides",
+          "method": "POST",
+          "type": "xhr"
+        },
+        {
+          "url": "https://www.google.com/ccm/collect?frm=0&en=page_view&dl=https%3A%2F%2Fwww.belleproperty.com%2Fbuy&scrsrc=www.googletagmanager.com&rnd=1223871603.1768725685&dt=Buy%20%7C%20Belle%20Property&auid=598866725.1768725679&navt=n&npa=0&gtm=45He61e1v864444075za200zd864444075xea&gcd=13l3l3l3l1l1&dma=0&tag_exp=103116026~103200004~104527907~104528500~104684208~104684211~105391252~115495940~115616985~115938466~115938469~116491845~116988315~117025847~117041587&tft=1768725684561&tfd=624&apve=1&apvf=f",
+          "method": "POST",
+          "type": "fetch"
+        },
+        {
+          "url": "https://analytics.google.com/g/collect?v=2&tid=G-XLN6D5T885&gtm=45je61e1v890500212z8864444075za20gzb864444075zd864444075&_p=1768725684413&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=1390840407.1768725679&ecid=324483302&ul=en-us&sr=1280x720&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=Windows&uapv=10.0&uaw=0&are=1&frm=0&pscdl=noapi&ec_mode=a&_eu=AAAAAGQ&_s=1&tag_exp=103116026~103200004~104527907~104528500~104684208~104684211~105391252~115495938~115938466~115938468~116491845~117041587&sid=1768725679&sct=1&seg=1&dl=https%3A%2F%2Fwww.belleproperty.com%2Fbuy&dt=Buy%20%7C%20Belle%20Property&en=page_view&tfd=751",
+          "method": "POST",
+          "type": "fetch"
+        },
+        {
+          "url": "https://px.ads.linkedin.com/attribution_trigger?pid=4522770&time=1768725684715&url=https%3A%2F%2Fwww.belleproperty.com%2Fbuy&tm=gtmv2",
+          "method": "GET",
+          "type": "xhr"
+        }
+      ],
+      "patterns": [
+        "https://analytics.google.com/g/collect",
+        "https://www.belleproperty.com/data/featured-listings",
+        "https://www.belleproperty.com/data/suburb-guides",
+        "https://www.google.com/ccm/collect",
+        "https://px.ads.linkedin.com/attribution_trigger"
+      ]
+    },
+    "offMarketSignals": [],
+    "sitemap": {
+      "totalUrls": 0,
+      "propertyUrls": 0,
+      "sitemapUrl": null
+    },
+    "darkPages": {
+      "detected": true,
+      "examples": [
+        "/listing-hits"
+      ]
+    }
+  }
+]
