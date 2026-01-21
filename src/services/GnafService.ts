@@ -61,12 +61,12 @@ export class GnafService {
 
     if (count === 0) {
       if (fs.existsSync(csvPath)) {
-        console.log('[GNAF] Starting auto-ingestion (SQLite)...');
+        console.error('[GNAF] Starting auto-ingestion (SQLite)...');
         await this.ingestGnaf(csvPath);
-        console.log('[GNAF] Auto-ingestion complete.');
+        console.error('[GNAF] Auto-ingestion complete.');
       }
     } else {
-      console.log(`[GNAF] Database initialized with ${count} records.`);
+      console.error(`[GNAF] Database initialized with ${count} records.`);
     }
   }
 
@@ -117,7 +117,7 @@ export class GnafService {
         bytesRead += chunk.length;
         const percent = Math.floor((bytesRead / totalBytes) * 100);
         if (percent % 5 === 0 && percent !== lastLoggedPercent) {
-          console.log(`[GNAF] Indexing Progress: ${percent}% (${count} rows)...`);
+          console.error(`[GNAF] Indexing Progress: ${percent}% (${count} rows)...`);
           lastLoggedPercent = percent;
         }
       });
@@ -135,7 +135,7 @@ export class GnafService {
 
       parser.on('end', () => {
         if (batch.length > 0) transaction(batch);
-        console.log(`[GNAF] Finished indexing ${count} rows (100%).`);
+        console.error(`[GNAF] Finished indexing ${count} rows (100%).`);
         resolve();
       });
 
@@ -210,7 +210,7 @@ export class GnafService {
 
   async pruneListings(source: string, activeScanId: string): Promise<number> {
     const db = getConnection();
-    console.log(`[GNAF] Pruning listings for source '${source}' that do not match scanId '${activeScanId}'...`);
+    console.error(`[GNAF] Pruning listings for source '${source}' that do not match scanId '${activeScanId}'...`);
     
     // Logic: If source is in sources list, AND last_scan_id != activeScanId, set is_listed = 0
     // Actually, simply: Update records where source matches and scan_id is old.
@@ -225,7 +225,7 @@ export class GnafService {
     `);
     
     const result = stmt.run(activeScanId, `%"${source}"%`);
-    console.log(`[GNAF] Pruned ${result.changes} listings.`);
+    console.error(`[GNAF] Pruned ${result.changes} listings.`);
     return result.changes;
   }
 

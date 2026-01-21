@@ -35,7 +35,7 @@ export class RayWhiteBallaratScout extends VaultREScout {
       if (state.isBlocked && state.lastRun) {
         const hoursSinceBlock = (new Date().getTime() - new Date(state.lastRun).getTime()) / (1000 * 60 * 60);
         if (hoursSinceBlock < 1) {
-          console.log(`[${this.name}] Region blocked. Skipping for now.`);
+          console.error(`[${this.name}] Region blocked. Skipping for now.`);
           return [];
         }
         state.isBlocked = false;
@@ -46,7 +46,7 @@ export class RayWhiteBallaratScout extends VaultREScout {
 
       if (!isGeneralSync) {
           // Targeted Search Step 1: Resolve Suburb to Coords via API
-          console.log(`[${this.name}] Resolving location via Ray White API: ${criteria.location}`);
+          console.error(`[${this.name}] Resolving location via Ray White API: ${criteria.location}`);
           
           const suburbUrl = `${this.apiBaseUrl}/v1/suburbs?apiKey=${this.apiKey}`;
           const suburbBody = {
@@ -78,7 +78,7 @@ export class RayWhiteBallaratScout extends VaultREScout {
                   const location = suburbResponse.data.data[0].value.location;
                   lat = location.lat;
                   lon = location.lon;
-                  console.log(`[${this.name}] Resolved '${criteria.location}' to ${lat},${lon}`);
+                  console.error(`[${this.name}] Resolved '${criteria.location}' to ${lat},${lon}`);
               }
           } catch (e: any) {
               console.error(`[${this.name}] Suburb resolution failed:`, e.message);
@@ -86,7 +86,7 @@ export class RayWhiteBallaratScout extends VaultREScout {
 
           // Fallback to G-NAF if API failed
           if (!lat || !lon) {
-              console.log(`[${this.name}] Falling back to G-NAF for coordinates...`);
+              console.error(`[${this.name}] Falling back to G-NAF for coordinates...`);
               const gnaf = new GnafService();
               const area = await gnaf.getAreaContext(criteria.location);
               if (area) {
@@ -118,7 +118,7 @@ export class RayWhiteBallaratScout extends VaultREScout {
               // We'll leave it broad and filter in parse logic to be safe
           }
 
-          console.log(`[${this.name}] POST search at ${lat},${lon}...`);
+          console.error(`[${this.name}] POST search at ${lat},${lon}...`);
           response = await axios.post(listingsUrl, listingsBody, axiosConfig);
 
       } else {

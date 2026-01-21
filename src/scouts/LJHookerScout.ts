@@ -85,7 +85,7 @@ export class LJHookerScout extends AgentpointScout {
         listings.push(listing);
       }
 
-      console.log(`[${this.name}] Parsed ${listings.length} properties from API`);
+      console.error(`[${this.name}] Parsed ${listings.length} properties from API`);
       
     } catch (error) {
       console.error(`[${this.name}] Error parsing API response:`, error);

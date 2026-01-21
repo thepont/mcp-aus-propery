@@ -30,7 +30,7 @@ export abstract class VaultREScout extends BaseScout {
       if (state.isBlocked && state.lastRun) {
           const hoursSinceBlock = (new Date().getTime() - new Date(state.lastRun).getTime()) / (1000 * 60 * 60);
           if (hoursSinceBlock < 1) {
-              console.log(`[${this.name}] Region blocked. Skipping.`);
+              console.error(`[${this.name}] Region blocked. Skipping.`);
               return [];
           }
           state.isBlocked = false;
@@ -50,7 +50,7 @@ export abstract class VaultREScout extends BaseScout {
     const isGeneralSync = !criteria.location || criteria.location === 'Any';
     const pageToFetch = isGeneralSync ? (state.lastPage + 1) : 1;
 
-    console.log(`[${this.name}] Fetching Page ${pageToFetch}...`);
+    console.error(`[${this.name}] Fetching Page ${pageToFetch}...`);
 
     try {
       // Organic jittered backoff

@@ -40,11 +40,11 @@ export abstract class AgentpointScout extends BaseScout {
   }
 
   private async extractToken(): Promise<{ token: string | null; apiUrl: string; config: any }> {
-    console.log(`[${this.name}] Extracting API token with stealth...`);
+    console.error(`[${this.name}] Extracting API token with stealth...`);
     
     try {
       const proxy = this.getProxyConfig();
-      if (proxy) console.log(`[${this.name}] Using Playwright proxy: ${proxy.server}`);
+      if (proxy) console.error(`[${this.name}] Using Playwright proxy: ${proxy.server}`);
       
       if (!this.browser) {
         const launchArgs = [
@@ -86,7 +86,7 @@ export abstract class AgentpointScout extends BaseScout {
         }
       });
 
-      console.log(`[${this.name}] Loading ${this.siteUrl}...`);
+      console.error(`[${this.name}] Loading ${this.siteUrl}...`);
       await page.goto(this.siteUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
       
       await this.waitOrganic();
@@ -172,7 +172,7 @@ export abstract class AgentpointScout extends BaseScout {
       const isGeneralSync = !criteria.location || criteria.location === 'Any';
       const pageToFetch = isGeneralSync ? (state.lastPage + 1) : 1;
 
-      console.log(`[${this.name}] Fetching API Page ${pageToFetch}...`);
+      console.error(`[${this.name}] Fetching API Page ${pageToFetch}...`);
       
       const endpoint = await this.buildApiEndpoint(criteria);
       const params = this.buildApiParams(criteria);

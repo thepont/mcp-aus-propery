@@ -62,9 +62,9 @@ export class PRDBallaratScout extends BaseScout {
       
       // Step 1: Initialize/Refill Queue if empty
       if (state.queue.length === 0) {
-        console.log(`[PRDBallaratScout] Queue empty. Fetching fresh sitemap from ${this.sitemapUrl}...`);
+        console.error(`[PRDBallaratScout] Queue empty. Fetching fresh sitemap from ${this.sitemapUrl}...`);
         const propertyUrls = await this.getPropertyUrlsFromSitemap();
-        console.log(`[PRDBallaratScout] Found ${propertyUrls.length} property URLs in sitemap`);
+        console.error(`[PRDBallaratScout] Found ${propertyUrls.length} property URLs in sitemap`);
         state.queue = propertyUrls;
         state.totalDiscovered = propertyUrls.length;
         this.saveState(state);
@@ -73,7 +73,7 @@ export class PRDBallaratScout extends BaseScout {
       // Process a batch (default: 20)
       const limit = 20;
       const urlsToProcess = state.queue.splice(0, limit);
-      console.log(`[PRDBallaratScout] Processing ${urlsToProcess.length} properties from queue. Remaining: ${state.queue.length}`);
+      console.error(`[PRDBallaratScout] Processing ${urlsToProcess.length} properties from queue. Remaining: ${state.queue.length}`);
 
       if (urlsToProcess.length === 0) return [];
 
@@ -124,7 +124,7 @@ export class PRDBallaratScout extends BaseScout {
   }
 
   private async targetedSearch(params: SearchParams): Promise<IndustrialListing[]> {
-    console.log(`[PRDBallaratScout] Performing targeted search for: ${params.location}`);
+    console.error(`[PRDBallaratScout] Performing targeted search for: ${params.location}`);
     
     // PRD Ballarat search URL
     const searchUrl = `https://www.prd.com.au/ballarat/property-search/?q=${encodeURIComponent(params.location)}`;
@@ -149,7 +149,7 @@ export class PRDBallaratScout extends BaseScout {
         return Array.from(new Set(links.map((a: any) => a.href))).filter(u => /\/property-search\/\d+\//.test(u));
       });
 
-      console.log(`[PRDBallaratScout] Targeted search found ${urls.length} candidate properties.`);
+      console.error(`[PRDBallaratScout] Targeted search found ${urls.length} candidate properties.`);
 
       const listings: IndustrialListing[] = [];
       const loc = params.location.toLowerCase();

@@ -47,15 +47,15 @@ export class BartropScout extends BaseScout {
   }
 
   private async backgroundSync(criteria: SearchParams): Promise<IndustrialListing[]> {
-    console.log(`[${this.name}] Starting sitemap-based background sync...`);
+    console.error(`[${this.name}] Starting sitemap-based background sync...`);
     try {
       if (!fs.existsSync('data')) fs.mkdirSync('data', { recursive: true });
       let state = this.loadState();
       
       if (state.queue.length === 0) {
-        console.log(`[${this.name}] Queue empty. Fetching fresh sitemap...`);
+        console.error(`[${this.name}] Queue empty. Fetching fresh sitemap...`);
         const propertyUrls = await this.getPropertyUrlsFromSitemap();
-        console.log(`[${this.name}] Found ${propertyUrls.length} property URLs in sitemap`);
+        console.error(`[${this.name}] Found ${propertyUrls.length} property URLs in sitemap`);
         state.queue = propertyUrls;
         state.totalDiscovered = propertyUrls.length;
         this.saveState(state);
@@ -63,7 +63,7 @@ export class BartropScout extends BaseScout {
 
       const limit = 20;
       const urlsToFetch = state.queue.splice(0, limit);
-      console.log(`[${this.name}] Processing ${urlsToFetch.length} properties from queue. Remaining: ${state.queue.length}`);
+      console.error(`[${this.name}] Processing ${urlsToFetch.length} properties from queue. Remaining: ${state.queue.length}`);
 
       if (urlsToFetch.length === 0) return [];
 
@@ -115,7 +115,7 @@ export class BartropScout extends BaseScout {
   }
 
   private async targetedSearch(criteria: SearchParams): Promise<IndustrialListing[]> {
-    console.log(`[${this.name}] Performing targeted search for: ${criteria.location}`);
+    console.error(`[${this.name}] Performing targeted search for: ${criteria.location}`);
     
     // Bartrop search URL
     const searchUrl = `https://www.bartrop.com.au/search?q=${encodeURIComponent(criteria.location)}`;
@@ -142,7 +142,7 @@ export class BartropScout extends BaseScout {
         return Array.from(new Set(links.map((a: any) => a.href)));
       });
 
-      console.log(`[${this.name}] Targeted search found ${urls.length} properties.`);
+      console.error(`[${this.name}] Targeted search found ${urls.length} properties.`);
 
       const listings: IndustrialListing[] = [];
       const context = page.context();

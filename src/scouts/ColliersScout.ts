@@ -41,7 +41,7 @@ export class ColliersScout extends BaseScout {
   }
 
   private async extractToken(): Promise<string | null> {
-    console.log(`[${this.name}] Extracting Coveo token with advanced stealth...`);
+    console.error(`[${this.name}] Extracting Coveo token with advanced stealth...`);
     
     try {
       const proxy = this.getProxyConfig();
@@ -92,11 +92,11 @@ export class ColliersScout extends BaseScout {
         { timeout: 60000 }
       ).catch(() => null);
 
-      console.log(`[${this.name}] Navigating to properties page...`);
+      console.error(`[${this.name}] Navigating to properties page...`);
       await page.goto(this.siteUrl, { waitUntil: 'domcontentloaded', timeout: 90000 });
       
       // Wait for any potential Cloudflare interstitial to pass
-      console.log(`[${this.name}] Waiting for page stability/interstitial...`);
+      console.error(`[${this.name}] Waiting for page stability/interstitial...`);
       await this.sleep(10000); 
       
       // Human-like behavior: Random movements
@@ -118,7 +118,7 @@ export class ColliersScout extends BaseScout {
 
       if (!extractedToken) {
         const title = await page.title();
-        console.log(`[${this.name}] Token not found. Page title: "${title}"`);
+        console.error(`[${this.name}] Token not found. Page title: "${title}"`);
         if (title.includes('Cloudflare') || title.includes('Verify')) {
           console.error(`[${this.name}] 🛑 Cloudflare block detected.`);
         }
@@ -161,7 +161,7 @@ export class ColliersScout extends BaseScout {
       const isGeneralSync = !criteria.location || criteria.location === 'Any';
       const pageToFetch = isGeneralSync ? state.lastPage : 0;
 
-      console.log(`[${this.name}] Searching Coveo (Page ${pageToFetch})...`);
+      console.error(`[${this.name}] Searching Coveo (Page ${pageToFetch})...`);
 
       const aq = [
         '( @propertyforsaleorleasecomputed=="All Listings" )',
@@ -195,7 +195,7 @@ export class ColliersScout extends BaseScout {
       const proxy = this.getProxyConfig();
       if (proxy) {
         axiosConfig.httpsAgent = new HttpsProxyAgent(proxy.server);
-        console.log(`[${this.name}] Using search proxy: ${proxy.server}`);
+        console.error(`[${this.name}] Using search proxy: ${proxy.server}`);
       }
 
       await this.waitOrganic();

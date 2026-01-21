@@ -59,7 +59,7 @@ export abstract class WordPressEPLScout extends BaseScout {
       if (isGeneralSync) {
         state.lastPage = pageToFetch;
         if (listings.length === 0) {
-          console.log(`[${this.name}] Reached end of properties. Resetting to page 1.`);
+          console.error(`[${this.name}] Reached end of properties. Resetting to page 1.`);
           state.lastPage = 0;
         }
         this.saveState(state);
@@ -67,7 +67,7 @@ export abstract class WordPressEPLScout extends BaseScout {
       
       return listings;
     } catch (error) {
-      console.log(`[${this.name}] API failed, falling back to HTML scraping`);
+      console.error(`[${this.name}] API failed, falling back to HTML scraping`);
       return await this.searchViaPlaywright(searchUrl, criteria);
     }
   }
@@ -91,7 +91,7 @@ export abstract class WordPressEPLScout extends BaseScout {
     for (const endpoint of endpoints) {
       try {
         const apiUrl = `${baseUrl}${endpoint}?per_page=50&page=${page}&status=current`;
-        console.log(`[${this.name}] Trying API (Page ${page}): ${apiUrl}`);
+        console.error(`[${this.name}] Trying API (Page ${page}): ${apiUrl}`);
         
         await this.waitOrganic();
         
@@ -103,7 +103,7 @@ export abstract class WordPressEPLScout extends BaseScout {
         });
 
         if (response.data && Array.isArray(response.data)) {
-          console.log(`[${this.name}] Found ${response.data.length} properties via ${endpoint}`);
+          console.error(`[${this.name}] Found ${response.data.length} properties via ${endpoint}`);
           allProperties = allProperties.concat(response.data);
         }
       } catch (error) {
