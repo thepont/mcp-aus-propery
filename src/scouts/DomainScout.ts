@@ -5,6 +5,7 @@ import { XMLParser } from 'fast-xml-parser';
 import fs from 'fs';
 import crypto from 'crypto';
 import * as cheerio from 'cheerio';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
 interface DomainState {
   scanId: string;
@@ -114,13 +115,21 @@ export class DomainScout extends BaseScout {
     const searchUrl = `${baseUrl}?${params.toString()}`;
     console.error(`[Domain] Fetching URL: ${searchUrl}`);
     
-    try {
-      const response = await axios.get(searchUrl, {
+    const proxy = this.getProxyConfig();
+    const axiosConfig: any = {
         headers: { 
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8'
         }
-      });
+    };
+
+    if (proxy) {
+        axiosConfig.httpsAgent = new HttpsProxyAgent(proxy.server);
+        console.error(`[Domain] Using proxy: ${proxy.server}`);
+    }
+    
+    try {
+      const response = await axios.get(searchUrl, axiosConfig);
       
       const $ = cheerio.load(response.data);
       const listings: IndustrialListing[] = [];

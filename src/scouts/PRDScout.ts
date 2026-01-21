@@ -3,6 +3,7 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import fs from 'fs';
 import path from 'path';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
 interface ScoutState {
   searchPage: number;
@@ -138,10 +139,17 @@ export class PRDScout extends BaseScout {
     const searchUrl = `${baseUrl}?${params.toString()}`;
     console.error(`[PRD] Fetching URL: ${searchUrl}`);
     
-    try {
-      const response = await axios.get(searchUrl, {
+    const proxy = this.getProxyConfig();
+    const axiosConfig: any = {
         headers: { 'User-Agent': 'Mozilla/5.0' }
-      });
+    };
+    if (proxy) {
+        axiosConfig.httpsAgent = new HttpsProxyAgent(proxy.server);
+        console.error(`[PRD] Using proxy: ${proxy.server}`);
+    }
+    
+    try {
+      const response = await axios.get(searchUrl, axiosConfig);
       
       const $ = cheerio.load(response.data);
       const urls: string[] = [];
@@ -217,12 +225,18 @@ export class PRDScout extends BaseScout {
   private async scrapeListingPage(url: string): Promise<IndustrialListing | null> {
     console.error(`[PRD] Scraping: ${url}`);
     
+    const proxy = this.getProxyConfig();
+    const axiosConfig: any = {
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+    };
+    if (proxy) {
+        axiosConfig.httpsAgent = new HttpsProxyAgent(proxy.server);
+    }
+    
     try {
-        const response = await axios.get(url, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-            }
-        });
+        const response = await axios.get(url, axiosConfig);
 
         const html = response.data;
         const $ = cheerio.load(html);
