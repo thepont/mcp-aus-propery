@@ -35,6 +35,8 @@
     "cheerio": "^1.1.2",
     "csv-parse": "^6.1.0",
     "fast-xml-parser": "^5.3.3",
+    "fingerprint-generator": "^2.1.79",
+    "fingerprint-injector": "^2.1.79",
     "https-proxy-agent": "^7.0.6",
     "playwright": "^1.40.0",
     "playwright-extra": "^4.3.6",
