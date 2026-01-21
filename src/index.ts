@@ -100,6 +100,10 @@ class IndustrialPropertyMcpServer {
                 items: { type: 'string' },
                 description: 'Zoning codes (e.g., ["IN1Z", "IN2Z", "IN3Z"]) (optional)',
               },
+              useCacheOnly: {
+                type: 'boolean',
+                description: 'If true, only return results already in the database without triggering fresh searches. (optional)',
+              },
             },
             required: ['location'],
           },
@@ -130,7 +134,7 @@ class IndustrialPropertyMcpServer {
           throw new Error('Missing required parameter: location');
         }
 
-        const searchParams: SearchParams = {
+        let searchParams: SearchParams = {
           location: args.location,
           lat: args.lat,
           lon: args.lon,
@@ -142,11 +146,45 @@ class IndustrialPropertyMcpServer {
           zoning: args.zoning,
         };
 
-        console.error(`[MCP Server] Executing find_properties with params:`, searchParams);
+        // 1. Enrichment Phase: Get Area Context from G-NAF if lat/lon missing
+        if (!searchParams.lat || !searchParams.lon) {
+          console.error(`[MCP Server] Looking up area context for: ${searchParams.location}`);
+          const areaContext = await this.gnafService.getAreaContext(searchParams.location);
+          if (areaContext) {
+            console.error(`[MCP Server] Resolved ${searchParams.location} to:`, areaContext);
+            searchParams.lat = areaContext.lat;
+            searchParams.lon = areaContext.lon;
+            searchParams.radius = areaContext.radius;
+          }
+        }
 
-        const listings = await this.scoutManager.findProperties(searchParams);
+        console.error(`[MCP Server] Searching for properties with criteria:`, searchParams);
 
-        console.error(`[MCP Server] Returning ${listings.length} listings to LLM`);
+        // 2. Local Database Search (Immediate)
+        let dbListings = await this.scoutManager.getExistingProperties(searchParams);
+        console.error(`[MCP Server] Found ${dbListings.length} matching properties in local DB.`);
+
+        // 3. On-Demand Scout Search (Refresh) - Only if not useCacheOnly
+        let freshCount = 0;
+        if (!args.useCacheOnly) {
+          const freshListings = await this.scoutManager.findProperties(searchParams);
+          freshCount = freshListings.length;
+          console.error(`[Fresh Search] Scouts found ${freshCount} properties.`);
+        }
+
+        // 4. Final Results from DB (includes newly indexed)
+        const finalResults = await this.scoutManager.getExistingProperties(searchParams);
+
+        // Map results to ensure source is clearly visible
+        const listingsWithSource = finalResults.map(l => ({
+          address: l.address,
+          source: l.source,
+          price: l.priceDisplay || l.price,
+          type: l.propertyType,
+          listing: l.listingType,
+          url: l.sourceUrl,
+          description: l.description.substring(0, 200) + '...'
+        }));
 
         return {
           content: [
@@ -154,11 +192,13 @@ class IndustrialPropertyMcpServer {
               type: 'text',
               text: JSON.stringify({
                 summary: {
-                  total_listings: listings.length,
+                  total_results: finalResults.length,
+                  freshly_discovered: freshCount,
+                  cache_only: !!args.useCacheOnly,
+                  area_resolved: searchParams.lat ? { lat: searchParams.lat, lon: searchParams.lon, radius: searchParams.radius } : null,
                   scouts_used: await this.scoutManager.getScoutNames(),
-                  search_criteria: searchParams,
                 },
-                listings: listings,
+                listings: listingsWithSource,
               }, null, 2),
             },
           ],
@@ -223,9 +263,12 @@ class IndustrialPropertyMcpServer {
     
     console.error('[MCP Server] Industrial Property Scout MCP Server running on stdio');
     
-    // Trigger background sync of listings on first load
-    // We do this without 'await' to avoid blocking the MCP client
-    this.triggerInitialSync();
+    // Trigger background sync ONLY if explicitly enabled
+    if (process.env.ENABLE_BACKGROUND_SYNC === 'true') {
+      this.triggerInitialSync();
+    } else {
+      console.error('[MCP Server] Background sync disabled by default. Set ENABLE_BACKGROUND_SYNC=true to enable.');
+    }
   }
 
   private triggerInitialSync(): void {
