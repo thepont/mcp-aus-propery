@@ -42,9 +42,14 @@ export class RayWhiteBallaratScout extends VaultREScout {
 
       // Determine sorting and filtering
       // For general sync, we use ASC to crawl forward from lastCreationTime
-      // For specific location search, we use DESC to get newest results
       const isGeneralSync = !criteria.location || criteria.location === 'Any';
-      const sortDir = isGeneralSync ? 'asc' : 'desc';
+      
+      if (!isGeneralSync) {
+          console.warn(`[${this.name}] Targeted search is not supported by this API endpoint. Skipping.`);
+          return [];
+      }
+
+      const sortDir = 'asc';
       
       const queryParams = [
         `from:0`,
@@ -54,11 +59,8 @@ export class RayWhiteBallaratScout extends VaultREScout {
       ];
 
       // If syncing, start from where we left off
-      if (isGeneralSync && state.lastCreationTime) {
+      if (state.lastCreationTime) {
         queryParams.push(`creationTime:['${state.lastCreationTime}' TO *]`);
-      } else if (!isGeneralSync) {
-        // Targeted search: Add location to query
-        queryParams.push(`(address:*${criteria.location}* OR suburb:*${criteria.location}*)`);
       }
 
       const url = `${this.apiBaseUrl}/v1/listings?apiKey=${this.apiKey}&q=${encodeURIComponent(queryParams.join(','))}`;
