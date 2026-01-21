@@ -26,8 +26,8 @@ export abstract class AgentpointScout extends BaseScout {
   
   private cachedToken: string | null = null;
   private tokenExpiry: number = 0;
-  private browser: any = null;
-  private isSharedBrowser: boolean = false;
+  protected browser: any = null;
+  protected isSharedBrowser: boolean = false;
 
   protected get stateFile(): string {
     const safeName = this.name.toLowerCase().replace(/[^a-z0-9]/g, '_');

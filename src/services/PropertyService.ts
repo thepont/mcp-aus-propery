@@ -136,12 +136,12 @@ export class PropertyService {
       const cleanQuery = params.location.replace(/[^a-zA-Z0-9 ]/g, '').trim();
       
       if (cleanQuery) {
-        // Use a more relaxed search: try FTS first, then LIKE as fallback
         sql = `
           SELECT p.*, 1 as rank 
           FROM properties p
-          WHERE (p.address LIKE ? OR p.description LIKE ?)
+          WHERE (p.address LIKE ? OR p.description LIKE ? OR p.metadata LIKE ?)
         `;
+        args.push(`%${cleanQuery}%`);
         args.push(`%${cleanQuery}%`);
         args.push(`%${cleanQuery}%`);
       } else {
@@ -164,17 +164,20 @@ export class PropertyService {
 
     // Append Filters
     if (params.propertyType) {
-      sql += " AND p.property_type LIKE ?";
+      // Robust property type matching
+      sql += " AND (p.property_type LIKE ? OR p.description LIKE ?)";
+      args.push(`%${params.propertyType}%`);
       args.push(`%${params.propertyType}%`);
     }
 
     if (params.listingType) {
-      sql += " AND p.listing_type LIKE ?";
+      sql += " AND (p.listing_type LIKE ? OR p.description LIKE ?)";
+      args.push(`%${params.listingType}%`);
       args.push(`%${params.listingType}%`);
     }
 
     if (params.minPrice !== undefined) {
-      sql += " AND (p.price >= ? OR p.price IS NULL)"; // Allow null prices to pass if filtered by range
+      sql += " AND (p.price >= ? OR p.price IS NULL)";
       args.push(params.minPrice);
     }
 

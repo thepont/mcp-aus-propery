@@ -6,7 +6,7 @@ import { PropertyService } from './services/PropertyService.js';
 import { chromium } from 'playwright-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { Observable, from, merge, of, timer, EMPTY } from 'rxjs';
-import { mergeMap, catchError, takeUntil, tap, toArray, map } from 'rxjs/operators';
+import { mergeMap, catchError, takeUntil, tap, toArray, map, concatMap } from 'rxjs/operators';
 
 // @ts-ignore
 chromium.use(StealthPlugin());
@@ -21,7 +21,7 @@ const __dirname = dirname(__filename);
 export class ScoutManager {
   private scouts: BaseScout[] = [];
   private initialized: boolean = false;
-  private db: PropertyService;
+  public db: PropertyService;
   private sharedBrowser: any = null;
 
   constructor() {
@@ -155,9 +155,16 @@ export class ScoutManager {
 
         // Merge all scout streams
         return merge(...scoutStreams).pipe(
+          // Index each property as it arrives, SERIALLY to avoid DB locks/races
+          concatMap(async (listing) => {
+              if (!listing.propertyType) listing.propertyType = this.inferPropertyType(listing);
+              if (!listing.listingType) listing.listingType = this.inferListingType(listing);
+              await this.db.indexProperty(listing);
+              return listing;
+          }),
           // Global timeout: Stop the stream after 35 seconds to ensure we respond
           takeUntil(timer(35000))
-        );
+        ) as Observable<IndustrialListing>;
       })
     );
   }
@@ -167,16 +174,11 @@ export class ScoutManager {
    */
   async findProperties(criteria: SearchParams): Promise<IndustrialListing[]> {
     const listings: IndustrialListing[] = [];
-    
     console.error('[ScoutManager] Starting stream-based search...');
     
     return new Promise((resolve) => {
       this.search$(criteria).subscribe({
-        next: async (listing) => {
-          if (!listing.propertyType) listing.propertyType = this.inferPropertyType(listing);
-          if (!listing.listingType) listing.listingType = this.inferListingType(listing);
-          
-          await this.db.indexProperty(listing);
+        next: (listing) => {
           listings.push(listing);
         },
         error: (err) => {
@@ -184,7 +186,7 @@ export class ScoutManager {
           resolve(listings);
         },
         complete: () => {
-          console.error(`[ScoutManager] Stream complete. Indexed ${listings.length} listings.`);
+          console.error(`[ScoutManager] Stream complete. Found ${listings.length} listings.`);
           resolve(listings);
         }
       });
@@ -248,24 +250,29 @@ export class ScoutManager {
    * Infer listing type (sale vs rental) from listing data when not explicitly set
    */
   private inferListingType(listing: IndustrialListing): ListingType | undefined {
-    const text = `${listing.description} ${listing.priceDisplay || ''} ${listing.zoning || ''}`.toLowerCase();
+    const text = `${listing.description} ${listing.priceDisplay || ''} ${listing.zoning || ''} ${listing.address}`.toLowerCase();
 
     // Rental indicators
     if (text.includes('for rent') || text.includes('for lease') || text.includes('rental') ||
         text.includes('leasing') || text.includes('pw') || text.includes('per week') ||
         text.includes('pcm') || text.includes('per month') || text.includes('/week') ||
-        text.includes('/month') || text.includes('p.w') || text.includes('p.m')) {
+        text.includes('/month') || text.includes('p.w') || text.includes('p.m') ||
+        // Check if price is like "$500" without large numbers
+        (listing.price && listing.price < 5000 && !text.includes('sale'))) {
       return 'rental';
     }
 
     // Sale indicators
     if (text.includes('for sale') || text.includes('auction') || text.includes('eoi') ||
         text.includes('expression of interest') || text.includes('offers') ||
-        text.includes('price guide') || text.includes('asking')) {
+        text.includes('price guide') || text.includes('asking') || 
+        text.includes('from') || text.includes('plus') || 
+        text.includes('$') || (listing.price && listing.price > 5000)) {
       return 'sale';
     }
 
-    return undefined;
+    // Default to sale for targeted searches if no rental indicators
+    return 'sale';
   }
 
   /**

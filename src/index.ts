@@ -172,7 +172,7 @@ class IndustrialPropertyMcpServer {
           // Use RxJS stream to send notifications
           await new Promise<void>((resolve) => {
             this.scoutManager.search$(searchParams).subscribe({
-              next: async (listing) => {
+              next: (listing) => {
                 freshCount++;
                 freshListings.push(listing);
                 
@@ -181,12 +181,7 @@ class IndustrialPropertyMcpServer {
                 this.server.sendLoggingMessage({
                   level: 'info',
                   data: logMessage
-                }).catch(e => {}); // Ignore if client doesn't support it
-
-                // Index it
-                if (!listing.propertyType) listing.propertyType = (this.scoutManager as any).inferPropertyType(listing);
-                if (!listing.listingType) listing.listingType = (this.scoutManager as any).inferListingType(listing);
-                await (this.scoutManager as any).db.indexProperty(listing);
+                }).catch(e => {}); 
               },
               error: (err) => {
                 console.error('[MCP Server] Search stream error:', err);
