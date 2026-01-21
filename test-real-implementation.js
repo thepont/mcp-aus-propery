@@ -22,7 +22,7 @@ async function testScouts() {
   console.log('\n🔍 Testing search for industrial properties in Melbourne...\n');
 
   try {
-    const listings = await manager.findIndustrialDeals({
+    const listings = await manager.findProperties({
       location: 'Melbourne',
       maxPrice: 5000000
     });

@@ -18,59 +18,87 @@
  * Coverage: Ballarat region (Victoria) - sales and rentals, all property types
  */
 
-import { BaseScout, IndustrialListing, SearchParams } from '../types.js';
+import { BaseScout, IndustrialListing, SearchParams, PropertyType, ListingType } from '../types.js';
 import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
 import { chromium, Browser, Page } from 'playwright';
+import fs from 'fs';
+import path from 'path';
+
+interface PRDState {
+  queue: string[];
+  totalDiscovered: number;
+  lastRun: string;
+}
 
 export class PRDBallaratScout extends BaseScout {
   name = 'PRD Ballarat';
   private sitemapUrl = 'https://www.prd.com.au/ballarat/sitemap-listings.xml';
+  private readonly STATE_FILE = 'data/prd_ballarat_state.json';
   private browser: Browser | null = null;
 
   async search(params: SearchParams): Promise<IndustrialListing[]> {
     try {
-      console.log(`[PRDBallaratScout] Fetching sitemap from ${this.sitemapUrl}...`);
-      
-      // Step 1: Fetch and parse sitemap
-      const propertyUrls = await this.getPropertyUrlsFromSitemap();
-      console.log(`[PRDBallaratScout] Found ${propertyUrls.length} property URLs in sitemap`);
+      // Ensure data directory
+      if (!fs.existsSync('data')) fs.mkdirSync('data', { recursive: true });
 
-      // Limit results for performance (default: 50)
-      const limit = 50;
-      const urlsToProcess = propertyUrls.slice(0, limit);
-      console.log(`[PRDBallaratScout] Processing ${urlsToProcess.length} properties...`);
+      let state = this.loadState();
+      
+      // Step 1: Initialize/Refill Queue if empty
+      if (state.queue.length === 0) {
+        console.log(`[PRDBallaratScout] Queue empty. Fetching fresh sitemap from ${this.sitemapUrl}...`);
+        const propertyUrls = await this.getPropertyUrlsFromSitemap();
+        console.log(`[PRDBallaratScout] Found ${propertyUrls.length} property URLs in sitemap`);
+        state.queue = propertyUrls;
+        state.totalDiscovered = propertyUrls.length;
+        this.saveState(state);
+      }
+
+      // Process a batch (default: 20)
+      const limit = 20;
+      const urlsToProcess = state.queue.splice(0, limit);
+      console.log(`[PRDBallaratScout] Processing ${urlsToProcess.length} properties from queue. Remaining: ${state.queue.length}`);
+
+      if (urlsToProcess.length === 0) {
+        console.log('[PRDBallaratScout] No more properties in queue.');
+        return [];
+      }
 
       // Step 2: Launch browser for scraping
-      this.browser = await chromium.launch({ headless: true });
+      const proxy = this.getProxyConfig();
+      if (proxy) console.log(`[${this.name}] Using Playwright proxy: ${proxy.server}`);
+      
+      this.browser = await chromium.launch({ 
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        proxy: proxy ? { server: proxy.server } : undefined
+      });
 
-      // Step 3: Process properties in batches
-      const batchSize = 5;
+      // Step 3: Process properties sequentially for organic appearance
       const listings: IndustrialListing[] = [];
 
-      for (let i = 0; i < urlsToProcess.length; i += batchSize) {
-        const batch = urlsToProcess.slice(i, i + batchSize);
-        console.log(`[PRDBallaratScout] Processing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(urlsToProcess.length / batchSize)}...`);
+      for (let i = 0; i < urlsToProcess.length; i++) {
+        const url = urlsToProcess[i];
+        
+        // Report overall progress
+        const processedTotal = state.totalDiscovered - state.queue.length - (urlsToProcess.length - i);
+        this.logProgress(processedTotal, state.totalDiscovered);
 
-        const batchResults = await Promise.allSettled(
-          batch.map(url => this.extractPropertyFromPage(url))
-        );
-
-        batchResults.forEach((result, index) => {
-          if (result.status === 'fulfilled' && result.value) {
-            listings.push(result.value);
-          } else if (result.status === 'rejected') {
-            console.error(`[PRDBallaratScout] Failed to extract property from ${batch[index]}:`, result.reason);
+        await this.waitOrganic();
+        
+        try {
+          const listing = await this.extractPropertyFromPage(url);
+          if (listing) {
+            listings.push(listing);
           }
-        });
-
-        // Rate limiting: 1 second delay between batches
-        if (i + batchSize < urlsToProcess.length) {
-          await new Promise(resolve => setTimeout(resolve, 1000));
+        } catch (error) {
+          console.error(`[PRDBallaratScout] Failed to extract property from ${url}:`, error);
         }
       }
 
-      // Step 4: Cleanup
+      // Step 4: Save state and Cleanup
+      this.saveState(state);
+
       if (this.browser) {
         await this.browser.close();
         this.browser = null;
@@ -89,6 +117,27 @@ export class PRDBallaratScout extends BaseScout {
       throw error;
     }
   }
+
+  private loadState(): PRDState {
+    if (fs.existsSync(this.STATE_FILE)) {
+      try {
+        return JSON.parse(fs.readFileSync(this.STATE_FILE, 'utf-8'));
+      } catch (e) {
+        console.error(`[PRDBallaratScout] Failed to load state file:`, e);
+      }
+    }
+    return { queue: [], totalDiscovered: 0, lastRun: new Date().toISOString() };
+  }
+
+  private saveState(state: PRDState): void {
+    state.lastRun = new Date().toISOString();
+    try {
+      fs.writeFileSync(this.STATE_FILE, JSON.stringify(state, null, 2));
+    } catch (e) {
+      console.error(`[PRDBallaratScout] Failed to save state file:`, e);
+    }
+  }
+
 
   /**
    * Fetch and parse sitemap XML to extract property URLs
@@ -184,6 +233,10 @@ export class PRDBallaratScout extends BaseScout {
         }
       }
 
+      // Determine property type and listing type
+      const propertyType = this.determinePropertyType(propertyData.category, propertyData.description, propertyData.priceDisplay);
+      const listingType = this.determineListingType(url, propertyData.priceDisplay);
+
       // Create listing object
       const listing: IndustrialListing = {
         address: propertyData.address,
@@ -193,6 +246,8 @@ export class PRDBallaratScout extends BaseScout {
         price,
         priceDisplay: propertyData.priceDisplay || undefined,
         source: this.name,
+        propertyType,
+        listingType,
         metadata: {
           extractedVia: 'sitemap+metadata',
           extractionMethod: 'Structured data: <title> for address, <h1> for description, meta tags, HTML selectors (fallback)',
@@ -203,7 +258,6 @@ export class PRDBallaratScout extends BaseScout {
           suburb: this.extractSuburb(propertyData.address),
           state: 'VIC',
           postcode: this.extractPostcode(propertyData.address),
-          propertyType: this.determinePropertyType(propertyData.category, propertyData.description)
         }
       };
 
@@ -255,22 +309,65 @@ export class PRDBallaratScout extends BaseScout {
   }
 
   /**
-   * Determine property type from category and description
+   * Determine property type from category, description, and price
    */
-  private determinePropertyType(category: string, description: string): string {
-    const combined = `${category} ${description}`.toLowerCase();
+  private determinePropertyType(category: string, description: string, priceDisplay?: string): PropertyType | undefined {
+    const combined = `${category} ${description} ${priceDisplay || ''}`.toLowerCase();
 
-    if (combined.includes('industrial') || combined.includes('warehouse') || combined.includes('factory')) {
-      return 'Industrial';
+    if (combined.includes('industrial') || combined.includes('warehouse') || combined.includes('factory') ||
+        combined.includes('workshop') || combined.includes('storage')) {
+      return 'industrial';
     }
-    if (combined.includes('commercial') || combined.includes('office') || combined.includes('retail') || combined.includes('shop')) {
-      return 'Commercial';
+    if (combined.includes('commercial') || combined.includes('office') || combined.includes('retail') ||
+        combined.includes('shop') || combined.includes('suite') || combined.includes('showroom')) {
+      return 'commercial';
     }
-    if (combined.includes('land') || combined.includes('development site')) {
-      return 'Land';
+    if (combined.includes('rural') || combined.includes('farm') || combined.includes('acreage') ||
+        combined.includes('hectare') || combined.includes('lifestyle')) {
+      return 'rural';
+    }
+    if (combined.includes('land') || combined.includes('development site') || combined.includes('block')) {
+      return 'land';
+    }
+    // Residential indicators
+    if (combined.includes('house') || combined.includes('home') || combined.includes('bedroom') ||
+        combined.includes('unit') || combined.includes('apartment') || combined.includes('townhouse') ||
+        combined.includes('villa') || combined.includes('living') || combined.includes('family') ||
+        combined.includes('kitchen') || combined.includes('bathroom') || combined.includes('garage') ||
+        combined.includes('pw') || combined.includes('per week')) {
+      return 'residential';
     }
 
-    // Default to Commercial for business/professional properties
-    return 'Commercial';
+    return undefined;
+  }
+
+  /**
+   * Determine listing type (sale vs rental) from URL and price
+   */
+  private determineListingType(url: string, priceDisplay?: string): ListingType | undefined {
+    const urlLower = url.toLowerCase();
+    const priceLower = (priceDisplay || '').toLowerCase();
+
+    // Check URL patterns (most reliable)
+    if (urlLower.includes('/rental') || urlLower.includes('/rent') || urlLower.includes('/lease') ||
+        urlLower.includes('for-rent') || urlLower.includes('for-lease')) {
+      return 'rental';
+    }
+    if (urlLower.includes('/sale') || urlLower.includes('/buy') || urlLower.includes('for-sale')) {
+      return 'sale';
+    }
+
+    // Check price patterns
+    if (priceLower.includes('pw') || priceLower.includes('per week') ||
+        priceLower.includes('pcm') || priceLower.includes('per month') ||
+        priceLower.includes('for rent') || priceLower.includes('for lease')) {
+      return 'rental';
+    }
+    if (priceLower.includes('for sale') || priceLower.includes('auction') ||
+        priceLower.includes('offers') || priceLower.includes('eoi')) {
+      return 'sale';
+    }
+
+    return undefined;
   }
 }

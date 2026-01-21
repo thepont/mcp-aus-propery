@@ -1,262 +1,63 @@
-# Final Implementation Summary - MCP Industrial Property Scout
-
-## Status: ✅ FULLY FUNCTIONAL
-
-**Date**: 2026-01-18  
-**Environment**: GitHub Copilot Workspace with Internet Access  
-**Validation**: Complete with real website testing
-
----
-
-## 🎯 What Was Achieved
-
-### 1. Real API Discovery ✅
-
-**CBRE Australia**: Found working REST API!
-- **Endpoint**: `https://www.cbre.com.au/property-api/propertylistings/query`
-- **Method**: GET
-- **Status**: ✅ **WORKING** - Returns 1,334 industrial properties
-- **Response**: JSON with full property details
-
-**Cameron Real Estate**: No API exists
-- **Investigation**: Comprehensive network analysis, search interactions, WordPress AJAX testing
-- **Conclusion**: Server-side rendered WordPress site with "Easy Property Listings" plugin
-- **Solution**: ✅ HTML scraping with correct selectors (`a.card.listing`)
-
-### 2. Scout Implementation Status
-
-#### CBRE Scout ✅ PARTIALLY WORKING
-- ✅ Real API implemented and tested
-- ✅ API returns 1,334 properties successfully
-- ⚠️ Current issue: API response parsing needs adjustment (returns `Found: true` instead of `Found: 1334`)
-- ✅ Playwright fallback ready
-- ✅ Error handling in place
-
-#### Cameron Scout ✅ FULLY WORKING
-- ✅ Correct HTML selectors implemented (`a.card.listing`)
-- ✅ Successfully extracts data from `.listing-address`, `.listing-price`, `.details`
-- ✅ **Validated**: Returns 24 real property listings
-- ✅ Sample output verified:
-  - Address: "3/36 Stephen Road, DANDENONG VIC 3175"
-  - URL: "https://www.cameron.com.au/commercial/3-36-stephen-road-dandenong-vic-3175-2/"
-  - Price & details extracted
-
-### 3. Test Results
-
-**Integration Tests**: 8/13 passing (61%)
-
-**Passing**:
-- ✅ TypeScript compilation
-- ✅ Domain resolution (both sites)
-- ✅ URL correctness (both sites)
-- ✅ Cameron page contains listings
-- ✅ Cameron selectors exist
-- ✅ **Cameron Scout returns real data (24 listings)**
-
-**Failing**:
-- ❌ CBRE page analysis (SPA rendering issue)
-- ❌ CBRE selectors (not needed - using API)
-- ❌ CBRE Scout (API parsing issue, see below)
-- ❌ ScoutManager test (minor test code issue)
+# Property Intelligence Engine - Final Summary
 
-### 4. Investigation Tools Created
-
-1. **`investigate-real-structure.cjs`** - Page structure analyzer
-2. **`deep-dive-structure.cjs`** - HTML element finder
-3. **`cameron-api-deep-dive.cjs`** - Comprehensive API hunter
-4. **`discover-apis.js`** - Network request interceptor
-5. **API test scripts** - Direct endpoint validation
-
----
-
-## 🔧 Technical Details
-
-### CBRE API Details
-
-```bash
-# Working API Call
-curl 'https://www.cbre.com.au/property-api/propertylistings/query?Site=au-comm&Common.Aspects=isLetting,isSale&Common.PropertyTypes=Industrial&Common.IsParent=true&PageSize=50&Page=1'
-
-# Response Structure
-{
-  "Found": true,              # Note: boolean, not count
-  "DocumentCount": 1334,      # Actual count here
-  "Documents": [[{
-    "Common.ActualAddress": {
-      "Common.Line1": "45 King Road",
-      "Common.Locallity": "HORNSBY",
-      "Common.Region": "NSW",
-      "Common.PostCode": "2077"
-    },
-    "Common.Highlights": [...]  # Description data
-  }]]
-}
-```
-
-### Cameron HTML Structure
-
-```html
-<a class="card listing" href="...">
-  <div class="contents">
-    <p class="listing-address">
-      <span class="item-street">3/36 Stephen Road,</span>
-      <span class="item-suburb">DANDENONG</span>
-      <span class="item-state">VIC</span>
-      <span class="item-pcode">3175</span>
-    </p>
-    <p>Great Entry Level Warehouse for Lease!</p>
-    <div class="listing-price">For Lease<br>$16,800 pa + GST</div>
-    <div class="details">Size: 120m²...</div>
-  </div>
-</a>
-```
+## Architecture Overview
 
----
+This project has been refactored into a robust **Property Intelligence Engine** powered by **SQLite** (via `better-sqlite3`). It serves as a Model Context Protocol (MCP) server that aggregates property data from multiple sources, standardizes addresses against the **G-NAF** (Geocoded National Address File) reference, and provides market analytics.
 
-## 🐛 Known Issues & Fixes Needed
+### Key Components
 
-### Issue 1: CBRE API Response Parsing
+1.  **Storage Engine (`src/services/DuckDBService.ts` & `src/services/GnafService.ts`)**
+    *   **`mcp.db`**: A single SQLite database (WAL mode) storing both "Canonical" G-NAF reference data and "Transient" market listings.
+    *   **Full-Text Search (FTS5)**: Addresses are indexed using SQLite's FTS5 extension for fuzzy matching and resolution.
 
-**Problem**: Code expects `response.data.Found` to be a number, but API returns boolean `true`
+2.  **Scout Swarm (`src/scouts/*`)**
+    *   **`PRDScout`**: Robust sitemap-based crawler. Discovers offices via the corporate sitemap, builds a persistent URL queue, and deeply scrapes listings using Adfenix tags and JSON-LD.
+    *   **`FirstNationalScout`**: Similar sitemap-based crawler. Iterates numbered sitemaps to discover listings and parses detailed JSON-LD.
+    *   **`DomainScout`**: "Synchronizer" scout. Fetches Domain.com.au sitemaps and links discovered listings to G-NAF PIDs in `mcp.db`, tracking market presence over time.
 
-**Current Code** (line 61 in CbreScout.ts):
-```typescript
-if (response.data && Array.isArray(response.data.Documents)) {
-```
+3.  **Address Resolution & Analytics**
+    *   **Resolution**: Matches scraping results to unique G-NAF PIDs using FTS5 `MATCH` queries.
+    *   **Market Penetration**: Calculates the % of properties in a suburb currently listed on Domain.
 
-**Fix Needed**: Check for `DocumentCount` instead:
-```typescript
-if (response.data && response.data.DocumentCount > 0 && Array.isArray(response.data.Documents)) {
-  console.error(`[CBRE] API returned ${response.data.DocumentCount} total properties`);
-```
+## Setup & Usage
 
-**Impact**: Low - API is working, just needs better logging
+### 1. Prerequisites
+*   Docker & Docker Compose
+*   A copy of the **G-NAF Core CSV** file.
 
-### Issue 2: Cameron Address Formatting
+### 2. Ingesting G-NAF Data
+The system is designed to auto-ingest G-NAF data on first startup.
 
-**Problem**: Address includes extra newlines and spacing
+1.  Place your G-NAF CSV file at `mcp-aus-propery/data/gnaf.csv`.
+2.  Start the container:
+    ```bash
+    docker-compose up -d --build
+    ```
+3.  The server will detect the empty database and the CSV file, then automatically ingest ~14M records into SQLite and build the FTS5 index. This is performant and reliable.
 
-**Current Output**:
-```
-"3/36 Stephen Road, DANDENONG\n\t\t\t\t\t\t\n\t\t\t\t\t\tVIC\n\t\t\t3175"
-```
+### 3. Running Scrapers
+The scouts are triggered via the MCP tool `find_properties`. You can trigger this via your MCP client (e.g., Claude Desktop, Cursor) or by running a script.
 
-**Fix**: Add `.replace(/\s+/g, ' ').trim()` to address extraction
+*   **Incremental Crawling**: Scouts like PRD and First National run in "incremental batches" (e.g., 5-10 listings per run) to avoid rate limits. Repeated calls will continue deeper into the sitemaps.
+*   **State Persistence**: Scraper progress is saved to `data/*.json` files, ensuring they resume where they left off after restarts.
 
-**Impact**: Low - functional but cosmetic
+### 4. Available MCP Tools
 
----
+*   **`find_properties(location, ...)`**: Triggers the scout swarm.
+    *   **Geo-Spatial Search**: Supports `lat`, `lon`, and `radius` parameters to find properties within X km of a point. Uses SQLite custom `haversine_distance` function.
+    *   **Full Text Search**: Uses FTS5 for `location` keyword matching (e.g. "warehouse in Sydney").
+*   **`get_market_penetration(suburb)`**: Returns analytics for a specific suburb (Total Parcels vs. Active Domain Listings).
 
-## 📊 Production Readiness Assessment
+## File Structure
 
-### Framework: ✅ Production Ready
-- MCP server architecture: Solid
-- Scout orchestration: Working
-- Parallel execution: Functional
-- Deduplication: Implemented
-- Error handling: Comprehensive
+*   `src/services/GnafService.ts`: Core G-NAF logic (Ingest, Resolve, Analytics) using SQLite + FTS5.
+*   `src/services/Database.ts`: Singleton SQLite connection manager.
+*   `src/DuckDBService.ts`: Legacy name, handles Listing storage/search via SQLite.
+*   `src/scouts/DomainScout.ts`: Domain synchronization logic.
+*   `src/scouts/PRDScout.ts` & `src/scouts/FirstNationalScout.ts`: Agent scrapers.
+*   `ingest-gnaf.js`: Utility script for manual ingestion.
 
-### Scout Implementations:
+## Troubleshooting
 
-**CBRE**: 🟡 90% Ready
-- API discovered and working
-- Minor parsing fix needed
-- Fallback to Playwright ready
-- **ETA to fix**: 5 minutes
-
-**Cameron**: ✅ 100% Ready
-- Fully functional
-- Returning real data
-- Tested and validated
-- No issues found
-
-### Overall: 🟢 95% Production Ready
-
-**Remaining Work**:
-1. Fix CBRE response parsing (5 min)
-2. Clean up address formatting (5 min)
-3. Add unit tests for parsing logic (optional)
-
----
-
-## 🚀 Deployment Instructions
-
-### Prerequisites
-```bash
-npm install
-npx playwright install --with-deps
-```
-
-### Build
-```bash
-npm run build
-```
-
-### Test
-```bash
-# Unit tests (no network)
-npm run test:unit
-
-# Integration tests (requires internet)
-npm run test:integration
-
-# Full test suite
-npm test
-```
-
-### Run
-```bash
-npm start
-```
-
-### Docker
-```bash
-docker build -t mcp-property-scout .
-docker run -i mcp-property-scout
-```
-
----
-
-## 📈 Metrics
-
-- **Total Time**: ~3 hours of investigation + implementation
-- **Lines of Code**: ~800 lines (scouts + types + server)
-- **Test Coverage**: 8/13 integration tests passing
-- **API Calls Tested**: 50+ different endpoint combinations
-- **Network Requests Analyzed**: 100+ 
-- **Properties Available**: 1,334 (CBRE) + 625+ (Cameron)
-
----
-
-## 🎓 Key Learnings
-
-1. **Real Estate APIs**:
-   - Major agencies (CBRE) have internal APIs
-   - Smaller agencies (Cameron) use WordPress + plugins
-   - APIs are often undocumented - need network analysis
-
-2. **Web Scraping**:
-   - Always check for APIs first (faster, more reliable)
-   - JSON-LD rarely exists on listing pages
-   - HTML structure is stable for production sites
-   - WordPress sites have predictable patterns
-
-3. **Testing Strategy**:
-   - Can't test without internet access
-   - Need real website validation
-   - Integration tests more valuable than unit tests for scrapers
-
----
-
-## ✅ Conclusion
-
-**The implementation is FUNCTIONAL and nearly PRODUCTION-READY.**
-
-- ✅ Real APIs discovered and tested
-- ✅ HTML scraping validated with real data
-- ✅ Cameron scout returning 24 listings
-- ✅ CBRE API returning 1,334 properties
-- 🔧 Minor parsing fix needed for CBRE
-- 🎯 95% complete
-
-**Recommendation**: Deploy to staging, apply CBRE fix, monitor for edge cases.
+*   **Docker Platform**: The system uses `node:20-bookworm-slim` which is stable on both ARM64 and AMD64.
+*   **Rate Limits**: Scouts are configured with ~6s delays. Adjust `RATE_LIMIT_MS` in the scout files if needed.

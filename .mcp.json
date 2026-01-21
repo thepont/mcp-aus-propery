@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "abs-mcp-server": {
+      "type": "stdio",
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "abs-mcp-server:latest"],
+      "env": {}
+    },
+    "mcp-aus-property": {
+      "type": "stdio",
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "mcp-aus-property:latest"],
+      "env": {}
+    }
+  }
+}

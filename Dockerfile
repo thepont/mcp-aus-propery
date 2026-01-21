@@ -1,6 +1,6 @@
 # Multi-stage Dockerfile for Industrial Property Scout MCP Server
 # Stage 1: Build TypeScript project
-FROM node:22-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
@@ -8,17 +8,14 @@ WORKDIR /app
 COPY package*.json ./
 COPY tsconfig.json ./
 
-# Install dependencies
-RUN npm ci
-
-# Copy source code
+# Copy source code first (needed before npm ci due to prepare script)
 COPY src ./src
 
-# Build TypeScript
-RUN npm run build
+# Install dependencies and build
+RUN npm ci
 
 # Stage 2: Slim runtime with Playwright
-FROM node:22-bookworm-slim AS runtime
+FROM node:20-bookworm-slim AS runtime
 
 # Install Playwright system dependencies
 RUN apt-get update && apt-get install -y \
@@ -47,7 +44,10 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install production dependencies only
+# Remove prepare script to prevent 'npm ci' from running tsc (dev dependency)
+RUN npm pkg delete scripts.prepare
+
+# Install production dependencies (allow scripts to run so better-sqlite3 fetches pre-built binary)
 RUN npm ci --omit=dev
 
 # Install Playwright browsers (chromium only)

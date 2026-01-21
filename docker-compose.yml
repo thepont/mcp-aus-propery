@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  mcp-server:
+    build: .
+    container_name: mcp-industrial-scout
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - HTTP_PROXY=http://host.docker.internal:8888
+    volumes:
+      - ./data:/app/data
+    stdin_open: true 
+    tty: true

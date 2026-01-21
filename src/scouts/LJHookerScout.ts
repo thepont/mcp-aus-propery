@@ -21,11 +21,7 @@ export class LJHookerScout extends AgentpointScout {
    * Build API endpoint for property search
    */
   protected async buildApiEndpoint(criteria: SearchParams): Promise<string> {
-    // Agentpoint API structure based on JavaScript analysis
-    const searchOrigin = 'commercialSale'; // Can be: residential, commercial, rural, land
-    const searchProfile = 'sale'; // Can be: sale, rent, sold
-    
-    return `${this.apiBaseUrl}/website/v1/search/${searchOrigin}/${searchProfile}`;
+    return `${this.apiBaseUrl}/website/search-v1`;
   }
 
   /**
@@ -33,7 +29,9 @@ export class LJHookerScout extends AgentpointScout {
    */
   protected buildApiParams(criteria: SearchParams): any {
     const params: any = {
-      limit: 50, // Agentpoint default is 5, increase for more results
+      searchOrigin: 'residential-au',
+      searchProfile: 'buy',
+      limit: 100,
       page: 1,
       orderBy: 'date-desc'
     };
@@ -61,8 +59,8 @@ export class LJHookerScout extends AgentpointScout {
     const listings: IndustrialListing[] = [];
 
     try {
-      // Agentpoint returns data in 'properties' array
-      const properties = data.properties || data.data || [];
+      // search-v1 returns data in 'data.properties' or just 'data' depending on API version
+      const properties = data.data?.properties || data.properties || data.data || [];
 
       for (const property of properties) {
         const listing: IndustrialListing = {

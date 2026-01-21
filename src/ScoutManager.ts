@@ -1,7 +1,8 @@
-import { BaseScout, SearchParams, IndustrialListing } from './types.js';
+import { BaseScout, SearchParams, IndustrialListing, PropertyType, ListingType } from './types.js';
 import { readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { PropertyService } from './services/PropertyService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,9 +14,10 @@ const __dirname = dirname(__filename);
 export class ScoutManager {
   private scouts: BaseScout[] = [];
   private initialized: boolean = false;
+  private db: PropertyService;
 
   constructor() {
-    // Initialize synchronously - scouts will be registered on first use
+    this.db = new PropertyService();
   }
 
   /**
@@ -24,6 +26,8 @@ export class ScoutManager {
   private async ensureInitialized(): Promise<void> {
     if (!this.initialized) {
       await this.registerScouts();
+      // Initialize DB schema for properties table
+      await this.db.init();
       this.initialized = true;
     }
   }
@@ -51,8 +55,12 @@ export class ScoutManager {
               if (typeof ExportedClass === 'function' && 
                   ExportedClass.prototype instanceof BaseScout) {
                 const scout = new ExportedClass() as BaseScout;
-                this.scouts.push(scout);
-                console.error(`[ScoutManager] Registered scout: ${scout.name}`);
+                
+                // Only register if it has a valid name (skip abstract base classes)
+                if (scout.name && scout.name !== 'undefined') {
+                  this.scouts.push(scout);
+                  console.error(`[ScoutManager] Registered scout: ${scout.name}`);
+                }
               }
             }
           } catch (error) {
@@ -75,73 +83,124 @@ export class ScoutManager {
 
   /**
    * Execute all scouts in parallel and aggregate results
-   * Deduplicates by address and returns combined listings
+   * Deduplicates by address, filters by criteria, and returns combined listings
    */
-  async findIndustrialDeals(criteria: SearchParams): Promise<IndustrialListing[]> {
+  async findProperties(criteria: SearchParams): Promise<IndustrialListing[]> {
     await this.ensureInitialized();
-    
+
     console.error(`[ScoutManager] Searching with ${this.scouts.length} scouts for: ${JSON.stringify(criteria)}`);
-    
+
     // Execute all scouts in parallel using Promise.allSettled
     const results = await Promise.allSettled(
       this.scouts.map(scout => scout.search(criteria))
     );
 
-    // Collect all successful results
-    const allListings: IndustrialListing[] = [];
-    
+    // Collect and Index all successful results
+    let scrapedCount = 0;
     for (let i = 0; i < results.length; i++) {
       const result = results[i];
       const scout = this.scouts[i];
-      
+
       if (result.status === 'fulfilled') {
-        console.error(`[ScoutManager] ${scout.name} returned ${result.value.length} listings`);
-        allListings.push(...result.value);
+        const listings = result.value;
+        console.error(`[ScoutManager] ${scout.name} returned ${listings.length} listings`);
+        
+        // Enrich and Index each listing
+        for (const listing of listings) {
+          // Enrich if missing types
+          if (!listing.propertyType) listing.propertyType = this.inferPropertyType(listing);
+          if (!listing.listingType) listing.listingType = this.inferListingType(listing);
+          
+          await this.db.indexProperty(listing);
+        }
+        scrapedCount += listings.length;
       } else {
         console.error(`[ScoutManager] ${scout.name} failed:`, result.reason);
       }
     }
 
-    // Deduplicate by address (case-insensitive, normalized)
-    const deduped = this.deduplicateListings(allListings);
-    
-    console.error(`[ScoutManager] Total listings after deduplication: ${deduped.length}`);
-    
-    return deduped;
+    console.error(`[ScoutManager] Indexed ${scrapedCount} new listings.`);
+
+    // Now query DuckDB for the final result
+    const searchResults = await this.db.search(criteria);
+    console.error(`[ScoutManager] DB returned ${searchResults.length} matches.`);
+
+    return searchResults;
   }
 
   /**
-   * Deduplicate listings by normalized address
+   * Infer property type from listing data when not explicitly set
    */
-  private deduplicateListings(listings: IndustrialListing[]): IndustrialListing[] {
-    const seen = new Map<string, IndustrialListing>();
-    
-    for (const listing of listings) {
-      const normalizedAddress = this.normalizeAddress(listing.address);
-      
-      if (!seen.has(normalizedAddress)) {
-        seen.set(normalizedAddress, listing);
-      } else {
-        // If duplicate, prefer the one with more complete data
-        const existing = seen.get(normalizedAddress)!;
-        if (listing.description.length > existing.description.length) {
-          seen.set(normalizedAddress, listing);
-        }
-      }
+  private inferPropertyType(listing: IndustrialListing): PropertyType | undefined {
+    const text = `${listing.description} ${listing.zoning || ''} ${listing.address}`.toLowerCase();
+    const priceText = (listing.priceDisplay || '').toLowerCase();
+
+    // Industrial keywords
+    if (text.includes('industrial') || text.includes('warehouse') || text.includes('factory') ||
+        text.includes('manufacturing') || text.includes('logistics') || text.includes('distribution') ||
+        text.includes('workshop') || text.includes('storage')) {
+      return 'industrial';
     }
-    
-    return Array.from(seen.values());
+
+    // Commercial keywords
+    if (text.includes('commercial') || text.includes('office') || text.includes('retail') ||
+        text.includes('shop') || text.includes('showroom') || text.includes('medical') ||
+        text.includes('restaurant') || text.includes('cafe') || text.includes('suite')) {
+      return 'commercial';
+    }
+
+    // Rural keywords
+    if (text.includes('rural') || text.includes('farm') || text.includes('acreage') ||
+        text.includes('agricultural') || text.includes('lifestyle') || text.includes('hectare')) {
+      return 'rural';
+    }
+
+    // Land keywords
+    if (text.includes('vacant land') || text.includes('land for sale') || text.includes('development site') ||
+        text.includes('block') || (text.includes('land') && !text.includes('landlord'))) {
+      return 'land';
+    }
+
+    // Residential keywords - expanded to catch more
+    if (text.includes('house') || text.includes('apartment') || text.includes('unit') ||
+        text.includes('townhouse') || text.includes('villa') || text.includes('bedroom') ||
+        text.includes('bathroom') || text.includes('residential') || text.includes('home') ||
+        text.includes('living') || text.includes('family') || text.includes('kitchen') ||
+        text.includes('garage') || text.includes('courtyard') || text.includes('garden') ||
+        text.includes('renovated') || text.includes('modern') || text.includes('spacious') ||
+        text.includes('cosy') || text.includes('cozy') || text.includes('neat') ||
+        text.includes('quiet') || text.includes('furnished') || text.includes('unfurnished') ||
+        // Common rental residential patterns
+        priceText.includes('pw') || priceText.includes('per week') ||
+        priceText.includes('pcm') || priceText.includes('per month')) {
+      return 'residential';
+    }
+
+    return undefined;
   }
 
   /**
-   * Normalize address for comparison
+   * Infer listing type (sale vs rental) from listing data when not explicitly set
    */
-  private normalizeAddress(address: string): string {
-    return address
-      .toLowerCase()
-      .replace(/\s+/g, ' ')
-      .replace(/[.,]/g, '')
-      .trim();
+  private inferListingType(listing: IndustrialListing): ListingType | undefined {
+    const text = `${listing.description} ${listing.priceDisplay || ''} ${listing.zoning || ''}`.toLowerCase();
+
+    // Rental indicators
+    if (text.includes('for rent') || text.includes('for lease') || text.includes('rental') ||
+        text.includes('leasing') || text.includes('pw') || text.includes('per week') ||
+        text.includes('pcm') || text.includes('per month') || text.includes('/week') ||
+        text.includes('/month') || text.includes('p.w') || text.includes('p.m')) {
+      return 'rental';
+    }
+
+    // Sale indicators
+    if (text.includes('for sale') || text.includes('auction') || text.includes('eoi') ||
+        text.includes('expression of interest') || text.includes('offers') ||
+        text.includes('price guide') || text.includes('asking')) {
+      return 'sale';
+    }
+
+    return undefined;
   }
 
   /**
