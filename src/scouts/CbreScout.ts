@@ -104,15 +104,12 @@ export class CbreScout extends BaseScout {
           args: ['--no-sandbox', '--disable-setuid-sandbox'],
           proxy: proxy ? { server: proxy.server } : undefined
         });
-        this.isSharedBrowser = false;
-      }
-
-      const context = await this.browser.newContext({
-        userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-      });
-      const page = await context.newPage();
-      const searchUrl = this.buildSearchUrl(criteria);
-      
+                  this.isSharedBrowser = false;
+              }
+        
+              const context = await this.createStealthContext(this.browser);
+              const page = await context.newPage();
+              const searchUrl = this.buildSearchUrl(criteria);      
       await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await this.waitOrganic();
 

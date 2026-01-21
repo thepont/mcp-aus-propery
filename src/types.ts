@@ -1,8 +1,10 @@
+import fs from 'fs';
+import { FingerprintGenerator } from 'fingerprint-generator';
+import { FingerprintInjector } from 'fingerprint-injector';
+
 /**
  * Property type classification
  */
-import fs from 'fs';
-
 export type PropertyType = 'residential' | 'commercial' | 'industrial' | 'land' | 'rural';
 
 /**
@@ -87,6 +89,9 @@ export abstract class BaseScout {
   /** Scout identifier (agency name) */
   abstract readonly name: string;
   
+  private static fingerprintGenerator = new FingerprintGenerator();
+  private static fingerprintInjector = new FingerprintInjector();
+
   /**
    * Search for industrial properties matching the criteria
    * @param criteria Search parameters
@@ -99,6 +104,32 @@ export abstract class BaseScout {
    */
   setBrowser(browser: any): void {
       // Optional override for scouts that use browser
+  }
+
+  /**
+   * Create a high-anonymity browser context using fingerprinting
+   */
+  protected async createStealthContext(browser: any): Promise<any> {
+      const fingerprintData = BaseScout.fingerprintGenerator.getFingerprint({
+          devices: ['desktop'],
+          browsers: ['chrome', 'firefox', 'safari'],
+          locales: ['en-AU', 'en-US'],
+      });
+
+      const { fingerprint } = fingerprintData as any;
+
+      const context = await browser.newContext({
+          userAgent: fingerprint.navigator.userAgent,
+          viewport: fingerprint.screen,
+          deviceScaleFactor: fingerprint.screen.devicePixelRatio,
+          hasTouch: fingerprint.navigator.maxTouchPoints > 0,
+          locale: 'en-AU',
+          timezoneId: 'Australia/Sydney',
+          ignoreHTTPSErrors: true
+      });
+
+      await BaseScout.fingerprintInjector.attachFingerprintToPlaywright(context, fingerprintData);
+      return context;
   }
 
   /**

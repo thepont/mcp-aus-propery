@@ -153,9 +153,7 @@ export class FirstNationalScout extends BaseScout {
           this.isSharedBrowser = false;
       }
 
-      const context = await this.browser.newContext({
-        userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-      });
+      const context = await this.createStealthContext(this.browser);
       const page = await context.newPage();
 
       console.error(`[FN] Navigating to search results...`);

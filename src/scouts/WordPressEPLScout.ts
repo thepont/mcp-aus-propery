@@ -253,9 +253,7 @@ export abstract class WordPressEPLScout extends BaseScout {
         this.isSharedBrowser = false;
     }
 
-    const context = await this.browser.newContext({
-      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-    });
+    const context = await this.createStealthContext(this.browser);
     const page = await context.newPage();
 
     try {
