@@ -252,4 +252,58 @@ export class GnafService {
     }
     return { suburb, total_parcels: 0, active_listings: 0, penetration_pct: 0 };
   }
+
+  /**
+   * Get center coordinate and bounds for a suburb or postcode
+   */
+  async getAreaContext(location: string): Promise<{ lat: number, lon: number, radius: number } | null> {
+    const db = getConnection();
+    
+    // Try suburb match first
+    let row = db.prepare(`
+      SELECT 
+        AVG(latitude) as lat, 
+        AVG(longitude) as lon,
+        (MAX(latitude) - MIN(latitude)) as lat_diff,
+        (MAX(longitude) - MIN(longitude)) as lon_diff
+      FROM gnaf_reference 
+      WHERE suburb LIKE ?
+    `).get(`${location}%`);
+
+    // Try postcode if no suburb match or poor match
+    if (!row || !row.lat) {
+      row = db.prepare(`
+        SELECT 
+          AVG(latitude) as lat, 
+          AVG(longitude) as lon,
+          (MAX(latitude) - MIN(latitude)) as lat_diff,
+          (MAX(longitude) - MIN(longitude)) as lon_diff
+        FROM gnaf_reference 
+        WHERE postcode = ?
+      `).get(location);
+    }
+
+    if (row && row.lat) {
+      // Calculate a rough radius in km based on bounds (1 degree ~ 111km)
+      const latRadius = (row.lat_diff * 111) / 2;
+      const lonRadius = (row.lon_diff * 111 * Math.cos(row.lat * Math.PI / 180)) / 2;
+      const radius = Math.max(latRadius, lonRadius, 5); // Minimum 5km radius
+
+      return {
+        lat: row.lat,
+        lon: row.lon,
+        radius: Math.ceil(radius)
+      };
+    }
+
+    return null;
+  }
+
+  /**
+   * Resolve a G-NAF record by ID
+   */
+  async getGnafRecord(id: string): Promise<any> {
+    const db = getConnection();
+    return db.prepare('SELECT * FROM gnaf_reference WHERE id = ?').get(id);
+  }
 }

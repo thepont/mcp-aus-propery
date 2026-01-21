@@ -14,6 +14,14 @@ interface EPLState {
  * Provides common functionality for EPL REST API integration
  */
 export abstract class WordPressEPLScout extends BaseScout {
+  protected browser: any = null;
+  protected isSharedBrowser: boolean = false;
+
+  setBrowser(browser: any): void {
+      this.browser = browser;
+      this.isSharedBrowser = true;
+  }
+
   /**
    * Subclasses must implement this to build the search URL
    */
@@ -237,13 +245,18 @@ export abstract class WordPressEPLScout extends BaseScout {
    * Fallback: Search via Playwright HTML scraping
    */
   private async searchViaPlaywright(searchUrl: string, criteria: SearchParams): Promise<IndustrialListing[]> {
-    const browser = await chromium.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-    const page = await browser.newPage({
+    if (!this.browser) {
+        this.browser = await chromium.launch({
+          headless: true,
+          args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
+        this.isSharedBrowser = false;
+    }
+
+    const context = await this.browser.newContext({
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
     });
+    const page = await context.newPage();
 
     try {
       await page.goto(searchUrl, { waitUntil: 'networkidle', timeout: 30000 });
@@ -270,7 +283,13 @@ export abstract class WordPressEPLScout extends BaseScout {
         return results;
       });
 
-      await browser.close();
+      if (!this.isSharedBrowser) {
+          await this.browser.close();
+          this.browser = null;
+      } else {
+          await page.close();
+          await context.close();
+      }
 
       return listings.map(item => ({
         address: item.address,
@@ -281,9 +300,19 @@ export abstract class WordPressEPLScout extends BaseScout {
         source: this.name
       }));
     } catch (error) {
-      await browser.close();
+      if (!this.isSharedBrowser && this.browser) {
+          await this.browser.close();
+          this.browser = null;
+      }
       console.error(`[${this.name}] Playwright scraping failed:`, error);
       return [];
+    }
+  }
+
+  async cleanup(): Promise<void> {
+    if (this.browser && !this.isSharedBrowser) {
+      await this.browser.close();
+      this.browser = null;
     }
   }
 

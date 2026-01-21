@@ -13,6 +13,12 @@ chromium.use(StealthPlugin());
 export class CbreScout extends BaseScout {
   readonly name = 'CBRE Australia';
   private browser: any = null;
+  private isSharedBrowser: boolean = false;
+
+  setBrowser(browser: any): void {
+      this.browser = browser;
+      this.isSharedBrowser = true;
+  }
 
   /**
    * Search CBRE for industrial properties
@@ -98,6 +104,7 @@ export class CbreScout extends BaseScout {
           args: ['--no-sandbox', '--disable-setuid-sandbox'],
           proxy: proxy ? { server: proxy.server } : undefined
         });
+        this.isSharedBrowser = false;
       }
 
       const context = await this.browser.newContext({
@@ -135,7 +142,12 @@ export class CbreScout extends BaseScout {
         listings.push(...htmlListings);
       }
 
-      await context.close();
+      if (!this.isSharedBrowser && this.browser) {
+          await this.browser.close();
+          this.browser = null;
+      } else {
+          await context.close();
+      }
     } catch (error) {
       console.error('[CBRE] Playwright search failed:', error);
     }
@@ -188,7 +200,7 @@ export class CbreScout extends BaseScout {
   }
 
   async cleanup(): Promise<void> {
-    if (this.browser) {
+    if (this.browser && !this.isSharedBrowser) {
       await this.browser.close();
       this.browser = null;
     }

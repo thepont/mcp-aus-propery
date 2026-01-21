@@ -4,6 +4,7 @@ import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
 import fs from 'fs';
 import crypto from 'crypto';
+import * as cheerio from 'cheerio';
 
 interface DomainState {
   scanId: string;
@@ -24,39 +25,44 @@ export class DomainScout extends BaseScout {
   }
 
   async search(criteria: SearchParams): Promise<IndustrialListing[]> {
-    console.error('[Domain] Starting synchronization...');
+    const isGeneralSync = !criteria.location || criteria.location === 'Any';
+    
+    if (isGeneralSync) {
+      return this.backgroundSync(criteria);
+    } else {
+      return this.targetedSearch(criteria);
+    }
+  }
+
+  /**
+   * Background sync logic (G-NAF based)
+   */
+  private async backgroundSync(criteria: SearchParams): Promise<IndustrialListing[]> {
+    console.error('[Domain] Starting background sync...');
     let state = this.loadState();
 
-    // 1. Initialize Scan ID if needed
     if (!state.scanId) {
         state.scanId = crypto.randomUUID();
         console.error(`[Domain] Starting new scan session: ${state.scanId}`);
     }
 
-    // 2. Refill Queue if empty
     if (state.queue.length === 0) {
         console.error('[Domain] Queue empty. Fetching fresh sitemap...');
         const urls = await this.fetchSitemapUrls();
-        
         if (urls.length > 0) {
             state.queue = urls;
             state.totalCount = urls.length;
-            console.error(`[Domain] Queue refilled with ${urls.length} listings.`);
         } else {
-            console.error('[Domain] No listings found in sitemap. Retrying later.');
             return [];
         }
     }
     
     const listings: IndustrialListing[] = [];
     let matchCount = 0;
-
-    // Report Progress
     const total = state.totalCount || state.queue.length;
     const currentProcessed = total - state.queue.length;
     this.logProgress(currentProcessed, total);
 
-    // Process a batch (to respect constraints)
     const BATCH_SIZE = 50; 
     const batch = state.queue.splice(0, BATCH_SIZE);
 
@@ -64,14 +70,10 @@ export class DomainScout extends BaseScout {
       const addressData = this.parseUrl(url);
       if (!addressData) continue;
 
-      // Resolve against G-NAF
       const gnafPid = await this.gnafService.resolveAddress(addressData.addressString);
-      
       if (gnafPid) {
-        // console.error(`[Domain] Matched ${addressData.addressString} -> ${gnafPid}`);
         await this.gnafService.updateListing(gnafPid, url, undefined, state.scanId);
         matchCount++;
-        
         listings.push({
             address: addressData.addressString,
             source: 'domain',
@@ -83,20 +85,57 @@ export class DomainScout extends BaseScout {
       }
     }
 
-    console.error(`[Domain] Synced ${matchCount} properties to G-NAF DB. Remaining in queue: ${state.queue.length}`);
-    
-    // 3. Check for Completion & Prune
     if (state.queue.length === 0) {
-        console.error(`[Domain] Scan complete for ${state.scanId}. Pruning old listings...`);
-        const pruned = await this.gnafService.pruneListings('domain', state.scanId);
-        console.error(`[Domain] Pruned ${pruned} old listings.`);
-        
-        // Reset for next scan
-        state.scanId = ''; // Will generate new one next time
+        await this.gnafService.pruneListings('domain', state.scanId);
+        state.scanId = ''; 
     }
 
     this.saveState(state);
     return listings;
+  }
+
+  /**
+   * Targeted search logic
+   */
+  private async targetedSearch(criteria: SearchParams): Promise<IndustrialListing[]> {
+    console.error(`[Domain] Performing targeted search for: ${criteria.location}`);
+    
+    // Domain search API or scraping
+    // For simplicity, let's use their frontend search results
+    const propertyType = criteria.propertyType || 'industrial';
+    const searchUrl = `https://www.domain.com.au/sale/${criteria.location.toLowerCase()}/?ptype=${propertyType}`;
+    
+    try {
+      const response = await axios.get(searchUrl, {
+        headers: { 'User-Agent': 'Mozilla/5.0' }
+      });
+      
+      const $ = cheerio.load(response.data);
+      const listings: IndustrialListing[] = [];
+
+      // Extract listings from HTML
+      $('[data-testid="listing-card"]').each((_, el) => {
+        const address = $(el).find('[data-testid="address-wrapper"]').text().trim();
+        const url = $(el).find('a').attr('href');
+        const price = $(el).find('[data-testid="listing-card-price"]').text().trim();
+        
+        if (address && url) {
+          listings.push({
+            address,
+            source: this.name,
+            sourceUrl: url.startsWith('http') ? url : `https://www.domain.com.au${url}`,
+            description: 'On-demand search result',
+            priceDisplay: price
+          });
+        }
+      });
+
+      console.error(`[Domain] Targeted search found ${listings.length} listings.`);
+      return listings;
+    } catch (error) {
+      console.error(`[Domain] Targeted search failed:`, error);
+      return [];
+    }
   }
 
   private loadState(): DomainState {

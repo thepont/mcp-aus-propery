@@ -36,8 +36,24 @@ export class PRDBallaratScout extends BaseScout {
   private sitemapUrl = 'https://www.prd.com.au/ballarat/sitemap-listings.xml';
   private readonly STATE_FILE = 'data/prd_ballarat_state.json';
   private browser: Browser | null = null;
+  private isSharedBrowser: boolean = false;
+
+  setBrowser(browser: any): void {
+      this.browser = browser;
+      this.isSharedBrowser = true;
+  }
 
   async search(params: SearchParams): Promise<IndustrialListing[]> {
+    const isGeneralSync = !params.location || params.location === 'Any';
+    
+    if (isGeneralSync) {
+      return this.backgroundSync(params);
+    } else {
+      return this.targetedSearch(params);
+    }
+  }
+
+  private async backgroundSync(params: SearchParams): Promise<IndustrialListing[]> {
     try {
       // Ensure data directory
       if (!fs.existsSync('data')) fs.mkdirSync('data', { recursive: true });
@@ -59,28 +75,24 @@ export class PRDBallaratScout extends BaseScout {
       const urlsToProcess = state.queue.splice(0, limit);
       console.log(`[PRDBallaratScout] Processing ${urlsToProcess.length} properties from queue. Remaining: ${state.queue.length}`);
 
-      if (urlsToProcess.length === 0) {
-        console.log('[PRDBallaratScout] No more properties in queue.');
-        return [];
+      if (urlsToProcess.length === 0) return [];
+
+      // Step 2: Launch browser for scraping if not shared
+      const proxy = this.getProxyConfig();
+      if (!this.browser) {
+          this.browser = await chromium.launch({ 
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            proxy: proxy ? { server: proxy.server } : undefined
+          });
+          this.isSharedBrowser = false;
       }
 
-      // Step 2: Launch browser for scraping
-      const proxy = this.getProxyConfig();
-      if (proxy) console.log(`[${this.name}] Using Playwright proxy: ${proxy.server}`);
-      
-      this.browser = await chromium.launch({ 
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        proxy: proxy ? { server: proxy.server } : undefined
-      });
-
-      // Step 3: Process properties sequentially for organic appearance
+      // Step 3: Process properties sequentially
       const listings: IndustrialListing[] = [];
 
       for (let i = 0; i < urlsToProcess.length; i++) {
         const url = urlsToProcess[i];
-        
-        // Report overall progress
         const processedTotal = state.totalDiscovered - state.queue.length - (urlsToProcess.length - i);
         this.logProgress(processedTotal, state.totalDiscovered);
 
@@ -88,33 +100,86 @@ export class PRDBallaratScout extends BaseScout {
         
         try {
           const listing = await this.extractPropertyFromPage(url);
-          if (listing) {
-            listings.push(listing);
-          }
+          if (listing) listings.push(listing);
         } catch (error) {
           console.error(`[PRDBallaratScout] Failed to extract property from ${url}:`, error);
         }
       }
 
-      // Step 4: Save state and Cleanup
       this.saveState(state);
-
-      if (this.browser) {
-        await this.browser.close();
-        this.browser = null;
+      if (this.browser && !this.isSharedBrowser) {
+          await this.browser.close();
+          this.browser = null;
       }
-
-      console.log(`[PRDBallaratScout] Successfully extracted ${listings.length} properties`);
       return listings;
 
     } catch (error) {
-      // Ensure browser cleanup on error
-      if (this.browser) {
-        await this.browser.close();
-        this.browser = null;
+      if (this.browser && !this.isSharedBrowser) {
+          await this.browser.close();
+          this.browser = null;
       }
-      console.error('[PRDBallaratScout] Error during search:', error);
-      throw error;
+      console.error('[PRDBallaratScout] Error during sync:', error);
+      return [];
+    }
+  }
+
+  private async targetedSearch(params: SearchParams): Promise<IndustrialListing[]> {
+    console.log(`[PRDBallaratScout] Performing targeted search for: ${params.location}`);
+    
+    // PRD Ballarat search URL
+    const searchUrl = `https://www.prd.com.au/ballarat/property-search/?q=${encodeURIComponent(params.location)}`;
+    
+    try {
+      const proxy = this.getProxyConfig();
+      if (!this.browser) {
+          this.browser = await chromium.launch({ 
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            proxy: proxy ? { server: proxy.server } : undefined
+          });
+          this.isSharedBrowser = false;
+      }
+
+      const page = await this.browser.newPage();
+      await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await this.waitOrganic();
+
+      const urls = await page.evaluate(() => {
+        const links = Array.from(document.querySelectorAll('a[href*="/property-search/"]'));
+        return Array.from(new Set(links.map((a: any) => a.href))).filter(u => /\/property-search\/\d+\//.test(u));
+      });
+
+      console.log(`[PRDBallaratScout] Targeted search found ${urls.length} candidate properties.`);
+
+      const listings: IndustrialListing[] = [];
+      const loc = params.location.toLowerCase();
+      
+      for (const url of urls.slice(0, 10)) {
+        await this.waitOrganic();
+        const listing = await this.extractPropertyFromPage(url);
+        if (listing) {
+          // Double check the listing actually belongs to the targeted location
+          if (listing.address.toLowerCase().includes(loc) || 
+              (listing.metadata?.suburb || '').toLowerCase().includes(loc)) {
+            listings.push(listing);
+          }
+        }
+      }
+
+      if (this.browser && !this.isSharedBrowser) {
+          await this.browser.close();
+          this.browser = null;
+      } else {
+          await page.close();
+      }
+      return listings;
+    } catch (error) {
+      console.error(`[PRDBallaratScout] Targeted search failed:`, error);
+      if (this.browser && !this.isSharedBrowser) {
+          await this.browser.close();
+          this.browser = null;
+      }
+      return [];
     }
   }
 

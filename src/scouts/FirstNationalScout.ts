@@ -29,6 +29,16 @@ export class FirstNationalScout extends BaseScout {
     // Ensure data directory
     if (!fs.existsSync('data')) fs.mkdirSync('data', { recursive: true });
 
+    const isGeneralSync = !criteria.location || criteria.location === 'Any';
+    
+    if (isGeneralSync) {
+      return this.backgroundSync(criteria);
+    } else {
+      return this.targetedSearch(criteria);
+    }
+  }
+
+  private async backgroundSync(criteria: SearchParams): Promise<IndustrialListing[]> {
     let queue = this.loadQueue();
     let state = this.loadState();
     
@@ -84,8 +94,6 @@ export class FirstNationalScout extends BaseScout {
         try {
             const listing = await this.scrapeListingPage(url);
             if (listing) {
-                // Apply simple client-side filter if criteria provided
-                // We'll just push everything to DB
                 listings.push(listing);
                 processedCount++;
             }
@@ -101,6 +109,53 @@ export class FirstNationalScout extends BaseScout {
     }
 
     return listings;
+  }
+
+  private async targetedSearch(criteria: SearchParams): Promise<IndustrialListing[]> {
+    console.error(`[FN] Performing targeted search for: ${criteria.location}`);
+    
+    // First National integrated search
+    const listingType = criteria.listingType === 'rental' ? 'rent' : 'buy';
+    const searchUrl = `https://www.firstnational.com.au/pages/real-estate/${listingType}/?q=${encodeURIComponent(criteria.location)}`;
+    
+    try {
+      const response = await axios.get(searchUrl, {
+        headers: { 'User-Agent': 'Mozilla/5.0' }
+      });
+      
+      const $ = cheerio.load(response.data);
+      const urls: string[] = [];
+
+      // Look for property links
+      $('a').each((_, el) => {
+        const href = $(el).attr('href');
+        if (href && href.includes('/property/')) {
+          const fullUrl = href.startsWith('http') ? href : `https://www.firstnational.com.au${href}`;
+          if (!urls.includes(fullUrl)) urls.push(fullUrl);
+        }
+      });
+
+      console.error(`[FN] Targeted search found ${urls.length} candidate URLs.`);
+
+      const results: IndustrialListing[] = [];
+      const loc = criteria.location.toLowerCase();
+      
+      for (const url of urls.slice(0, 10)) {
+        const listing = await this.scrapeListingPage(url);
+        if (listing) {
+          if (listing.address.toLowerCase().includes(loc) || 
+              (listing.metadata?.suburb || '').toLowerCase().includes(loc)) {
+            results.push(listing);
+          }
+        }
+        await this.waitOrganic();
+      }
+
+      return results;
+    } catch (error) {
+      console.error(`[FN] Targeted search failed:`, error);
+      return [];
+    }
   }
 
   private async getSitemapList(): Promise<string[]> {

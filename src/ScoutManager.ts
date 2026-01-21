@@ -3,6 +3,11 @@ import { readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { PropertyService } from './services/PropertyService.js';
+import { chromium } from 'playwright-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+
+// @ts-ignore
+chromium.use(StealthPlugin());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -15,6 +20,7 @@ export class ScoutManager {
   private scouts: BaseScout[] = [];
   private initialized: boolean = false;
   private db: PropertyService;
+  private sharedBrowser: any = null;
 
   constructor() {
     this.db = new PropertyService();
@@ -30,6 +36,35 @@ export class ScoutManager {
       await this.db.init();
       this.initialized = true;
     }
+  }
+
+  /**
+   * Initialize ScoutManager (public API)
+   * Pre-registers scouts and launches shared browser
+   */
+  async init(): Promise<void> {
+      await this.ensureInitialized();
+      await this.ensureBrowser();
+  }
+
+  /**
+   * Initialize shared browser instance
+   */
+  private async ensureBrowser(): Promise<any> {
+      if (!this.sharedBrowser) {
+          console.error('[ScoutManager] Launching shared browser instance...');
+          const launchArgs = [
+            '--no-sandbox', 
+            '--disable-setuid-sandbox',
+            '--disable-blink-features=AutomationControlled'
+          ];
+          
+          this.sharedBrowser = await chromium.launch({ 
+            headless: true,
+            args: launchArgs
+          });
+      }
+      return this.sharedBrowser;
   }
 
   /**
@@ -82,21 +117,36 @@ export class ScoutManager {
   }
 
   /**
+   * Directly search existing indexed properties in DB
+   */
+  async getExistingProperties(criteria: SearchParams): Promise<IndustrialListing[]> {
+    await this.ensureInitialized();
+    return this.db.search(criteria);
+  }
+
+  /**
    * Execute all scouts in parallel and aggregate results
    * Deduplicates by address, filters by criteria, and returns combined listings
    */
   async findProperties(criteria: SearchParams): Promise<IndustrialListing[]> {
     await this.ensureInitialized();
+    const browser = await this.ensureBrowser();
 
-    console.error(`[ScoutManager] Searching with ${this.scouts.length} scouts for: ${JSON.stringify(criteria)}`);
+    // Share browser with scouts
+    for (const scout of this.scouts) {
+        scout.setBrowser(browser);
+    }
 
-    // Execute all scouts in parallel using Promise.allSettled
+    const isGeneralSync = !criteria.location || criteria.location === 'Any';
+    console.error(`[ScoutManager] ${isGeneralSync ? 'Syncing' : 'Searching'} with ${this.scouts.length} scouts for: ${JSON.stringify(criteria)}`);
+
+    // Execute all scouts in parallel
     const results = await Promise.allSettled(
       this.scouts.map(scout => scout.search(criteria))
     );
 
     // Collect and Index all successful results
-    let scrapedCount = 0;
+    const listingsInThisRun: IndustrialListing[] = [];
     for (let i = 0; i < results.length; i++) {
       const result = results[i];
       const scout = this.scouts[i];
@@ -105,27 +155,21 @@ export class ScoutManager {
         const listings = result.value;
         console.error(`[ScoutManager] ${scout.name} returned ${listings.length} listings`);
         
-        // Enrich and Index each listing
         for (const listing of listings) {
-          // Enrich if missing types
           if (!listing.propertyType) listing.propertyType = this.inferPropertyType(listing);
           if (!listing.listingType) listing.listingType = this.inferListingType(listing);
           
           await this.db.indexProperty(listing);
+          listingsInThisRun.push(listing);
         }
-        scrapedCount += listings.length;
       } else {
         console.error(`[ScoutManager] ${scout.name} failed:`, result.reason);
       }
     }
 
-    console.error(`[ScoutManager] Indexed ${scrapedCount} new listings.`);
+    console.error(`[ScoutManager] Indexed ${listingsInThisRun.length} listings from this run.`);
 
-    // Now query DuckDB for the final result
-    const searchResults = await this.db.search(criteria);
-    console.error(`[ScoutManager] DB returned ${searchResults.length} matches.`);
-
-    return searchResults;
+    return listingsInThisRun;
   }
 
   /**
@@ -219,6 +263,12 @@ export class ScoutManager {
       if ('cleanup' in scout && typeof (scout as any).cleanup === 'function') {
         await (scout as any).cleanup();
       }
+    }
+    
+    if (this.sharedBrowser) {
+        console.error('[ScoutManager] Closing shared browser...');
+        await this.sharedBrowser.close();
+        this.sharedBrowser = null;
     }
   }
 }

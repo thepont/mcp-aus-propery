@@ -56,8 +56,13 @@ export abstract class VaultREScout extends BaseScout {
       // Organic jittered backoff
       await this.waitOrganic();
 
+      const params: any = { pageSize: 20, page: pageToFetch };
+      if (!isGeneralSync) {
+        params.q = criteria.location;
+      }
+
       const axiosConfig: any = {
-        params: { pageSize: 20, page: pageToFetch },
+        params,
         timeout: 30000,
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',

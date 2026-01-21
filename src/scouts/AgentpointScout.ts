@@ -27,10 +27,16 @@ export abstract class AgentpointScout extends BaseScout {
   private cachedToken: string | null = null;
   private tokenExpiry: number = 0;
   private browser: any = null;
+  private isSharedBrowser: boolean = false;
 
   protected get stateFile(): string {
     const safeName = this.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
     return `data/ap_${safeName}_state.json`;
+  }
+
+  setBrowser(browser: any): void {
+      this.browser = browser;
+      this.isSharedBrowser = true;
   }
 
   private async extractToken(): Promise<{ token: string | null; apiUrl: string; config: any }> {
@@ -52,6 +58,7 @@ export abstract class AgentpointScout extends BaseScout {
           args: launchArgs,
           proxy: proxy ? { server: proxy.server } : undefined
         });
+        this.isSharedBrowser = false;
       }
 
       const context = await this.browser.newContext({
@@ -145,7 +152,7 @@ export abstract class AgentpointScout extends BaseScout {
   }
 
   async cleanup(): Promise<void> {
-    if (this.browser) {
+    if (this.browser && !this.isSharedBrowser) {
       await this.browser.close();
       this.browser = null;
     }

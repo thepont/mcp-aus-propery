@@ -26,20 +26,31 @@ export class PRDScout extends BaseScout {
     // Ensure data directory
     if (!fs.existsSync('data')) fs.mkdirSync('data', { recursive: true });
 
+    const isGeneralSync = !criteria.location || criteria.location === 'Any';
+    
+    if (isGeneralSync) {
+      return this.backgroundSync(criteria);
+    } else {
+      return this.targetedSearch(criteria);
+    }
+  }
+
+  /**
+   * Background sync logic (Queue based)
+   */
+  private async backgroundSync(criteria: SearchParams): Promise<IndustrialListing[]> {
     let queue = this.loadQueue();
     let state = this.loadState();
     
     // Determine listing type for discovery
     const targetListingType = criteria.listingType === 'rental' ? 'Lease' : 'Sale';
     if (state.listingType !== targetListingType) {
-      // If switching type, reset search page but keep queue? 
-      // Safer to just switch focus.
       state.listingType = targetListingType;
       state.searchPage = 1;
     }
 
     const listings: IndustrialListing[] = [];
-    const MAX_ITEMS_PER_RUN = 5; // Process 5 items per run
+    const MAX_ITEMS_PER_RUN = 5; 
     let processedCount = 0;
 
     // Report Progress
@@ -48,14 +59,11 @@ export class PRDScout extends BaseScout {
     this.logProgress(currentProcessed, total);
 
     // 1. Discovery Phase: Refill Queue if low
-    // If queue is running low (< 10), fetch more from corporate search
     if (queue.urls.length < 10) {
       console.error(`[PRD] Queue low. Discovering from Corporate Search (Page ${state.searchPage})...`);
-      
       const newUrls = await this.discoverListings(state.listingType, state.searchPage);
       
       if (newUrls.length > 0) {
-        // Add unique URLs to queue
         const existingSet = new Set(queue.urls);
         let added = 0;
         for (const url of newUrls) {
@@ -65,14 +73,10 @@ export class PRDScout extends BaseScout {
             added++;
           }
         }
-        console.error(`[PRD] Added ${added} new listings to queue.`);
-        
-        // Advance page
         state.searchPage++;
         this.saveState(state);
         this.saveQueue(queue);
       } else {
-        console.error('[PRD] No more listings found on search page. Resetting to Page 1.');
         state.searchPage = 1;
         this.saveState(state);
       }
@@ -80,16 +84,12 @@ export class PRDScout extends BaseScout {
 
     // 2. Processing Phase: Crawl Detail Pages
     while (processedCount < MAX_ITEMS_PER_RUN && queue.urls.length > 0) {
-      const url = queue.urls.shift(); // Get next URL
+      const url = queue.urls.shift();
       if (!url) break;
 
       try {
-        // Skip if it's not a property URL
         if (url.includes('/property-search/') || url.includes('/corporate-search/')) {
-           // It's a property page if it has an ID, e.g., /1849754/
-           if (!/\/\d+\//.test(url)) {
-             continue; 
-           }
+           if (!/\/\d+\//.test(url)) continue;
         }
 
         const listing = await this.scrapeListingPage(url);
@@ -101,15 +101,61 @@ export class PRDScout extends BaseScout {
         console.error(`[PRD] Failed to scrape ${url}:`, error);
       }
 
-      // Save state
       this.saveQueue(queue);
-      
-      if (queue.urls.length > 0) {
-        await this.waitOrganic();
-      }
+      if (queue.urls.length > 0) await this.waitOrganic();
     }
 
     return listings;
+  }
+
+  /**
+   * Targeted search logic (Direct search)
+   */
+  private async targetedSearch(criteria: SearchParams): Promise<IndustrialListing[]> {
+    console.error(`[PRD] Performing targeted search for: ${criteria.location}`);
+    
+    // We can use the discovery logic but with keywords
+    // PRD search URL can take 'q' parameter: ?listing_type=Sale&q=Ballarat
+    const targetListingType = criteria.listingType === 'rental' ? 'Lease' : 'Sale';
+    const searchUrl = `https://www.prd.com.au/corporate-search/?listing_type=${targetListingType}&q=${encodeURIComponent(criteria.location)}`;
+    
+    try {
+      const response = await axios.get(searchUrl, {
+        headers: { 'User-Agent': 'Mozilla/5.0' }
+      });
+      
+      const $ = cheerio.load(response.data);
+      const urls: string[] = [];
+
+      $('article.property-card').each((_, el) => {
+        const relativeUrl = $(el).attr('data-url');
+        if (relativeUrl) {
+          urls.push(relativeUrl.startsWith('http') ? relativeUrl : `https://www.prd.com.au${relativeUrl.startsWith('/') ? '' : '/'}${relativeUrl}`);
+        }
+      });
+
+      console.error(`[PRD] Targeted search found ${urls.length} candidate URLs.`);
+
+      // Scrape first few for immediate result
+      const results: IndustrialListing[] = [];
+      const loc = criteria.location.toLowerCase();
+      
+      for (const url of urls.slice(0, 10)) {
+        const listing = await this.scrapeListingPage(url);
+        if (listing) {
+          if (listing.address.toLowerCase().includes(loc) || 
+              (listing.metadata?.city || '').toLowerCase().includes(loc)) {
+            results.push(listing);
+          }
+        }
+        await this.waitOrganic();
+      }
+
+      return results;
+    } catch (error) {
+      console.error(`[PRD] Targeted search failed:`, error);
+      return [];
+    }
   }
 
   private async discoverListings(listingType: string, page: number): Promise<string[]> {

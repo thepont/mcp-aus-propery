@@ -24,15 +24,30 @@ export class BartropScout extends BaseScout {
   readonly name = 'Bartrop Real Estate';
   private readonly siteUrl = 'https://www.bartrop.com.au';
   private readonly sitemapUrl = 'https://www.bartrop.com.au/sitemap.xml';
-  private readonly STATE_FILE = 'data/bartrop_state.json';
+  private STATE_FILE = 'data/bartrop_state.json';
   private browser: Browser | null = null;
+  private isSharedBrowser: boolean = false;
+
+  setBrowser(browser: any): void {
+      this.browser = browser;
+      this.isSharedBrowser = true;
+  }
 
   /**
    * Search for properties using sitemap strategy with watermarking
    */
   async search(criteria: SearchParams): Promise<IndustrialListing[]> {
-    console.log(`[${this.name}] Starting sitemap-based search for ${criteria.location || 'all areas'}...`);
+    const isGeneralSync = !criteria.location || criteria.location === 'Any';
+    
+    if (isGeneralSync) {
+      return this.backgroundSync(criteria);
+    } else {
+      return this.targetedSearch(criteria);
+    }
+  }
 
+  private async backgroundSync(criteria: SearchParams): Promise<IndustrialListing[]> {
+    console.log(`[${this.name}] Starting sitemap-based background sync...`);
     try {
       if (!fs.existsSync('data')) fs.mkdirSync('data', { recursive: true });
       let state = this.loadState();
@@ -54,13 +69,15 @@ export class BartropScout extends BaseScout {
 
       const listings: IndustrialListing[] = [];
       const proxy = this.getProxyConfig();
-      if (proxy) console.log(`[${this.name}] Using Playwright proxy: ${proxy.server}`);
       
-      this.browser = await chromium.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        proxy: proxy ? { server: proxy.server } : undefined
-      });
+      if (!this.browser) {
+          this.browser = await chromium.launch({
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            proxy: proxy ? { server: proxy.server } : undefined
+          });
+          this.isSharedBrowser = false;
+      }
 
       const context = await this.browser.newContext({
         userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
@@ -77,19 +94,76 @@ export class BartropScout extends BaseScout {
           const listing = await this.fetchPropertyDetails(context, url);
           if (listing) listings.push(listing);
         } catch (error) {
-          console.error(`[${this.name}] Failed to fetch property ${url}:`, error);
+          console.error(`[Bartrop Real Estate] Failed to fetch property ${url}:`, error);
         }
       }
 
       this.saveState(state);
-      await this.browser.close();
-      this.browser = null;
+      if (!this.isSharedBrowser && this.browser) {
+          await this.browser.close();
+          this.browser = null;
+      } else {
+          await context.close();
+      }
 
-      console.log(`[${this.name}] Successfully extracted ${listings.length} properties`);
       return listings;
     } catch (error) {
-      console.error(`[${this.name}] Error in search:`, error);
-      if (this.browser) { await this.browser.close(); this.browser = null; }
+      console.error(`[${this.name}] Error in background sync:`, error);
+      if (this.browser && !this.isSharedBrowser) { await this.browser.close(); this.browser = null; }
+      return [];
+    }
+  }
+
+  private async targetedSearch(criteria: SearchParams): Promise<IndustrialListing[]> {
+    console.log(`[${this.name}] Performing targeted search for: ${criteria.location}`);
+    
+    // Bartrop search URL
+    const searchUrl = `https://www.bartrop.com.au/search?q=${encodeURIComponent(criteria.location)}`;
+    
+    try {
+      const proxy = this.getProxyConfig();
+      
+      if (!this.browser) {
+          this.browser = await chromium.launch({
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            proxy: proxy ? { server: proxy.server } : undefined
+          });
+          this.isSharedBrowser = false;
+      }
+
+      const page = await this.browser.newPage();
+      await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await this.waitOrganic();
+
+      // Extract URLs from search results
+      const urls = await page.evaluate(() => {
+        const links = Array.from(document.querySelectorAll('a[href*="/property?property_id="]'));
+        return Array.from(new Set(links.map((a: any) => a.href)));
+      });
+
+      console.log(`[${this.name}] Targeted search found ${urls.length} properties.`);
+
+      const listings: IndustrialListing[] = [];
+      const context = page.context();
+      
+      for (const url of urls.slice(0, 5)) {
+        await this.waitOrganic();
+        const listing = await this.fetchPropertyDetails(context, url);
+        if (listing) listings.push(listing);
+      }
+
+      if (!this.isSharedBrowser && this.browser) {
+          await this.browser.close();
+          this.browser = null;
+      } else {
+          await page.close();
+      }
+
+      return listings;
+    } catch (error) {
+      console.error(`[${this.name}] Targeted search failed:`, error);
+      if (this.browser && !this.isSharedBrowser) { await this.browser.close(); this.browser = null; }
       return [];
     }
   }
@@ -216,6 +290,6 @@ export class BartropScout extends BaseScout {
   }
 
   async cleanup(): Promise<void> {
-    if (this.browser) { await this.browser.close(); this.browser = null; }
+    if (this.browser && !this.isSharedBrowser) { await this.browser.close(); this.browser = null; }
   }
 }

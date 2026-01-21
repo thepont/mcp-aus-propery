@@ -258,6 +258,9 @@ class IndustrialPropertyMcpServer {
     // Attempt to ingest G-NAF data if available
     await this.gnafService.autoIngest();
 
+    // Initialize Scout Manager (Pre-warm browser)
+    await this.scoutManager.init();
+
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
     

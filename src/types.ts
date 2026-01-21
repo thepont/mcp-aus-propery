@@ -95,6 +95,13 @@ export abstract class BaseScout {
   abstract search(criteria: SearchParams): Promise<IndustrialListing[]>;
 
   /**
+   * Set shared browser instance
+   */
+  setBrowser(browser: any): void {
+      // Optional override for scouts that use browser
+  }
+
+  /**
    * Helper to log standardized progress percentage
    */
   protected logProgress(current: number, total: number): void {

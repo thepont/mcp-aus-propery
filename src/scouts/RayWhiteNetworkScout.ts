@@ -56,6 +56,9 @@ export class RayWhiteBallaratScout extends VaultREScout {
       // If syncing, start from where we left off
       if (isGeneralSync && state.lastCreationTime) {
         queryParams.push(`creationTime:['${state.lastCreationTime}' TO *]`);
+      } else if (!isGeneralSync) {
+        // Targeted search: Add location to query
+        queryParams.push(`(address:*${criteria.location}* OR suburb:*${criteria.location}*)`);
       }
 
       const url = `${this.apiBaseUrl}/v1/listings?apiKey=${this.apiKey}&q=${encodeURIComponent(queryParams.join(','))}`;
