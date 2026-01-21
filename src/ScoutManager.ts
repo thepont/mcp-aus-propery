@@ -5,6 +5,8 @@ import { fileURLToPath } from 'url';
 import { PropertyService } from './services/PropertyService.js';
 import { chromium } from 'playwright-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+import { Observable, from, merge, of, timer, EMPTY } from 'rxjs';
+import { mergeMap, catchError, takeUntil, tap, toArray, map } from 'rxjs/operators';
 
 // @ts-ignore
 chromium.use(StealthPlugin());
@@ -125,76 +127,71 @@ export class ScoutManager {
   }
 
   /**
-   * Execute all scouts in parallel and aggregate results
-   * Deduplicates by address, filters by criteria, and returns combined listings
+   * Search and stream results as they arrive
    */
-  async findProperties(criteria: SearchParams): Promise<IndustrialListing[]> {
-    await this.ensureInitialized();
-    const browser = await this.ensureBrowser();
+  search$(criteria: SearchParams): Observable<IndustrialListing> {
+    return from(this.ensureInitialized().then(() => this.ensureBrowser())).pipe(
+      mergeMap((browser) => {
+        // Share browser
+        this.scouts.forEach(s => s.setBrowser(browser));
+        
+        const isGeneralSync = !criteria.location || criteria.location === 'Any';
+        console.error(`[ScoutManager] ${isGeneralSync ? 'Syncing' : 'Searching'} with ${this.scouts.length} scouts`);
 
-    // Share browser with scouts
-    for (const scout of this.scouts) {
-        scout.setBrowser(browser);
-    }
+        const scoutStreams = this.scouts.map(scout => {
+          return from(scout.search(criteria)).pipe(
+            // Flatten array of listings into individual emissions
+            mergeMap(listings => from(listings)),
+            tap(listing => {
+               // Log discovery (optional, verbose)
+               // console.error(`[Stream] ${scout.name} found: ${listing.address}`);
+            }),
+            catchError(err => {
+              console.error(`[ScoutManager] ❌ ${scout.name} stream error: ${err.message}`);
+              return EMPTY; // Continue other scouts even if one fails
+            })
+          );
+        });
 
-    const isGeneralSync = !criteria.location || criteria.location === 'Any';
-    console.error(`[ScoutManager] ${isGeneralSync ? 'Syncing' : 'Searching'} with ${this.scouts.length} scouts for: ${JSON.stringify(criteria)}`);
-
-    const SCOUT_TIMEOUT_MS = 30000; // 30 second timeout per scout
-
-    // Execute all scouts in parallel with timeout
-    const results = await Promise.allSettled(
-      this.scouts.map(async (scout) => {
-          console.error(`[ScoutManager] Starting search for ${scout.name}...`);
-          const startTime = Date.now();
-          
-          try {
-              const timeoutPromise = new Promise<IndustrialListing[]>((_, reject) => 
-                  setTimeout(() => reject(new Error('Scout timed out')), SCOUT_TIMEOUT_MS)
-              );
-              
-              const listings = await Promise.race([scout.search(criteria), timeoutPromise]);
-              const duration = Date.now() - startTime;
-              console.error(`[ScoutManager] ✅ ${scout.name} finished in ${duration}ms. Found ${listings.length} listings.`);
-              return listings;
-          } catch (error: any) {
-              const duration = Date.now() - startTime;
-              if (error.message === 'Scout timed out') {
-                  console.error(`[ScoutManager] ⏱️ ${scout.name} timed out after ${duration}ms.`);
-              } else {
-                  console.error(`[ScoutManager] ❌ ${scout.name} failed after ${duration}ms: ${error.message}`);
-              }
-              throw error;
-          }
+        // Merge all scout streams
+        return merge(...scoutStreams).pipe(
+          // Global timeout: Stop the stream after 35 seconds to ensure we respond
+          takeUntil(timer(35000))
+        );
       })
     );
+  }
 
-    // Collect and Index all successful results
-    const listingsInThisRun: IndustrialListing[] = [];
-    for (let i = 0; i < results.length; i++) {
-      const result = results[i];
-      const scout = this.scouts[i];
-
-      if (result.status === 'fulfilled') {
-        const listings = result.value;
-        console.error(`[ScoutManager] ${scout.name} returned ${listings.length} listings`);
-        
-        for (const listing of listings) {
+  /**
+   * Execute all scouts and return aggregate (Promise wrapper around search$)
+   */
+  async findProperties(criteria: SearchParams): Promise<IndustrialListing[]> {
+    const listings: IndustrialListing[] = [];
+    
+    console.error('[ScoutManager] Starting stream-based search...');
+    
+    return new Promise((resolve) => {
+      this.search$(criteria).subscribe({
+        next: async (listing) => {
           if (!listing.propertyType) listing.propertyType = this.inferPropertyType(listing);
           if (!listing.listingType) listing.listingType = this.inferListingType(listing);
           
           await this.db.indexProperty(listing);
-          listingsInThisRun.push(listing);
+          listings.push(listing);
+        },
+        error: (err) => {
+          console.error('[ScoutManager] Fatal stream error:', err);
+          resolve(listings);
+        },
+        complete: () => {
+          console.error(`[ScoutManager] Stream complete. Indexed ${listings.length} listings.`);
+          resolve(listings);
         }
-      } else {
-        console.error(`[ScoutManager] ${scout.name} failed:`, result.reason);
-      }
-    }
-
-    console.error(`[ScoutManager] Indexed ${listingsInThisRun.length} listings from this run.`);
-
-    return listingsInThisRun;
+      });
+    });
   }
+
+  // ... (Rest of the class) ...
 
   /**
    * Infer property type from listing data when not explicitly set

@@ -166,9 +166,38 @@ class IndustrialPropertyMcpServer {
 
         // 3. On-Demand Scout Search (Refresh) - Only if not useCacheOnly
         let freshCount = 0;
+        const freshListings: any[] = [];
+
         if (!args.useCacheOnly) {
-          const freshListings = await this.scoutManager.findProperties(searchParams);
-          freshCount = freshListings.length;
+          // Use RxJS stream to send notifications
+          await new Promise<void>((resolve) => {
+            this.scoutManager.search$(searchParams).subscribe({
+              next: async (listing) => {
+                freshCount++;
+                freshListings.push(listing);
+                
+                // Send immediate notification to client
+                const logMessage = `Found: [${listing.source}] ${listing.address} (${listing.priceDisplay || 'Contact Agent'})`;
+                this.server.sendLoggingMessage({
+                  level: 'info',
+                  data: logMessage
+                }).catch(e => {}); // Ignore if client doesn't support it
+
+                // Index it
+                if (!listing.propertyType) listing.propertyType = (this.scoutManager as any).inferPropertyType(listing);
+                if (!listing.listingType) listing.listingType = (this.scoutManager as any).inferListingType(listing);
+                await (this.scoutManager as any).db.indexProperty(listing);
+              },
+              error: (err) => {
+                console.error('[MCP Server] Search stream error:', err);
+                resolve();
+              },
+              complete: () => {
+                resolve();
+              }
+            });
+          });
+          
           console.error(`[Fresh Search] Scouts found ${freshCount} properties.`);
         }
 
