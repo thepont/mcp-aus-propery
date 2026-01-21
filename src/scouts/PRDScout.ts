@@ -21,6 +21,13 @@ export class PRDScout extends BaseScout {
   private readonly STATE_FILE = 'data/prd_scout_state.json';
   private readonly QUEUE_FILE = 'data/prd_queue.json';
   private readonly RATE_LIMIT_MS = 6000; // 6 seconds per request
+  private browser: any = null;
+  private isSharedBrowser: boolean = false;
+
+  setBrowser(browser: any): void {
+      this.browser = browser;
+      this.isSharedBrowser = true;
+  }
 
   async search(criteria: SearchParams): Promise<IndustrialListing[]> {
     // Ensure data directory
@@ -114,10 +121,22 @@ export class PRDScout extends BaseScout {
   private async targetedSearch(criteria: SearchParams): Promise<IndustrialListing[]> {
     console.error(`[PRD] Performing targeted search for: ${criteria.location}`);
     
-    // We can use the discovery logic but with keywords
-    // PRD search URL can take 'q' parameter: ?listing_type=Sale&q=Ballarat
     const targetListingType = criteria.listingType === 'rental' ? 'Lease' : 'Sale';
-    const searchUrl = `https://www.prd.com.au/corporate-search/?listing_type=${targetListingType}&q=${encodeURIComponent(criteria.location)}`;
+    const baseUrl = 'https://www.prd.com.au/corporate-search/';
+    
+    const params = new URLSearchParams();
+    params.append('listing_type', targetListingType);
+    params.append('q', criteria.location);
+    
+    if (criteria.maxPrice) {
+        params.append('max_price', criteria.maxPrice.toString());
+    }
+    if (criteria.minPrice) {
+        params.append('min_price', criteria.minPrice.toString());
+    }
+
+    const searchUrl = `${baseUrl}?${params.toString()}`;
+    console.error(`[PRD] Fetching URL: ${searchUrl}`);
     
     try {
       const response = await axios.get(searchUrl, {
@@ -140,7 +159,8 @@ export class PRDScout extends BaseScout {
       const results: IndustrialListing[] = [];
       const loc = criteria.location.toLowerCase();
       
-      for (const url of urls.slice(0, 10)) {
+      // Limit to 5 for targeted search to be fast
+      for (const url of urls.slice(0, 5)) {
         const listing = await this.scrapeListingPage(url);
         if (listing) {
           if (listing.address.toLowerCase().includes(loc) || 
@@ -151,9 +171,10 @@ export class PRDScout extends BaseScout {
         await this.waitOrganic();
       }
 
+      console.error(`[PRD] Successfully extracted ${results.length} listings.`);
       return results;
-    } catch (error) {
-      console.error(`[PRD] Targeted search failed:`, error);
+    } catch (error: any) {
+      console.error(`[PRD] Targeted search failed:`, error.message);
       return [];
     }
   }

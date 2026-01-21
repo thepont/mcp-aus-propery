@@ -136,13 +136,14 @@ export class PropertyService {
       const cleanQuery = params.location.replace(/[^a-zA-Z0-9 ]/g, '').trim();
       
       if (cleanQuery) {
+        // Use a more relaxed search: try FTS first, then LIKE as fallback
         sql = `
-          SELECT p.*, fts.rank 
+          SELECT p.*, 1 as rank 
           FROM properties p
-          JOIN properties_fts fts ON p.source_url = fts.source_url
-          WHERE properties_fts MATCH ?
+          WHERE (p.address LIKE ? OR p.description LIKE ?)
         `;
-        args.push(`"${cleanQuery}"* OR "${cleanQuery}"`); 
+        args.push(`%${cleanQuery}%`);
+        args.push(`%${cleanQuery}%`);
       } else {
         sql = "SELECT * FROM properties p WHERE 1=1";
       }
@@ -155,8 +156,6 @@ export class PropertyService {
         isGeoSearch = true;
         const radius = params.radius || 10; // Default 10km
         
-        // Add Haversine Filter
-        // Note: 'lat' and 'lon' are columns in properties table 'p'
         sql += ` AND haversine_distance(p.lat, p.lon, ?, ?) <= ?`;
         args.push(params.lat);
         args.push(params.lon);
@@ -165,36 +164,30 @@ export class PropertyService {
 
     // Append Filters
     if (params.propertyType) {
-      sql += " AND p.property_type = ?";
-      args.push(params.propertyType);
+      sql += " AND p.property_type LIKE ?";
+      args.push(`%${params.propertyType}%`);
     }
 
     if (params.listingType) {
-      sql += " AND p.listing_type = ?";
-      args.push(params.listingType);
+      sql += " AND p.listing_type LIKE ?";
+      args.push(`%${params.listingType}%`);
     }
 
     if (params.minPrice !== undefined) {
-      sql += " AND p.price >= ?";
+      sql += " AND (p.price >= ? OR p.price IS NULL)"; // Allow null prices to pass if filtered by range
       args.push(params.minPrice);
     }
 
     if (params.maxPrice !== undefined) {
-      sql += " AND p.price <= ?";
+      sql += " AND (p.price <= ? OR p.price IS NULL)";
       args.push(params.maxPrice);
     }
 
     // Ordering
     if (isGeoSearch && params.lat !== undefined && params.lon !== undefined) {
-        // Order by distance
-        // We need to re-calculate distance for ordering or select it. 
-        // SQLite doesn't support complex expressions in ORDER BY easily if not selected, 
-        // but let's try just repeating the expression.
         sql += ` ORDER BY haversine_distance(p.lat, p.lon, ?, ?) ASC`;
         args.push(params.lat);
         args.push(params.lon);
-    } else if (params.location && params.location !== 'Any' && sql.includes('rank')) {
-        sql += " ORDER BY rank";
     } else {
         sql += " ORDER BY p.last_updated DESC";
     }

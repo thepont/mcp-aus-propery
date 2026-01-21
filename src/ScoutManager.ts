@@ -140,9 +140,33 @@ export class ScoutManager {
     const isGeneralSync = !criteria.location || criteria.location === 'Any';
     console.error(`[ScoutManager] ${isGeneralSync ? 'Syncing' : 'Searching'} with ${this.scouts.length} scouts for: ${JSON.stringify(criteria)}`);
 
-    // Execute all scouts in parallel
+    const SCOUT_TIMEOUT_MS = 30000; // 30 second timeout per scout
+
+    // Execute all scouts in parallel with timeout
     const results = await Promise.allSettled(
-      this.scouts.map(scout => scout.search(criteria))
+      this.scouts.map(async (scout) => {
+          console.error(`[ScoutManager] Starting search for ${scout.name}...`);
+          const startTime = Date.now();
+          
+          try {
+              const timeoutPromise = new Promise<IndustrialListing[]>((_, reject) => 
+                  setTimeout(() => reject(new Error('Scout timed out')), SCOUT_TIMEOUT_MS)
+              );
+              
+              const listings = await Promise.race([scout.search(criteria), timeoutPromise]);
+              const duration = Date.now() - startTime;
+              console.error(`[ScoutManager] ✅ ${scout.name} finished in ${duration}ms. Found ${listings.length} listings.`);
+              return listings;
+          } catch (error: any) {
+              const duration = Date.now() - startTime;
+              if (error.message === 'Scout timed out') {
+                  console.error(`[ScoutManager] ⏱️ ${scout.name} timed out after ${duration}ms.`);
+              } else {
+                  console.error(`[ScoutManager] ❌ ${scout.name} failed after ${duration}ms: ${error.message}`);
+              }
+              throw error;
+          }
+      })
     );
 
     // Collect and Index all successful results

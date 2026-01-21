@@ -117,10 +117,14 @@ export class FirstNationalScout extends BaseScout {
     // First National integrated search
     const listingType = criteria.listingType === 'rental' ? 'rent' : 'buy';
     const searchUrl = `https://www.firstnational.com.au/pages/real-estate/${listingType}/?q=${encodeURIComponent(criteria.location)}`;
+    console.error(`[FN] Fetching URL: ${searchUrl}`);
     
     try {
       const response = await axios.get(searchUrl, {
-        headers: { 'User-Agent': 'Mozilla/5.0' }
+        headers: { 
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8'
+        }
       });
       
       const $ = cheerio.load(response.data);
@@ -140,7 +144,8 @@ export class FirstNationalScout extends BaseScout {
       const results: IndustrialListing[] = [];
       const loc = criteria.location.toLowerCase();
       
-      for (const url of urls.slice(0, 10)) {
+      // Limit to 5
+      for (const url of urls.slice(0, 5)) {
         const listing = await this.scrapeListingPage(url);
         if (listing) {
           if (listing.address.toLowerCase().includes(loc) || 
@@ -151,9 +156,13 @@ export class FirstNationalScout extends BaseScout {
         await this.waitOrganic();
       }
 
+      console.error(`[FN] Successfully extracted ${results.length} listings.`);
       return results;
-    } catch (error) {
-      console.error(`[FN] Targeted search failed:`, error);
+    } catch (error: any) {
+      console.error(`[FN] Targeted search failed:`, error.message);
+      if (error.response) {
+          console.error(`[FN] Status: ${error.response.status}`);
+      }
       return [];
     }
   }

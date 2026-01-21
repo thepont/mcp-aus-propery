@@ -100,14 +100,26 @@ export class DomainScout extends BaseScout {
   private async targetedSearch(criteria: SearchParams): Promise<IndustrialListing[]> {
     console.error(`[Domain] Performing targeted search for: ${criteria.location}`);
     
-    // Domain search API or scraping
-    // For simplicity, let's use their frontend search results
-    const propertyType = criteria.propertyType || 'industrial';
-    const searchUrl = `https://www.domain.com.au/sale/${criteria.location.toLowerCase()}/?ptype=${propertyType}`;
+    // Domain search URL: https://www.domain.com.au/sale/ballarat-vic-3350/?ptype=house&price=0-500000
+    const propertyType = criteria.propertyType === 'residential' ? 'house' : (criteria.propertyType || 'industrial');
+    const locationSlug = criteria.location.toLowerCase().replace(/\s+/g, '-');
+    const baseUrl = `https://www.domain.com.au/sale/${locationSlug}/`;
+    
+    const params = new URLSearchParams();
+    params.append('ptype', propertyType);
+    if (criteria.maxPrice) {
+        params.append('price', `0-${criteria.maxPrice}`);
+    }
+
+    const searchUrl = `${baseUrl}?${params.toString()}`;
+    console.error(`[Domain] Fetching URL: ${searchUrl}`);
     
     try {
       const response = await axios.get(searchUrl, {
-        headers: { 'User-Agent': 'Mozilla/5.0' }
+        headers: { 
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8'
+        }
       });
       
       const $ = cheerio.load(response.data);
@@ -132,8 +144,11 @@ export class DomainScout extends BaseScout {
 
       console.error(`[Domain] Targeted search found ${listings.length} listings.`);
       return listings;
-    } catch (error) {
-      console.error(`[Domain] Targeted search failed:`, error);
+    } catch (error: any) {
+      console.error(`[Domain] Targeted search failed for ${searchUrl}:`, error.message);
+      if (error.response) {
+          console.error(`[Domain] Status: ${error.response.status}`);
+      }
       return [];
     }
   }
