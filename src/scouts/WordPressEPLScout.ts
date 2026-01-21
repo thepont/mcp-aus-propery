@@ -291,7 +291,7 @@ export abstract class WordPressEPLScout extends BaseScout {
           await context.close();
       }
 
-      return listings.map(item => ({
+      const results = listings.map(item => ({
         address: item.address,
         zoning: '',
         description: item.description || 'No description',
@@ -299,6 +299,17 @@ export abstract class WordPressEPLScout extends BaseScout {
         priceDisplay: item.price,
         source: this.name
       }));
+
+      // Filter by location to ensure relevance
+      if (criteria.location && criteria.location !== 'Any') {
+          const loc = criteria.location.toLowerCase();
+          return results.filter(l => 
+            l.address.toLowerCase().includes(loc) || 
+            l.description.toLowerCase().includes(loc)
+          );
+      }
+
+      return results;
     } catch (error) {
       if (!this.isSharedBrowser && this.browser) {
           await this.browser.close();

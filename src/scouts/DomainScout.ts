@@ -19,10 +19,17 @@ export class DomainScout extends BaseScout {
   private gnafService: GnafService;
   private readonly SITEMAP_URL = 'https://www.domain.com.au/sitemap-listings-sale.xml';
   private readonly STATE_FILE = 'data/domain_state.json';
+  private browser: any = null;
+  private isSharedBrowser: boolean = false;
 
   constructor() {
     super();
     this.gnafService = new GnafService(); // Connects to ./data/mcp.db via Singleton
+  }
+
+  setBrowser(browser: any): void {
+      this.browser = browser;
+      this.isSharedBrowser = true;
   }
 
   async search(criteria: SearchParams): Promise<IndustrialListing[]> {
@@ -101,63 +108,92 @@ export class DomainScout extends BaseScout {
   private async targetedSearch(criteria: SearchParams): Promise<IndustrialListing[]> {
     console.error(`[Domain] Performing targeted search for: ${criteria.location}`);
     
-    // Domain search URL: https://www.domain.com.au/sale/ballarat-vic-3350/?ptype=house&price=0-500000
     const propertyType = criteria.propertyType === 'residential' ? 'house' : (criteria.propertyType || 'industrial');
     const locationSlug = criteria.location.toLowerCase().replace(/\s+/g, '-');
     const baseUrl = `https://www.domain.com.au/sale/${locationSlug}/`;
     
     const params = new URLSearchParams();
     params.append('ptype', propertyType);
-    if (criteria.maxPrice) {
-        params.append('price', `0-${criteria.maxPrice}`);
-    }
+    if (criteria.maxPrice) params.append('price', `0-${criteria.maxPrice}`);
 
     const searchUrl = `${baseUrl}?${params.toString()}`;
     console.error(`[Domain] Fetching URL: ${searchUrl}`);
     
-    const proxy = this.getProxyConfig();
-    const axiosConfig: any = {
-        headers: { 
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8'
-        }
-    };
-
-    if (proxy) {
-        axiosConfig.httpsAgent = new HttpsProxyAgent(proxy.server);
-        console.error(`[Domain] Using proxy: ${proxy.server}`);
-    }
-    
     try {
-      const response = await axios.get(searchUrl, axiosConfig);
+      const proxy = this.getProxyConfig();
       
-      const $ = cheerio.load(response.data);
-      const listings: IndustrialListing[] = [];
-
-      // Extract listings from HTML
-      $('[data-testid="listing-card"]').each((_, el) => {
-        const address = $(el).find('[data-testid="address-wrapper"]').text().trim();
-        const url = $(el).find('a').attr('href');
-        const price = $(el).find('[data-testid="listing-card-price"]').text().trim();
-        
-        if (address && url) {
-          listings.push({
-            address,
-            source: this.name,
-            sourceUrl: url.startsWith('http') ? url : `https://www.domain.com.au${url}`,
-            description: 'On-demand search result',
-            priceDisplay: price
+      if (!this.browser) {
+          const { chromium } = await import('playwright-extra');
+          this.browser = await chromium.launch({ 
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            proxy: proxy ? { server: proxy.server } : undefined
           });
-        }
+          this.isSharedBrowser = false;
+      }
+
+      const context = await this.browser.newContext({
+        userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      });
+      const page = await context.newPage();
+
+      console.error(`[Domain] Navigating to: ${searchUrl}`);
+      await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
+      
+      // Wait for results
+      try {
+          await page.waitForSelector('[data-testid="listing-card"]', { timeout: 15000 });
+      } catch (e) {
+          console.error(`[Domain] Timeout waiting for listing cards.`);
+      }
+
+      const listings = await page.evaluate(() => {
+          const results: any[] = [];
+          const cards = document.querySelectorAll('[data-testid="listing-card"], .listing-result, .property-card');
+          cards.forEach(el => {
+              const address = el.querySelector('[data-testid="address-wrapper"], .address')?.textContent?.trim();
+              const link = el.querySelector('a')?.getAttribute('href');
+              const price = el.querySelector('[data-testid="listing-card-price"], .price')?.textContent?.trim();
+              
+              if (address && link) {
+                  results.push({
+                      address,
+                      url: link.startsWith('http') ? link : `https://www.domain.com.au${link}`,
+                      priceDisplay: price
+                  });
+              }
+          });
+          return results;
       });
 
-      console.error(`[Domain] Targeted search found ${listings.length} listings.`);
-      return listings;
-    } catch (error: any) {
-      console.error(`[Domain] Targeted search failed for ${searchUrl}:`, error.message);
-      if (error.response) {
-          console.error(`[Domain] Status: ${error.response.status}`);
+      if (listings.length === 0) {
+          const title = await page.title();
+          const content = await page.content();
+          console.error(`[Domain] DEBUG: Title="${title}", Content Length: ${content.length}`);
+          if (content.includes('unusual traffic') || content.includes('Captcha')) {
+              console.error(`[Domain] 🛑 BLOCK DETECTED (Captcha/Traffic)`);
+          }
       }
+
+      if (!this.isSharedBrowser) {
+          await this.browser.close();
+          this.browser = null;
+      } else {
+          await page.close();
+          await context.close();
+      }
+
+      console.error(`[Domain] Targeted search found ${listings.length} listings.`);
+      return listings.map(l => ({
+          address: l.address,
+          source: this.name,
+          sourceUrl: l.url,
+          description: 'On-demand search result',
+          priceDisplay: l.priceDisplay
+      }));
+
+    } catch (error: any) {
+      console.error(`[Domain] Targeted search failed:`, error.message);
       return [];
     }
   }
@@ -217,5 +253,12 @@ export class DomainScout extends BaseScout {
       }
     } catch (e) { }
     return null;
+  }
+
+  async cleanup(): Promise<void> {
+    if (this.browser && !this.isSharedBrowser) {
+      await this.browser.close();
+      this.browser = null;
+    }
   }
 }

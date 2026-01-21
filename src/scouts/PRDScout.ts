@@ -335,4 +335,11 @@ export class PRDScout extends BaseScout {
   private saveQueue(queue: ListingQueue): void {
     fs.writeFileSync(this.QUEUE_FILE, JSON.stringify(queue, null, 2));
   }
+
+  async cleanup(): Promise<void> {
+    if (this.browser && !this.isSharedBrowser) {
+      await this.browser.close();
+      this.browser = null;
+    }
+  }
 }

@@ -4,6 +4,7 @@ import { XMLParser } from 'fast-xml-parser';
 import * as cheerio from 'cheerio';
 import fs from 'fs';
 import path from 'path';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
 interface ScoutState {
   sitemapIndex: number; // Which numbered sitemap we are on
@@ -18,12 +19,19 @@ interface ListingQueue {
 }
 
 export class FirstNationalScout extends BaseScout {
-// ... (omitting parts for brevity, will match exact context in next step)
+// ...
   readonly name = 'first_national';
   private readonly STATE_FILE = 'data/fn_scout_state.json';
   private readonly QUEUE_FILE = 'data/fn_queue.json';
   private readonly SITEMAP_INDEX_URL = 'https://www.firstnational.com.au/sitemap.xml';
   private readonly RATE_LIMIT_MS = 6000; // 6 seconds per request
+  private browser: any = null;
+  private isSharedBrowser: boolean = false;
+
+  setBrowser(browser: any): void {
+      this.browser = browser;
+      this.isSharedBrowser = true;
+  }
 
   async search(criteria: SearchParams): Promise<IndustrialListing[]> {
     // Ensure data directory
@@ -114,29 +122,55 @@ export class FirstNationalScout extends BaseScout {
   private async targetedSearch(criteria: SearchParams): Promise<IndustrialListing[]> {
     console.error(`[FN] Performing targeted search for: ${criteria.location}`);
     
-    // First National integrated search
-    const listingType = criteria.listingType === 'rental' ? 'rent' : 'buy';
-    const searchUrl = `https://www.firstnational.com.au/pages/real-estate/${listingType}/?q=${encodeURIComponent(criteria.location)}`;
+    // First National integrated search URL
+    const baseUrl = 'https://www.firstnational.com.au/pages/real-estate/results';
+    
+    const params = new URLSearchParams();
+    params.append('listing_sale_method', criteria.listingType === 'rental' ? 'lease' : 'sale');
+    
+    const propertyCategory = criteria.propertyType === 'industrial' ? 'commercial' : (criteria.propertyType || 'residential');
+    params.append('listing_category', propertyCategory);
+    
+    params.append('q', criteria.location);
+    
+    if (criteria.minPrice) params.append('listing_price_from', criteria.minPrice.toString());
+    if (criteria.maxPrice) params.append('listing_price_to', criteria.maxPrice.toString());
+
+    const searchUrl = `${baseUrl}?${params.toString()}`;
     console.error(`[FN] Fetching URL: ${searchUrl}`);
     
     try {
-      const response = await axios.get(searchUrl, {
-        headers: { 
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8'
-        }
-      });
+      const proxy = this.getProxyConfig();
       
-      const $ = cheerio.load(response.data);
-      const urls: string[] = [];
+      // Use Playwright for targeted search because the results are loaded dynamically via HTMX/JS
+      if (!this.browser) {
+          const { chromium } = await import('playwright-extra');
+          this.browser = await chromium.launch({ 
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            proxy: proxy ? { server: proxy.server } : undefined
+          });
+          this.isSharedBrowser = false;
+      }
 
-      // Look for property links
-      $('a').each((_, el) => {
-        const href = $(el).attr('href');
-        if (href && href.includes('/property/')) {
-          const fullUrl = href.startsWith('http') ? href : `https://www.firstnational.com.au${href}`;
-          if (!urls.includes(fullUrl)) urls.push(fullUrl);
-        }
+      const context = await this.browser.newContext({
+        userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      });
+      const page = await context.newPage();
+
+      console.error(`[FN] Navigating to search results...`);
+      await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
+      
+      // Wait for listings to appear (HTMX load)
+      try {
+          await page.waitForSelector('a[href*="/property/"]', { timeout: 15000 });
+      } catch (e) {
+          console.error(`[FN] Timeout waiting for listing elements to appear.`);
+      }
+
+      const urls = await page.evaluate(() => {
+          const links = Array.from(document.querySelectorAll('a[href*="/property/"]'));
+          return Array.from(new Set(links.map((a: any) => a.href))).filter(u => /\/\d+\//.test(u));
       });
 
       console.error(`[FN] Targeted search found ${urls.length} candidate URLs.`);
@@ -156,13 +190,18 @@ export class FirstNationalScout extends BaseScout {
         await this.waitOrganic();
       }
 
+      if (!this.isSharedBrowser) {
+          await this.browser.close();
+          this.browser = null;
+      } else {
+          await page.close();
+          await context.close();
+      }
+
       console.error(`[FN] Successfully extracted ${results.length} listings.`);
       return results;
     } catch (error: any) {
       console.error(`[FN] Targeted search failed:`, error.message);
-      if (error.response) {
-          console.error(`[FN] Status: ${error.response.status}`);
-      }
       return [];
     }
   }
@@ -235,11 +274,16 @@ export class FirstNationalScout extends BaseScout {
     console.error(`[FN] Scraping: ${url}`);
     
     try {
-        const response = await axios.get(url, {
+        const proxy = this.getProxyConfig();
+        const axiosConfig: any = {
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-            }
-        });
+            },
+            timeout: 15000
+        };
+        if (proxy) axiosConfig.httpsAgent = new HttpsProxyAgent(proxy.server);
+
+        const response = await axios.get(url, axiosConfig);
 
         const $ = cheerio.load(response.data);
         
@@ -362,5 +406,12 @@ export class FirstNationalScout extends BaseScout {
 
   private saveQueue(queue: ListingQueue): void {
     fs.writeFileSync(this.QUEUE_FILE, JSON.stringify(queue, null, 2));
+  }
+
+  async cleanup(): Promise<void> {
+    if (this.browser && !this.isSharedBrowser) {
+      await this.browser.close();
+      this.browser = null;
+    }
   }
 }
