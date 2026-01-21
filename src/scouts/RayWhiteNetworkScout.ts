@@ -3,6 +3,7 @@ import type { SearchParams, IndustrialListing } from '../types.js';
 import axios from 'axios';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import fs from 'fs';
+import { GnafService } from '../services/GnafService.js';
 
 interface RayWhiteState {
   lastCreationTime: string;
@@ -40,52 +41,108 @@ export class RayWhiteBallaratScout extends VaultREScout {
         state.isBlocked = false;
       }
 
-      // Determine sorting and filtering
-      // For general sync, we use ASC to crawl forward from lastCreationTime
       const isGeneralSync = !criteria.location || criteria.location === 'Any';
-      
+      let response: any;
+
       if (!isGeneralSync) {
-          console.warn(`[${this.name}] Targeted search is not supported by this API endpoint. Skipping.`);
-          return [];
+          // Targeted Search Step 1: Resolve Suburb to Coords via API
+          console.log(`[${this.name}] Resolving location via Ray White API: ${criteria.location}`);
+          
+          const suburbUrl = `${this.apiBaseUrl}/v1/suburbs?apiKey=${this.apiKey}`;
+          const suburbBody = {
+              "from": 0,
+              "countryCode": ["AU"],
+              "partialName": criteria.location.toLowerCase()
+          };
+
+          const axiosConfig: any = {
+            timeout: 15000,
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:147.0) Gecko/20100101 Firefox/147.0',
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Origin': 'https://www.raywhite.com',
+              'Referer': 'https://www.raywhite.com/'
+            }
+          };
+
+          const proxy = this.getProxyConfig();
+          if (proxy) axiosConfig.httpsAgent = new HttpsProxyAgent(proxy.server);
+
+          let lat: number | undefined;
+          let lon: number | undefined;
+
+          try {
+              const suburbResponse = await axios.post(suburbUrl, suburbBody, axiosConfig);
+              if (suburbResponse.data?.data?.length > 0) {
+                  const location = suburbResponse.data.data[0].value.location;
+                  lat = location.lat;
+                  lon = location.lon;
+                  console.log(`[${this.name}] Resolved '${criteria.location}' to ${lat},${lon}`);
+              }
+          } catch (e: any) {
+              console.error(`[${this.name}] Suburb resolution failed:`, e.message);
+          }
+
+          // Fallback to G-NAF if API failed
+          if (!lat || !lon) {
+              console.log(`[${this.name}] Falling back to G-NAF for coordinates...`);
+              const gnaf = new GnafService();
+              const area = await gnaf.getAreaContext(criteria.location);
+              if (area) {
+                  lat = area.lat;
+                  lon = area.lon;
+              }
+          }
+
+          if (!lat || !lon) {
+              console.warn(`[${this.name}] Could not resolve location '${criteria.location}'. Skipping.`);
+              return [];
+          }
+
+          // Targeted Search Step 2: POST to listings with coordinates
+          const listingsUrl = `${this.apiBaseUrl}/v1/listings?apiKey=${this.apiKey}`;
+          const listingsBody: any = {
+              "size": 50,
+              "from": 0,
+              "sort": [{"field":"location","lat":lat,"lon":lon,"order":"asc"}],
+              "location": {"lat":lat,"lon":lon},
+              "countryCode": ["AU","NZ"],
+              "statusCode": {"in": ["CUR"]}
+          };
+
+          // Apply property type filter if possible
+          if (criteria.propertyType === 'residential') {
+              listingsBody.typeCode = { "in": ["RUR", "SAL"] }; // From user's curl
+          } else if (criteria.propertyType === 'industrial') {
+              // We'll leave it broad and filter in parse logic to be safe
+          }
+
+          console.log(`[${this.name}] POST search at ${lat},${lon}...`);
+          response = await axios.post(listingsUrl, listingsBody, axiosConfig);
+
+      } else {
+          // General Sync (GET)
+          const sortDir = 'asc';
+          const queryParams = [
+            `from:0`,
+            `size:50`,
+            `sort:!('creationTime ${sortDir}','id ${sortDir}')`,
+            `statusCode:CUR`
+          ];
+          if (state.lastCreationTime) queryParams.push(`creationTime:['${state.lastCreationTime}' TO *]`);
+          
+          const url = `${this.apiBaseUrl}/v1/listings?apiKey=${this.apiKey}&q=${encodeURIComponent(queryParams.join(','))}`;
+          
+          const axiosConfig: any = {
+            timeout: 30000,
+            headers: { 'User-Agent': 'Mozilla/5.0' }
+          };
+          const proxy = this.getProxyConfig();
+          if (proxy) axiosConfig.httpsAgent = new HttpsProxyAgent(proxy.server);
+
+          response = await axios.get(url, axiosConfig);
       }
-
-      const sortDir = 'asc';
-      
-      const queryParams = [
-        `from:0`,
-        `size:50`,
-        `sort:!('creationTime ${sortDir}','id ${sortDir}')`,
-        `statusCode:CUR`
-      ];
-
-      // If syncing, start from where we left off
-      if (state.lastCreationTime) {
-        queryParams.push(`creationTime:['${state.lastCreationTime}' TO *]`);
-      }
-
-      const url = `${this.apiBaseUrl}/v1/listings?apiKey=${this.apiKey}&q=${encodeURIComponent(queryParams.join(','))}`;
-      
-      console.log(`[${this.name}] Fetching direct API (${sortDir})...`);
-      
-      // Jittered backoff
-      await this.sleep(3000);
-
-      const axiosConfig: any = {
-        timeout: 30000,
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-          'Accept': 'application/json'
-        }
-      };
-
-      // Add Proxy
-      const proxy = this.getProxyConfig();
-      if (proxy) {
-        axiosConfig.httpsAgent = new HttpsProxyAgent(proxy.server);
-        console.log(`[${this.name}] Using proxy: ${proxy.server}`);
-      }
-
-      const response = await axios.get(url, axiosConfig);
       
       state.isBlocked = false;
       
@@ -97,17 +154,13 @@ export class RayWhiteBallaratScout extends VaultREScout {
       const listings = this.parseRayWhiteListings(rawListings, criteria);
 
       if (isGeneralSync && rawListings.length > 0) {
-        // Update watermark with the latest creationTime in this batch
-        // Since we sorted ASC, it's the last item
+        // Update watermark
         const lastItem = rawListings[rawListings.length - 1].value;
         if (lastItem.creationTime) {
           state.lastCreationTime = lastItem.creationTime;
         }
         state.totalProcessed += rawListings.length;
         this.saveRayWhiteState(state);
-        
-        const totalAvailable = response.data.hits || 94000;
-        this.logProgress(state.totalProcessed, totalAvailable);
       }
 
       return listings;
