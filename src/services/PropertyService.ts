@@ -131,19 +131,20 @@ export class PropertyService {
     let sql = "";
     let isGeoSearch = false;
 
-    // FTS Query Base
+    // Location Filter
     if (params.location && params.location !== 'Any') {
-      const cleanQuery = params.location.replace(/[^a-zA-Z0-9 ]/g, '').trim();
+      const keywords = params.location
+        .replace(/,/g, ' ')
+        .split(/\s+/)
+        .map(k => k.trim())
+        .filter(k => k.length > 1);
       
-      if (cleanQuery) {
-        sql = `
-          SELECT p.*, 1 as rank 
-          FROM properties p
-          WHERE (p.address LIKE ? OR p.description LIKE ? OR p.metadata LIKE ?)
-        `;
-        args.push(`%${cleanQuery}%`);
-        args.push(`%${cleanQuery}%`);
-        args.push(`%${cleanQuery}%`);
+      if (keywords.length > 0) {
+        sql = "SELECT p.*, 1 as rank FROM properties p WHERE 1=1";
+        for (const k of keywords) {
+            sql += ` AND (p.address LIKE ? OR p.description LIKE ? OR p.metadata LIKE ?)`;
+            args.push(`%${k}%`, `%${k}%`, `%${k}%`);
+        }
       } else {
         sql = "SELECT * FROM properties p WHERE 1=1";
       }

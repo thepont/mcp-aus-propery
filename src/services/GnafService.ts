@@ -259,8 +259,12 @@ export class GnafService {
   async getAreaContext(location: string): Promise<{ lat: number, lon: number, radius: number } | null> {
     const db = getConnection();
     
-    // Try suburb match first
-    let row = db.prepare(`
+    // Normalize location: 'Richmond, VIC' -> 'Richmond'
+    const parts = location.split(',').map(p => p.trim());
+    const suburbSearch = parts[0];
+    const stateSearch = parts.length > 1 ? parts[1] : null;
+
+    let sql = `
       SELECT 
         AVG(latitude) as lat, 
         AVG(longitude) as lon,
@@ -268,7 +272,15 @@ export class GnafService {
         (MAX(longitude) - MIN(longitude)) as lon_diff
       FROM gnaf_reference 
       WHERE suburb LIKE ?
-    `).get(`${location}%`);
+    `;
+    const args: any[] = [`${suburbSearch}%`];
+
+    if (stateSearch) {
+        sql += ` AND state LIKE ?`;
+        args.push(`${stateSearch}%`);
+    }
+
+    let row = db.prepare(sql).get(...args);
 
     // Try postcode if no suburb match or poor match
     if (!row || !row.lat) {
