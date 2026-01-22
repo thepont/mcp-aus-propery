@@ -4,6 +4,7 @@ import * as cheerio from 'cheerio';
 import fs from 'fs';
 import path from 'path';
 import { HttpsProxyAgent } from 'https-proxy-agent';
+import { GnafService } from '../services/GnafService.js';
 
 interface ScoutState {
   searchPage: number;
@@ -180,6 +181,21 @@ export class PRDScout extends BaseScout {
       }
 
       console.error(`[PRD] Successfully extracted ${results.length} listings.`);
+      
+      const gnaf = new GnafService();
+      for (const listing of results) {
+          const res = await gnaf.resolveAddress(listing.address);
+          if (res) {
+              listing.metadata = { 
+                  ...listing.metadata, 
+                  gnafPid: res.id,
+                  lat: res.lat,
+                  lon: res.lon,
+                  agencyName: 'PRD'
+              };
+          }
+      }
+
       return results;
     } catch (error: any) {
       console.error(`[PRD] Targeted search failed:`, error.message);

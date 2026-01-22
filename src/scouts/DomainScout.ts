@@ -86,9 +86,9 @@ export class DomainScout extends BaseScout {
       const addressData = this.parseUrl(url);
       if (!addressData) continue;
 
-      const gnafPid = await this.gnafService.resolveAddress(addressData.addressString);
-      if (gnafPid) {
-        await this.gnafService.updateListing(gnafPid, url, undefined, state.scanId);
+      const res = await this.gnafService.resolveAddress(addressData.addressString);
+      if (res) {
+        await this.gnafService.updateListing(res.id, url, undefined, state.scanId);
         matchCount++;
         listings.push({
             address: addressData.addressString,
@@ -96,7 +96,7 @@ export class DomainScout extends BaseScout {
             sourceUrl: url,
             description: 'Matched G-NAF Property',
             listingType: 'sale',
-            metadata: { gnafPid, scanId: state.scanId }
+            metadata: { gnafPid: res.id, lat: res.lat, lon: res.lon, scanId: state.scanId }
         });
       }
     }
@@ -203,11 +203,17 @@ export class DomainScout extends BaseScout {
               const link = el.querySelector('a')?.getAttribute('href');
               const price = el.querySelector('[data-testid^="listing-card-price"], [class*="Price"], .price, [data-testid="search-card__price"]')?.textContent?.trim();
               
+              // Try to find agency name (often in logo alt text)
+              const agencyName = el.querySelector('[data-testid="agency-logo"] img')?.getAttribute('alt') || 
+                                 el.querySelector('.agency-logo img')?.getAttribute('alt') ||
+                                 el.querySelector('[class*="AgencyLogo"] img')?.getAttribute('alt');
+              
               if (address && link) {
                   results.push({
                       address,
                       url: link.startsWith('http') ? link : (link.startsWith('/') ? `${window.location.origin}${link}` : link),
-                      priceDisplay: price
+                      priceDisplay: price,
+                      agencyName: agencyName?.replace(' logo', '')?.trim()
                   });
               }
           });
@@ -232,13 +238,28 @@ export class DomainScout extends BaseScout {
       }
 
       console.error(`[Domain] Targeted search found ${listings.length} listings.`);
-      return listings.map(l => ({
-          address: l.address,
-          source: this.name,
-          sourceUrl: l.url,
-          description: 'On-demand search result',
-          priceDisplay: l.priceDisplay
-      }));
+      
+      const gnaf = new GnafService();
+      const finalResults: IndustrialListing[] = [];
+
+      for (const l of listings) {
+          const res = await gnaf.resolveAddress(l.address);
+          finalResults.push({
+              address: l.address,
+              source: this.name,
+              sourceUrl: l.url,
+              description: 'On-demand search result',
+              priceDisplay: l.priceDisplay,
+              metadata: { 
+                  gnafPid: res?.id || undefined,
+                  lat: res?.lat || undefined,
+                  lon: res?.lon || undefined,
+                  agencyName: l.agencyName
+              }
+          });
+      }
+
+      return finalResults;
 
     } catch (error: any) {
       console.error(`[Domain] Targeted search failed:`, error.message);

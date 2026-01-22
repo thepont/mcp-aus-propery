@@ -1,6 +1,7 @@
 import { AgentpointScout } from './AgentpointScout.js';
 import type { SearchParams, IndustrialListing } from '../types.js';
 import { chromium } from 'playwright-extra';
+import { GnafService } from '../services/GnafService.js';
 
 /**
  * Ballarat Real Estate Scout
@@ -81,23 +82,34 @@ export class BallaratRealEstateScout extends AgentpointScout {
 
       console.error(`[${this.name}] Scraped ${listings.length} listings.`);
 
-      return listings.map(l => {
+      const gnaf = new GnafService();
+      const results: IndustrialListing[] = [];
+
+      for (const l of listings) {
           let address = l.address;
           if (!address.toLowerCase().includes('ballarat')) {
               address = `${address}, Ballarat`;
           }
           
-          return {
+          const res = await gnaf.resolveAddress(address);
+          
+          results.push({
               address: address,
               source: this.name,
               sourceUrl: l.url.startsWith('http') ? l.url : `${this.siteUrl}${l.url}`,
               description: l.description || 'Scraped listing',
               priceDisplay: l.priceDisplay,
               metadata: {
-                  suburb: 'Ballarat'
+                  suburb: 'Ballarat',
+                  gnafPid: res?.id || undefined,
+                  lat: res?.lat || undefined,
+                  lon: res?.lon || undefined,
+                  agencyName: 'Ballarat Real Estate'
               }
-          };
-      });
+          });
+      }
+
+      return results;
 
     } catch (error: any) {
       console.error(`[${this.name}] Search failed:`, error.message);

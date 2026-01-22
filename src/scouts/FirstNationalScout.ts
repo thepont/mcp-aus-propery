@@ -5,6 +5,7 @@ import * as cheerio from 'cheerio';
 import fs from 'fs';
 import path from 'path';
 import { HttpsProxyAgent } from 'https-proxy-agent';
+import { GnafService } from '../services/GnafService.js';
 
 interface ScoutState {
   sitemapIndex: number; // Which numbered sitemap we are on
@@ -197,6 +198,21 @@ export class FirstNationalScout extends BaseScout {
       }
 
       console.error(`[FN] Successfully extracted ${results.length} listings.`);
+
+      const gnaf = new GnafService();
+      for (const listing of results) {
+          const res = await gnaf.resolveAddress(listing.address);
+          if (res) {
+              listing.metadata = { 
+                  ...listing.metadata, 
+                  gnafPid: res.id,
+                  lat: res.lat,
+                  lon: res.lon,
+                  agencyName: 'First National'
+              };
+          }
+      }
+
       return results;
     } catch (error: any) {
       console.error(`[FN] Targeted search failed:`, error.message);

@@ -143,36 +143,30 @@ export class GnafService {
     });
   }
 
-  async resolveAddress(addressString: string): Promise<string | null> {
+  async resolveAddress(addressString: string): Promise<{ id: string, lat: number, lon: number } | null> {
     const db = getConnection();
     // FTS5 MATCH query
     // Simple sanitization
     const cleanAddr = addressString.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
     if (!cleanAddr) return null;
 
-    // Use NEAR query or OR query? Simple OR for now.
-    // "123 george st" -> "123 OR george OR st" (weak) or just pass string.
-    // FTS5 is good with "123 george st" as a phrase or near.
-    // Let's try standard MATCH.
-    
     try {
       const stmt = db.prepare(`
-        SELECT id FROM gnaf_fts 
+        SELECT g.id, g.latitude as lat, g.longitude as lon 
+        FROM gnaf_reference g
+        JOIN gnaf_fts f ON g.id = f.id
         WHERE gnaf_fts MATCH ? 
         ORDER BY rank 
         LIMIT 1
       `);
-      // Enclose in quotes for phrase search logic or just pass keywords
-      // For address matching, standard FTS5 syntax on the whole string often works well.
-      // E.g. '"1475 Pakenham Road"'
       
-      const row = stmt.get(`"${cleanAddr}"`); // Exact phrase match attempt first?
-      if (row) return row.id;
+      const row = stmt.get(`"${cleanAddr}"`);
+      if (row) return row as any;
       
       // Fallback to AND match
       const andQuery = cleanAddr.split(' ').join(' AND ');
       const row2 = stmt.get(andQuery);
-      if (row2) return row2.id;
+      if (row2) return row2 as any;
 
     } catch (e) {
       console.error(`[GNAF] Address resolution error:`, e);

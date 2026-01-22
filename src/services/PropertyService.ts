@@ -25,9 +25,12 @@ export class PropertyService {
     });
 
     db.exec(`
+      -- Force reset for schema migration
+      -- DROP TABLE IF EXISTS properties; 
+      -- DROP TABLE IF EXISTS properties_fts;
+
       CREATE TABLE IF NOT EXISTS properties (
-        source_url TEXT PRIMARY KEY,
-        source TEXT,
+        id TEXT PRIMARY KEY, -- GNAF_PID or stable address hash
         address TEXT,
         description TEXT,
         price REAL,
@@ -38,12 +41,15 @@ export class PropertyService {
         zoning TEXT,
         lat REAL,
         lon REAL,
+        source TEXT, -- Principal source
+        source_url TEXT, -- Principal URL
+        all_sources TEXT, -- JSON array of { source, url, price }
         metadata TEXT,
         last_updated TEXT DEFAULT CURRENT_TIMESTAMP
       );
 
       CREATE VIRTUAL TABLE IF NOT EXISTS properties_fts USING fts5(
-        source_url UNINDEXED, 
+        id UNINDEXED, 
         address, 
         description, 
         zoning, 
@@ -55,44 +61,80 @@ export class PropertyService {
   async indexProperty(listing: IndustrialListing): Promise<void> {
     const db = getConnection();
 
+    // 1. Determine Stable ID
+    let id = listing.metadata?.gnafPid;
+    if (!id) {
+        // Fallback: Create a stable ID from normalized address
+        id = listing.address.toLowerCase().replace(/[^a-z0-9]/g, '');
+    }
+
     // Normalize Lat/Long
-    let lat = null;
-    let lon = null;
+    let lat = listing.metadata?.lat || listing.metadata?.latitude;
+    let lon = listing.metadata?.lon || listing.metadata?.longitude;
     
     if (listing.metadata?.['Common.Coordinate']) {
       lat = listing.metadata['Common.Coordinate'].lat;
       lon = listing.metadata['Common.Coordinate'].lon;
-    } else if (listing.metadata?.lat && listing.metadata?.lon) {
-      lat = listing.metadata.lat;
-      lon = listing.metadata.lon;
     }
 
     const transaction = db.transaction(() => {
-      // 1. Update Main Table
+      // 2. Manage Sources (Merge duplicates and track history)
+      const existing = db.prepare('SELECT all_sources FROM properties WHERE id = ?').get(id);
+      let allSources = [];
+      if (existing && existing.all_sources) {
+          try { allSources = JSON.parse(existing.all_sources); } catch (e) {}
+      }
+      
+      const now = new Date().toISOString();
+      
+      // Update or Add source
+      const existingIndex = allSources.findIndex((s: any) => s.source === listing.source);
+      
+      const agent = listing.metadata?.agencyName || listing.metadata?.agentName || listing.source;
+
+      const sourceInfo: any = { 
+          source: listing.source, 
+          url: listing.sourceUrl, 
+          price: listing.priceDisplay || listing.price,
+          agent: agent,
+          last_seen: now
+      };
+
+      if (existingIndex >= 0) {
+          sourceInfo.first_seen = allSources[existingIndex].first_seen || allSources[existingIndex].last_seen || now;
+          allSources[existingIndex] = sourceInfo;
+      } else {
+          sourceInfo.first_seen = now;
+          allSources.push(sourceInfo);
+      }
+
+      // 3. Update Main Table
       const stmt = db.prepare(`
         INSERT INTO properties (
-          source_url, source, address, description, price, price_display, 
-          area, property_type, listing_type, zoning, lat, lon, metadata, last_updated
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ON CONFLICT(source_url) DO UPDATE SET
-          source = excluded.source,
+          id, address, description, price, price_display, 
+          area, property_type, listing_type, zoning, lat, lon, 
+          source, source_url, all_sources, metadata, last_updated
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(id) DO UPDATE SET
           address = excluded.address,
           description = excluded.description,
-          price = excluded.price,
-          price_display = excluded.price_display,
-          area = excluded.area,
-          property_type = excluded.property_type,
-          listing_type = excluded.listing_type,
-          zoning = excluded.zoning,
-          lat = excluded.lat,
-          lon = excluded.lon,
+          price = COALESCE(excluded.price, properties.price),
+          price_display = COALESCE(excluded.price_display, properties.price_display),
+          area = COALESCE(excluded.area, properties.area),
+          property_type = COALESCE(excluded.property_type, properties.property_type),
+          listing_type = COALESCE(excluded.listing_type, properties.listing_type),
+          zoning = COALESCE(excluded.zoning, properties.zoning),
+          lat = COALESCE(excluded.lat, properties.lat),
+          lon = COALESCE(excluded.lon, properties.lon),
+          source = excluded.source,
+          source_url = excluded.source_url,
+          all_sources = excluded.all_sources,
           metadata = excluded.metadata,
           last_updated = excluded.last_updated
       `);
 
       stmt.run(
-        listing.sourceUrl,
-        listing.source,
+        id,
         listing.address,
         listing.description,
         listing.price || null,
@@ -103,18 +145,21 @@ export class PropertyService {
         listing.zoning || null,
         lat,
         lon,
+        listing.source,
+        listing.sourceUrl,
+        JSON.stringify(allSources),
         JSON.stringify(listing.metadata || {}),
         new Date().toISOString()
       );
 
-      // 2. Update FTS Table
-      db.prepare('DELETE FROM properties_fts WHERE source_url = ?').run(listing.sourceUrl);
+      // 4. Update FTS Table
+      db.prepare('DELETE FROM properties_fts WHERE id = ?').run(id);
       
       db.prepare(`
-        INSERT INTO properties_fts (source_url, address, description, zoning, property_type)
+        INSERT INTO properties_fts (id, address, description, zoning, property_type)
         VALUES (?, ?, ?, ?, ?)
       `).run(
-        listing.sourceUrl,
+        id,
         listing.address,
         listing.description,
         listing.zoning || '',
@@ -201,9 +246,13 @@ export class PropertyService {
     const rows = db.prepare(sql).all(...args);
 
     return rows.map((row: any) => ({
+      id: row.id,
       address: row.address,
+      lat: row.lat,
+      lon: row.lon,
       source: row.source,
       sourceUrl: row.source_url,
+      all_sources: typeof row.all_sources === 'string' ? JSON.parse(row.all_sources) : row.all_sources,
       description: row.description,
       price: row.price,
       priceDisplay: row.price_display,

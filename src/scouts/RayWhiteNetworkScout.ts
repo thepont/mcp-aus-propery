@@ -153,6 +153,23 @@ export class RayWhiteBallaratScout extends VaultREScout {
       const rawListings = response.data.data;
       const listings = this.parseRayWhiteListings(rawListings, criteria);
 
+      // Targeted search: Resolve GNAF PIDs for deduplication
+      if (!isGeneralSync) {
+          const gnaf = new GnafService();
+          for (const listing of listings) {
+              const res = await gnaf.resolveAddress(listing.address);
+              if (res) {
+                  listing.metadata = { 
+                      ...listing.metadata, 
+                      gnafPid: res.id,
+                      lat: res.lat,
+                      lon: res.lon,
+                      agencyName: 'Ray White'
+                  };
+              }
+          }
+      }
+
       if (isGeneralSync && rawListings.length > 0) {
         // Update watermark
         const lastItem = rawListings[rawListings.length - 1].value;

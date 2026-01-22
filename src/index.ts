@@ -201,12 +201,14 @@ class IndustrialPropertyMcpServer {
 
         // Map results to ensure source is clearly visible
         const listingsWithSource = finalResults.map(l => ({
+          id: (l as any).id || l.metadata?.gnafPid,
           address: l.address,
-          source: l.source,
+          lat: (l as any).lat || l.metadata?.lat || l.metadata?.['Common.Coordinate']?.lat,
+          lon: (l as any).lon || l.metadata?.lon || l.metadata?.['Common.Coordinate']?.lon,
           price: l.priceDisplay || l.price,
           type: l.propertyType,
           listing: l.listingType,
-          url: l.sourceUrl,
+          sources: (l as any).all_sources || [{ source: l.source, url: l.sourceUrl }],
           description: l.description.substring(0, 200) + '...'
         }));
 
