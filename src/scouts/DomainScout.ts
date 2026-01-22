@@ -6,6 +6,7 @@ import fs from 'fs';
 import crypto from 'crypto';
 import * as cheerio from 'cheerio';
 import { HttpsProxyAgent } from 'https-proxy-agent';
+import { devices } from 'playwright';
 
 interface DomainState {
   scanId: string;
@@ -30,6 +31,38 @@ export class DomainScout extends BaseScout {
   setBrowser(browser: any): void {
       this.browser = browser;
       this.isSharedBrowser = true;
+  }
+
+  /**
+   * Domain-specific high-stealth context (Mobile)
+   */
+  private async createHighStealthContext(browser: any): Promise<any> {
+      // Choose a realistic mobile device profile
+      const mobileDevices = ['iPhone 13', 'iPhone 14', 'Pixel 7'];
+      const deviceName = mobileDevices[Math.floor(Math.random() * mobileDevices.length)];
+      const deviceProfile = devices[deviceName];
+
+      // Generate a fingerprint that matches the device type
+      const fingerprintData = (this as any).constructor.fingerprintGenerator.getFingerprint({
+          devices: ['mobile'],
+          browsers: [deviceName.includes('iPhone') ? 'safari' : 'chrome'],
+          locales: ['en-AU'],
+      });
+
+      const { fingerprint } = fingerprintData as any;
+
+      const context = await browser.newContext({
+          ...deviceProfile,
+          userAgent: fingerprint.navigator.userAgent,
+          locale: 'en-AU',
+          timezoneId: 'Australia/Sydney',
+          ignoreHTTPSErrors: true
+      });
+
+      // Inject the advanced hardware fingerprint
+      await (this as any).constructor.fingerprintInjector.attachFingerprintToPlaywright(context, fingerprintData);
+      
+      return context;
   }
 
   async search(criteria: SearchParams): Promise<IndustrialListing[]> {
@@ -108,12 +141,17 @@ export class DomainScout extends BaseScout {
   private async targetedSearch(criteria: SearchParams): Promise<IndustrialListing[]> {
     console.error(`[Domain] Performing targeted search for: ${criteria.location}`);
     
-    const propertyType = criteria.propertyType === 'residential' ? 'house' : (criteria.propertyType || 'industrial');
-    const locationSlug = criteria.location.toLowerCase().replace(/\s+/g, '-');
-    const baseUrl = `https://www.domain.com.au/sale/${locationSlug}/`;
+    // User provided URL structure: https://www.domain.com.au/sale/?excludeunderoffer=1&suburb=ballarat-central-vic-3350
+    const locationSlug = criteria.location.toLowerCase().replace(/,\s*/g, '-').replace(/\s+/g, '-');
+    const baseUrl = `https://www.domain.com.au/sale/`;
     
     const params = new URLSearchParams();
+    params.append('excludeunderoffer', '1');
+    params.append('suburb', locationSlug);
+    
+    const propertyType = criteria.propertyType === 'residential' ? 'house' : (criteria.propertyType || 'industrial');
     params.append('ptype', propertyType);
+    
     if (criteria.maxPrice) params.append('price', `0-${criteria.maxPrice}`);
 
     const searchUrl = `${baseUrl}?${params.toString()}`;
@@ -132,26 +170,27 @@ export class DomainScout extends BaseScout {
           this.isSharedBrowser = false;
       }
 
-      const context = await this.createStealthContext(this.browser);
+      const context = await this.createHighStealthContext(this.browser);
       const page = await context.newPage();
 
       console.error(`[Domain] Navigating to: ${searchUrl}`);
-      await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
+      await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
       
       // Wait for results
       try {
-          await page.waitForSelector('[data-testid="listing-card"]', { timeout: 15000 });
+          await page.waitForSelector('[data-testid="listing-card"], .listing-result', { timeout: 20000 });
       } catch (e) {
           console.error(`[Domain] Timeout waiting for listing cards.`);
       }
 
       const listings = await page.evaluate(() => {
           const results: any[] = [];
-          const cards = document.querySelectorAll('[data-testid="listing-card"], .listing-result, .property-card');
+          // Mobile might have different selectors, let's be broad
+          const cards = document.querySelectorAll('[data-testid="listing-card"], .listing-result, [class*="PropertyCard"]');
           cards.forEach(el => {
-              const address = el.querySelector('[data-testid="address-wrapper"], .address')?.textContent?.trim();
+              const address = el.querySelector('[data-testid="address-wrapper"], [class*="Address"]')?.textContent?.trim();
               const link = el.querySelector('a')?.getAttribute('href');
-              const price = el.querySelector('[data-testid="listing-card-price"], .price')?.textContent?.trim();
+              const price = el.querySelector('[data-testid="listing-card-price"], [class*="Price"]')?.textContent?.trim();
               
               if (address && link) {
                   results.push({
