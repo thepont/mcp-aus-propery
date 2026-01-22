@@ -123,6 +123,7 @@ export abstract class VaultREScout extends BaseScout {
         price: prop.price ? parseFloat(prop.price) : undefined,
         priceDisplay: prop.displayPrice || '',
         source: this.name,
+        sources: [{ name: this.name, url: prop.webUrl || `${this.apiBaseUrl}/property/${prop.slug || prop.id}` }], // Added sources array
         propertyType,
         listingType,
         dateListed: prop.creationTime || prop.publishedTime,

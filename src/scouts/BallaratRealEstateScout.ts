@@ -1,20 +1,26 @@
-import { AgentpointScout } from './AgentpointScout.js';
-import type { SearchParams, IndustrialListing } from '../types.js';
+import { BaseScout, SearchParams, IndustrialListing } from '../types.js';
 import { chromium } from 'playwright-extra';
 import { GnafService } from '../services/GnafService.js';
 
 /**
  * Ballarat Real Estate Scout
  * 
- * Uses Playwright to scrape property listings directly from the website.
+ * Uses Playwright to extract property listings directly from the website.
  */
-export class BallaratRealEstateScout extends AgentpointScout {
+export class BallaratRealEstateScout extends BaseScout {
   readonly name = 'Ballarat Real Estate';
-  protected readonly siteUrl = 'https://www.ballaratrealestate.com.au';
-  protected readonly apiBaseUrl = 'https://www.ballaratrealestate.com.au';
+  private readonly siteUrl = 'https://www.ballaratrealestate.com.au';
+  readonly relevanceArea = { lat: -37.5622, lon: 143.8503, radiusKm: 50 };
+  private browser: any = null;
+  private isSharedBrowser: boolean = false;
+
+  setBrowser(browser: any): void {
+      this.browser = browser;
+      this.isSharedBrowser = true;
+  }
 
   /**
-   * Search for properties using Playwright scraping
+   * Search for properties using Playwright extraction
    */
   async search(criteria: SearchParams): Promise<IndustrialListing[]> {
     console.error(`[${this.name}] Performing search for: ${criteria.location}`);
@@ -80,7 +86,7 @@ export class BallaratRealEstateScout extends AgentpointScout {
           await context.close();
       }
 
-      console.error(`[${this.name}] Scraped ${listings.length} listings.`);
+      console.error(`[${this.name}] Extracted ${listings.length} listings.`);
 
       const gnaf = new GnafService();
       const results: IndustrialListing[] = [];
@@ -97,7 +103,7 @@ export class BallaratRealEstateScout extends AgentpointScout {
               address: address,
               source: this.name,
               sourceUrl: l.url.startsWith('http') ? l.url : `${this.siteUrl}${l.url}`,
-              description: l.description || 'Scraped listing',
+              description: l.description || 'Extracted listing',
               priceDisplay: l.priceDisplay,
               metadata: {
                   suburb: 'Ballarat',
@@ -105,7 +111,8 @@ export class BallaratRealEstateScout extends AgentpointScout {
                   lat: res?.lat || undefined,
                   lon: res?.lon || undefined,
                   agencyName: 'Ballarat Real Estate'
-              }
+              },
+              sources: [{ name: this.name, url: l.url.startsWith('http') ? l.url : `${this.siteUrl}${l.url}` }]
           });
       }
 

@@ -9,9 +9,10 @@ import {
 import { ScoutManager } from './ScoutManager.js';
 import { GnafService } from './services/GnafService.js';
 import { MarketService } from './services/MarketService.js';
+import { PropertyValueService } from './services/PropertyValueService.js';
 import { CbreScout } from './scouts/CbreScout.js';
 import { CameronScout } from './scouts/CameronScout.js';
-import { SearchParams } from './types.js';
+import { SearchParams, SuburbTrend } from './types.js';
 
 /**
  * Universal Industrial Property Scout MCP Server
@@ -22,6 +23,7 @@ class IndustrialPropertyMcpServer {
   private scoutManager: ScoutManager;
   private gnafService: GnafService;
   private marketService: MarketService;
+  private propertyValueService: PropertyValueService;
 
   constructor() {
     this.server = new Server(
@@ -39,6 +41,7 @@ class IndustrialPropertyMcpServer {
     this.scoutManager = new ScoutManager();
     this.gnafService = new GnafService();
     this.marketService = new MarketService();
+    this.propertyValueService = new PropertyValueService();
     
     // Scouts are auto-registered from the scouts directory
     // Manual registration is also supported: this.scoutManager.registerScout(new CbreScout());
@@ -140,6 +143,20 @@ class IndustrialPropertyMcpServer {
             required: ['suburb'],
           },
         },
+        {
+          name: 'get_property_estimate',
+          description: 'Get an estimated value range and sales history for a specific property address (Residential/Commercial). Source: PropertyValue (CoreLogic).',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              address: {
+                type: 'string',
+                description: 'Full property address (e.g., "9 Goulburn Street Nagambie VIC 3608")',
+              },
+            },
+            required: ['address'],
+          },
+        },
       ],
     }));
 
@@ -147,19 +164,61 @@ class IndustrialPropertyMcpServer {
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const args = request.params.arguments as any;
 
+      if (request.params.name === 'get_property_estimate') {
+        if (!args.address || typeof args.address !== 'string') {
+          throw new Error('Missing required parameter: address');
+        }
+
+        const estimate = await this.propertyValueService.getEstimate(args.address);
+
+        if (!estimate) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: 'Property not found or estimate unavailable.',
+              },
+            ],
+            isError: true,
+          };
+        }
+
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(estimate, null, 2),
+            },
+          ],
+        };
+      }
+
       if (request.params.name === 'get_suburb_trends') {
         if (!args.suburb || typeof args.suburb !== 'string') {
           throw new Error('Missing required parameter: suburb');
         }
 
         console.error(`[MCP Server] Fetching trends for: ${args.suburb}`);
-        const trends = await this.marketService.getSuburbTrends(args.suburb);
+        
+        // Fetch from multiple sources in parallel
+        const [marketTrends, propertyValueTrends] = await Promise.all([
+          this.marketService.getSuburbTrends(args.suburb),
+          this.propertyValueService.getSuburbTrends(args.suburb)
+        ]);
+
+        const allSuburbTrends: SuburbTrend[] = [];
+        if (marketTrends) {
+          allSuburbTrends.push(...marketTrends);
+        }
+        if (propertyValueTrends) {
+          allSuburbTrends.push(propertyValueTrends);
+        }
 
         return {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(trends, null, 2),
+              text: JSON.stringify(allSuburbTrends, null, 2),
             },
           ],
         };

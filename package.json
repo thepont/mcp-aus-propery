@@ -15,7 +15,8 @@
     "test:unit": "npm run build && node tests/unit/framework.test.js",
     "test:integration": "npm run build && node tests/integration/mcp-server.test.js",
     "test:network": "npm run build && node tests/integration/website-assumptions.test.js",
-    "test:all": "npm run test:unit && npm run test:integration && npm run test:network",
+    "test:system": "npm run build && node tests/integration/tools.test.js",
+    "test:all": "npm run test:unit && npm run test:integration && npm run test:system",
     "prepare": "npm run build"
   },
   "keywords": [

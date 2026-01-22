@@ -81,7 +81,9 @@ export class CbreScout extends BaseScout {
                 sourceUrl, price: doc['Common.Charges']?.[0]?.['Common.Value'],
                 priceDisplay: doc['Common.Charges']?.[0]?.['Common.FormattedValue'],
                 area: doc['Common.TotalSize']?.['Common.Value'],
-                source: this.name, metadata: doc
+                source: this.name,
+                sources: [{ name: this.name, url: sourceUrl }], // Added sources array
+                metadata: doc
               });
             } catch (err) { continue; }
           }
@@ -135,7 +137,7 @@ export class CbreScout extends BaseScout {
       }
 
       if (listings.length === 0) {
-        const htmlListings = await this.scrapeHtmlListings(page);
+        const htmlListings = await this.extractHtmlListings(page);
         listings.push(...htmlListings);
       }
 
@@ -171,12 +173,13 @@ export class CbreScout extends BaseScout {
         sourceUrl: url.startsWith('http') ? url : `https://www.cbre.com.au${url}`,
         price: data.offers?.price,
         priceDisplay: data.offers?.priceCurrency ? `${data.offers.priceCurrency} ${data.offers.price}` : data.offers?.priceSpecification?.price,
-        area: data.floorSize?.value, source: this.name, metadata: data
+        area: data.floorSize?.value, source: this.name, metadata: data,
+        sources: [{ name: this.name, url: url.startsWith('http') ? url : `https://www.cbre.com.au${url}` }] // Added sources array
       };
     } catch (error) { return null; }
   }
 
-  private async scrapeHtmlListings(page: any): Promise<IndustrialListing[]> {
+  private async extractHtmlListings(page: any): Promise<IndustrialListing[]> {
     const listings: IndustrialListing[] = [];
     try {
       const propertyCards = await page.$$('[data-testid="property-card"], .property-card, .listing-card');
@@ -188,7 +191,9 @@ export class CbreScout extends BaseScout {
           const href = linkElement ? await linkElement.getAttribute('href') : '';
           const url = href?.startsWith('http') ? href : `https://www.cbre.com.au${href}`;
           if (address) {
-            listings.push({ address, description, sourceUrl: url, source: this.name, zoning: undefined });
+            listings.push({ address, description, sourceUrl: url, source: this.name, zoning: undefined,
+                sources: [{ name: this.name, url: url }] // Added sources array
+            });
           }
         } catch (error) { continue; }
       }

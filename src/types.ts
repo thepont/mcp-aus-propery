@@ -72,6 +72,8 @@ export interface IndustrialListing {
   /** Source agency name */
   source: string;
 
+  sources: Array<{ name: string, url: string }>; // Added sources array to IndustrialListing
+
   /** Property type (residential, commercial, industrial, land, rural) */
   propertyType?: PropertyType;
 
@@ -85,12 +87,33 @@ export interface IndustrialListing {
   metadata?: Record<string, any>;
 }
 
+export interface SuburbTrend {
+    source: string;
+    sources: Array<{ name: string, url: string }>;
+    suburb: string;
+    description: string;
+    medianPrices?: any[]; // Made optional
+    marketPerformance?: any[];
+    metrics?: Record<string, string>; // Added for flat metrics
+    growth?: any;
+    rent?: any;
+    url: string;
+    coreLogicMetrics?: any;
+}
+
 /**
  * Abstract base class for all agency scouts
  */
 export abstract class BaseScout {
   /** Scout identifier (agency name) */
   abstract readonly name: string;
+
+  /** 
+   * Optional geographic focus area for this scout.
+   * If provided, the ScoutManager will skip this scout for searches outside this area.
+   * radiusKm is the "generous" bounding radius.
+   */
+  readonly relevanceArea?: { lat: number, lon: number, radiusKm: number };
   
   private static fingerprintGenerator = new FingerprintGenerator();
   private static fingerprintInjector = new FingerprintInjector();

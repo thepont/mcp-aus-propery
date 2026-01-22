@@ -5,7 +5,7 @@
  * Sitemap: https://www.prd.com.au/ballarat/sitemap-listings.xml
  * Properties: 8,317 listings in sitemap (all property types)
  * 
- * Strategy: XML sitemap parsing → Structured metadata extraction → HTML scraping fallback
+ * Strategy: XML sitemap parsing → Structured metadata extraction → HTML extraction fallback
  * Priority: <title> tags → <h1> tags → meta tags → HTML selectors
  * 
  * Structured Data Available:
@@ -35,6 +35,7 @@ export class PRDBallaratScout extends BaseScout {
   name = 'PRD Ballarat';
   private sitemapUrl = 'https://www.prd.com.au/ballarat/sitemap-listings.xml';
   private readonly STATE_FILE = 'data/prd_ballarat_state.json';
+  readonly relevanceArea = { lat: -37.5622, lon: 143.8503, radiusKm: 50 };
   private browser: Browser | null = null;
   private isSharedBrowser: boolean = false;
 
@@ -77,7 +78,7 @@ export class PRDBallaratScout extends BaseScout {
 
       if (urlsToProcess.length === 0) return [];
 
-      // Step 2: Launch browser for scraping if not shared
+      // Step 2: Launch browser for extraction if not shared
       const proxy = this.getProxyConfig();
       if (!this.browser) {
           this.browser = await chromium.launch({ 
@@ -311,6 +312,7 @@ export class PRDBallaratScout extends BaseScout {
         price,
         priceDisplay: propertyData.priceDisplay || undefined,
         source: this.name,
+        sources: [{ name: this.name, url: url }], // Added sources array
         propertyType,
         listingType,
         metadata: {

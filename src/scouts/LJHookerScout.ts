@@ -71,6 +71,7 @@ export class LJHookerScout extends AgentpointScout {
           price: this.extractPrice(property),
           area: this.extractArea(property),
           source: this.name,
+          sources: [{ name: this.name, url: property.linkUrl || property.url || '' }], // Add sources array
           metadata: {
             propertyId: property.id || property.propertyId,
             status: property.status || property.statusDisplay,

@@ -96,7 +96,8 @@ export class DomainScout extends BaseScout {
             sourceUrl: url,
             description: 'Matched G-NAF Property',
             listingType: 'sale',
-            metadata: { gnafPid: res.id, lat: res.lat, lon: res.lon, scanId: state.scanId }
+            metadata: { gnafPid: res.id, lat: res.lat, lon: res.lon, scanId: state.scanId },
+            sources: [{ name: this.name, url: url }] // Added sources
         });
       }
     }
@@ -259,7 +260,8 @@ export class DomainScout extends BaseScout {
                   lat: res?.lat || undefined,
                   lon: res?.lon || undefined,
                   agencyName: l.agencyName
-              }
+              },
+              sources: [{ name: this.name, url: l.url }]
           });
       }
 

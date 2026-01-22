@@ -237,6 +237,7 @@ export class ColliersScout extends BaseScout {
         priceDisplay: raw.pricecomputed || '',
         area: raw.totalarea || raw.landarea || '',
         source: this.name,
+        sources: [{ name: this.name, url: raw.sysclickableuri || res.clickUri || '' }], // Add sources array
         propertyType,
         listingType: raw.propertyforsaleorleasecomputed?.toLowerCase().includes('rent') ? 'rental' : 'sale',
         metadata: {

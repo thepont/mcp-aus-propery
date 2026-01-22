@@ -18,7 +18,6 @@ interface ListingQueue {
 }
 
 export class PRDScout extends BaseScout {
-// ...
   readonly name = 'prd';
   private readonly STATE_FILE = 'data/prd_scout_state.json';
   private readonly QUEUE_FILE = 'data/prd_queue.json';
@@ -101,13 +100,13 @@ export class PRDScout extends BaseScout {
            if (!/\/\d+\//.test(url)) continue;
         }
 
-        const listing = await this.scrapeListingPage(url);
+        const listing = await this.extractListingPage(url);
         if (listing) {
           listings.push(listing);
           processedCount++;
         }
       } catch (error) {
-        console.error(`[PRD] Failed to scrape ${url}:`, error);
+        console.error(`[PRD] Failed to extract ${url}:`, error);
       }
 
       this.saveQueue(queue);
@@ -164,13 +163,13 @@ export class PRDScout extends BaseScout {
 
       console.error(`[PRD] Targeted search found ${urls.length} candidate URLs.`);
 
-      // Scrape first few for immediate result
+      // Extract first few for immediate result
       const results: IndustrialListing[] = [];
       const loc = criteria.location.toLowerCase();
       
       // Limit to 5 for targeted search to be fast
       for (const url of urls.slice(0, 5)) {
-        const listing = await this.scrapeListingPage(url);
+        const listing = await this.extractListingPage(url);
         if (listing) {
           if (listing.address.toLowerCase().includes(loc) || 
               (listing.metadata?.city || '').toLowerCase().includes(loc)) {
@@ -238,8 +237,8 @@ export class PRDScout extends BaseScout {
     }
   }
 
-  private async scrapeListingPage(url: string): Promise<IndustrialListing | null> {
-    console.error(`[PRD] Scraping: ${url}`);
+  private async extractListingPage(url: string): Promise<IndustrialListing | null> {
+    console.error(`[PRD] Extracting: ${url}`);
     
     const proxy = this.getProxyConfig();
     const axiosConfig: any = {
@@ -308,7 +307,8 @@ export class PRDScout extends BaseScout {
                 ...adfenixData,
                 images,
                 'Common.Coordinate': { lat, lon }
-            }
+            },
+            sources: [{ name: this.name, url: url }]
         };
 
         // Normalize property type

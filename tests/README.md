@@ -4,7 +4,7 @@
 
 This test suite is organized into three tiers, designed to validate the MCP Industrial Property Scout implementation at different levels.
 
-**CRITICAL**: Since we haven't been able to view the actual websites we're scraping, the **Integration Tests (Network)** are THE MOST IMPORTANT tests. They validate ALL assumptions we've made about website structure, URLs, and selectors.
+**CRITICAL**: Since we haven't been able to view the actual websites we're processing, the **Integration Tests (Network)** are THE MOST IMPORTANT tests. They validate ALL assumptions we've made about website structure, URLs, and selectors.
 
 ## Test Structure
 

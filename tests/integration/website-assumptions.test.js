@@ -283,12 +283,12 @@ await test('ASSUMPTION 6: CBRE page has JSON-LD structured data', async () => {
     console.log(`   Found ${jsonLdCount} JSON-LD script tags`);
     
     if (jsonLdCount === 0) {
-      console.log(`   ⚠️  No JSON-LD found - will rely on HTML scraping only`);
+      console.log(`   ⚠️  No JSON-LD found - will rely on HTML extraction only`);
       results.cbre.assumptions.push({
         assumption: 'Page has JSON-LD',
         validated: false
       });
-      return; // Not a failure, just means we use HTML scraping
+      return; // Not a failure, just means we use HTML extraction
     }
     
     // Parse JSON-LD

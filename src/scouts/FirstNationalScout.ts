@@ -20,7 +20,6 @@ interface ListingQueue {
 }
 
 export class FirstNationalScout extends BaseScout {
-// ...
   readonly name = 'first_national';
   private readonly STATE_FILE = 'data/fn_scout_state.json';
   private readonly QUEUE_FILE = 'data/fn_queue.json';
@@ -101,13 +100,13 @@ export class FirstNationalScout extends BaseScout {
         }
 
         try {
-            const listing = await this.scrapeListingPage(url);
+            const listing = await this.extractListingPage(url);
             if (listing) {
                 listings.push(listing);
                 processedCount++;
             }
         } catch (error) {
-            console.error(`[FN] Failed to scrape ${url}:`, error);
+            console.error(`[FN] Failed to extract ${url}:`, error);
         }
 
         this.saveQueue(queue);
@@ -179,7 +178,7 @@ export class FirstNationalScout extends BaseScout {
       
       // Limit to 5
       for (const url of urls.slice(0, 5)) {
-        const listing = await this.scrapeListingPage(url);
+        const listing = await this.extractListingPage(url);
         if (listing) {
           if (listing.address.toLowerCase().includes(loc) || 
               (listing.metadata?.suburb || '').toLowerCase().includes(loc)) {
@@ -284,8 +283,8 @@ export class FirstNationalScout extends BaseScout {
     }
   }
 
-  private async scrapeListingPage(url: string): Promise<IndustrialListing | null> {
-    console.error(`[FN] Scraping: ${url}`);
+  private async extractListingPage(url: string): Promise<IndustrialListing | null> {
+    console.error(`[FN] Extracting: ${url}`);
     
     try {
         const proxy = this.getProxyConfig();
@@ -386,13 +385,14 @@ export class FirstNationalScout extends BaseScout {
                 parking: getProp('numberOfParkingSpaces'),
                 propertyTypeRaw: rawType,
                 'Common.Coordinate': (lat && lon) ? { lat, lon } : undefined
-            }
+            },
+            sources: [{ name: this.name, url: url }]
         };
 
         return listing;
 
     } catch (error) {
-        console.error(`[FN] Error scraping page ${url}:`, error);
+        console.error(`[FN] Error extracting page ${url}:`, error);
         return null;
     }
   }

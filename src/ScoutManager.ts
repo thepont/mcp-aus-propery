@@ -3,10 +3,11 @@ import { readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { PropertyService } from './services/PropertyService.js';
+import { GnafService } from './services/GnafService.js';
 import { chromium } from 'playwright-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { Observable, from, merge, of, timer, EMPTY } from 'rxjs';
-import { mergeMap, catchError, takeUntil, tap, toArray, map, concatMap } from 'rxjs/operators';
+import { mergeMap, catchError, takeUntil, tap, toArray, map, concatMap, filter } from 'rxjs/operators';
 
 // @ts-ignore
 chromium.use(StealthPlugin());
@@ -22,10 +23,12 @@ export class ScoutManager {
   private scouts: BaseScout[] = [];
   private initialized: boolean = false;
   public db: PropertyService;
+  private gnaf: GnafService;
   private sharedBrowser: any = null;
 
   constructor() {
     this.db = new PropertyService();
+    this.gnaf = new GnafService();
   }
 
   /**
@@ -127,18 +130,63 @@ export class ScoutManager {
   }
 
   /**
+   * Calculate distance between two coordinates in KM
+   */
+  private calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    const R = 6371; // Earth's radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+  }
+
+  /**
    * Search and stream results as they arrive
    */
   search$(criteria: SearchParams): Observable<IndustrialListing> {
     return from(this.ensureInitialized().then(() => this.ensureBrowser())).pipe(
-      mergeMap((browser) => {
+      mergeMap(async (browser) => {
         // Share browser
         this.scouts.forEach(s => s.setBrowser(browser));
         
         const isGeneralSync = !criteria.location || criteria.location === 'Any';
-        console.error(`[ScoutManager] ${isGeneralSync ? 'Syncing' : 'Searching'} with ${this.scouts.length} scouts`);
+        
+        // 1. Resolve coordinates for the search location
+        let searchCoords: { lat: number, lon: number } | null = null;
+        if (criteria.lat && criteria.lon) {
+            searchCoords = { lat: criteria.lat, lon: criteria.lon };
+        } else if (criteria.location && criteria.location !== 'Any') {
+            const resolved = await this.gnaf.resolveAddress(criteria.location);
+            if (resolved) {
+                searchCoords = { lat: resolved.lat, lon: resolved.lon };
+            }
+        }
 
-        const scoutStreams = this.scouts.map(scout => {
+        // 2. Filter scouts based on relevance area
+        const relevantScouts = this.scouts.filter(scout => {
+            if (!scout.relevanceArea || !searchCoords) return true; // National scout or unknown location
+            
+            const distance = this.calculateDistance(
+                searchCoords.lat, searchCoords.lon,
+                scout.relevanceArea.lat, scout.relevanceArea.lon
+            );
+            
+            const isRelevant = distance <= scout.relevanceArea.radiusKm;
+            if (!isRelevant) {
+                // console.error(`[ScoutManager] Skipping ${scout.name} (too far: ${distance.toFixed(1)}km > ${scout.relevanceArea.radiusKm}km)`);
+            }
+            return isRelevant;
+        });
+
+        console.error(`[ScoutManager] ${isGeneralSync ? 'Syncing' : 'Searching'} with ${relevantScouts.length}/${this.scouts.length} scouts`);
+        return { browser, relevantScouts };
+      }),
+      mergeMap(({ relevantScouts }) => {
+        const scoutStreams = relevantScouts.map(scout => {
           return from(scout.search(criteria)).pipe(
             // Flatten array of listings into individual emissions
             mergeMap(listings => from(listings)),

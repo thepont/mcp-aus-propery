@@ -67,7 +67,7 @@ export abstract class WordPressEPLScout extends BaseScout {
       
       return listings;
     } catch (error) {
-      console.error(`[${this.name}] API failed, falling back to HTML scraping`);
+      console.error(`[${this.name}] API failed, falling back to HTML extraction`);
       return await this.searchViaPlaywright(searchUrl, criteria);
     }
   }
@@ -88,9 +88,15 @@ export abstract class WordPressEPLScout extends BaseScout {
 
     let allProperties: any[] = [];
 
+    // Append search query if location is provided
+    let queryParams = `per_page=50&page=${page}&status=current`;
+    if (criteria.location && criteria.location !== 'Any') {
+        queryParams += `&search=${encodeURIComponent(criteria.location)}`;
+    }
+
     for (const endpoint of endpoints) {
       try {
-        const apiUrl = `${baseUrl}${endpoint}?per_page=50&page=${page}&status=current`;
+        const apiUrl = `${baseUrl}${endpoint}?${queryParams}`;
         console.error(`[${this.name}] Trying API (Page ${page}): ${apiUrl}`);
         
         await this.waitOrganic();
@@ -174,6 +180,7 @@ export abstract class WordPressEPLScout extends BaseScout {
         priceDisplay,
         area: meta.property_building_area || meta.property_land_area || '',
         source: this.name,
+        sources: [{ name: this.name, url: prop.link || '' }], // Add sources array
         propertyType,
         listingType,
         metadata: {
@@ -242,7 +249,7 @@ export abstract class WordPressEPLScout extends BaseScout {
   }
 
   /**
-   * Fallback: Search via Playwright HTML scraping
+   * Fallback: Search via Playwright HTML extraction
    */
   private async searchViaPlaywright(searchUrl: string, criteria: SearchParams): Promise<IndustrialListing[]> {
     if (!this.browser) {
@@ -295,7 +302,8 @@ export abstract class WordPressEPLScout extends BaseScout {
         description: item.description || 'No description',
         sourceUrl: item.url,
         priceDisplay: item.price,
-        source: this.name
+        source: this.name,
+        sources: [{ name: this.name, url: item.url }]
       }));
 
       // Filter by location to ensure relevance
@@ -313,7 +321,7 @@ export abstract class WordPressEPLScout extends BaseScout {
           await this.browser.close();
           this.browser = null;
       }
-      console.error(`[${this.name}] Playwright scraping failed:`, error);
+      console.error(`[${this.name}] Playwright extraction failed:`, error);
       return [];
     }
   }

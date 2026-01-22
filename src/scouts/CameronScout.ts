@@ -10,12 +10,13 @@ import { SearchParams } from '../types.js';
  * EPL REST API: https://www.cameron.com.au/wp-json/wp/v2/commercial
  * Total Properties: 2,019+ commercial listings
  * 
- * This scout extends WordPressEPLScout and uses:
- * 1. EPL REST API with pagination (primary - fetches up to 500 properties)
- * 2. HTML scraping fallback (if API fails)
+ * Strategy:
+ * 1. WordPress REST API (preferred)
+ * 2. HTML extraction fallback (if API fails)
  */
 export class CameronScout extends WordPressEPLScout {
   readonly name = 'Cameron Real Estate';
+  readonly relevanceArea = { lat: -37.9810, lon: 145.2150, radiusKm: 60 };
 
   /**
    * Build search URL for Cameron commercial properties
