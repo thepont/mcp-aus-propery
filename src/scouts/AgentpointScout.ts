@@ -55,13 +55,12 @@ export abstract class AgentpointScout extends BaseScout {
 
         this.browser = await chromium.launch({ 
           headless: true,
-          args: launchArgs,
-          proxy: proxy ? { server: proxy.server } : undefined
+          args: launchArgs
         });
         this.isSharedBrowser = false;
       }
 
-      const context = await this.createStealthContext(this.browser);
+      const context = await this.createStealthContext(this.browser, this.siteUrl);
 
       const page = await context.newPage();
       let extractedToken: string | null = null;

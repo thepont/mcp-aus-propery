@@ -109,7 +109,7 @@ export abstract class BaseScout {
   /**
    * Create a high-anonymity browser context using fingerprinting
    */
-  protected async createStealthContext(browser: any): Promise<any> {
+  protected async createStealthContext(browser: any, referer?: string): Promise<any> {
       const fingerprintData = BaseScout.fingerprintGenerator.getFingerprint({
           devices: ['desktop'],
           browsers: ['chrome', 'firefox', 'safari'],
@@ -117,6 +117,7 @@ export abstract class BaseScout {
       });
 
       const { fingerprint } = fingerprintData as any;
+      const proxy = this.getProxyConfig();
 
       const context = await browser.newContext({
           userAgent: fingerprint.navigator.userAgent,
@@ -125,7 +126,9 @@ export abstract class BaseScout {
           hasTouch: fingerprint.navigator.maxTouchPoints > 0,
           locale: 'en-AU',
           timezoneId: 'Australia/Sydney',
-          ignoreHTTPSErrors: true
+          ignoreHTTPSErrors: true,
+          proxy: proxy ? { server: proxy.server } : undefined,
+          extraHTTPHeaders: referer ? { 'Referer': referer } : undefined
       });
 
       await BaseScout.fingerprintInjector.attachFingerprintToPlaywright(context, fingerprintData);

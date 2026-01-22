@@ -34,35 +34,10 @@ export class DomainScout extends BaseScout {
   }
 
   /**
-   * Domain-specific high-stealth context (Mobile)
+   * Domain-specific high-stealth context (Desktop)
    */
   private async createHighStealthContext(browser: any): Promise<any> {
-      // Choose a realistic mobile device profile
-      const mobileDevices = ['iPhone 13', 'iPhone 14', 'Pixel 7'];
-      const deviceName = mobileDevices[Math.floor(Math.random() * mobileDevices.length)];
-      const deviceProfile = devices[deviceName];
-
-      // Generate a fingerprint that matches the device type
-      const fingerprintData = (this as any).constructor.fingerprintGenerator.getFingerprint({
-          devices: ['mobile'],
-          browsers: [deviceName.includes('iPhone') ? 'safari' : 'chrome'],
-          locales: ['en-AU'],
-      });
-
-      const { fingerprint } = fingerprintData as any;
-
-      const context = await browser.newContext({
-          ...deviceProfile,
-          userAgent: fingerprint.navigator.userAgent,
-          locale: 'en-AU',
-          timezoneId: 'Australia/Sydney',
-          ignoreHTTPSErrors: true
-      });
-
-      // Inject the advanced hardware fingerprint
-      await (this as any).constructor.fingerprintInjector.attachFingerprintToPlaywright(context, fingerprintData);
-      
-      return context;
+      return await this.createStealthContext(browser, 'https://www.domain.com.au/');
   }
 
   async search(criteria: SearchParams): Promise<IndustrialListing[]> {
@@ -141,20 +116,53 @@ export class DomainScout extends BaseScout {
   private async targetedSearch(criteria: SearchParams): Promise<IndustrialListing[]> {
     console.error(`[Domain] Performing targeted search for: ${criteria.location}`);
     
-    // User provided URL structure: https://www.domain.com.au/sale/?excludeunderoffer=1&suburb=ballarat-central-vic-3350
-    const locationSlug = criteria.location.toLowerCase().replace(/,\s*/g, '-').replace(/\s+/g, '-');
-    const baseUrl = `https://www.domain.com.au/sale/`;
+    let locationSlug = criteria.location.toLowerCase().replace(/,\s*/g, '-').replace(/\s+/g, '-');
+    
+    // Step 1: Try to resolve precise slug via Domain Autocomplete API
+    try {
+        const proxy = this.getProxyConfig();
+        const autoUrl = `https://www.domain.com.au/phoenix/api/locations/autocomplete/v2?prefixText=${encodeURIComponent(criteria.location)}`;
+        const autoConfig: any = {
+            timeout: 10000,
+            headers: { 'User-Agent': 'Mozilla/5.0' }
+        };
+        if (proxy) autoConfig.httpsAgent = new HttpsProxyAgent(proxy.server);
+        
+        const autoRes = await axios.get(autoUrl, autoConfig);
+        if (autoRes.data && autoRes.data.length > 0) {
+            locationSlug = autoRes.data[0].value;
+            console.error(`[Domain] Resolved location to precise slug: ${locationSlug}`);
+        }
+    } catch (e: any) {
+        console.error(`[Domain] Autocomplete resolution failed (using fallback slug): ${e.message}`);
+    }
+
+    // Branch between Residential and Commercial
+    const isCommercial = criteria.propertyType === 'commercial' || criteria.propertyType === 'industrial';
+    
+    // User provided URL structure: https://www.domain.com.au/sale/ballarat-central-vic-3350/?excludeunderoffer=1&sort=dateupdated-desc
+    // Commercial structure: https://www.commercialrealestate.com.au/for-sale/ballarat-vic-3350/
+    const baseUrl = isCommercial 
+        ? `https://www.commercialrealestate.com.au/for-sale/`
+        : `https://www.domain.com.au/sale/`;
     
     const params = new URLSearchParams();
-    params.append('excludeunderoffer', '1');
-    params.append('suburb', locationSlug);
+    if (!isCommercial) {
+        params.append('excludeunderoffer', '1');
+        params.append('sort', 'dateupdated-desc');
+        const propertyType = criteria.propertyType === 'residential' ? 'house' : (criteria.propertyType || 'industrial');
+        params.append('ptype', propertyType);
+    }
     
-    const propertyType = criteria.propertyType === 'residential' ? 'house' : (criteria.propertyType || 'industrial');
-    params.append('ptype', propertyType);
-    
-    if (criteria.maxPrice) params.append('price', `0-${criteria.maxPrice}`);
+    if (criteria.maxPrice) {
+        if (isCommercial) params.append('price', `${criteria.maxPrice}`); // Commercial might use different param
+        else params.append('price', `0-${criteria.maxPrice}`);
+    }
 
-    const searchUrl = `${baseUrl}?${params.toString()}`;
+    const searchUrl = isCommercial 
+        ? `${baseUrl}${locationSlug}/`
+        : `${baseUrl}${locationSlug}/?${params.toString()}`;
+    
     console.error(`[Domain] Fetching URL: ${searchUrl}`);
     
     try {
@@ -178,24 +186,27 @@ export class DomainScout extends BaseScout {
       
       // Wait for results
       try {
-          await page.waitForSelector('[data-testid="listing-card"], .listing-result', { timeout: 20000 });
+          await page.waitForSelector('li[data-testid^="listing-"], [data-testid^="listing-card-wrapper"], .property-card, [class*="ListingCard"], [data-testid^="search-card-"]', { timeout: 30000 });
       } catch (e) {
           console.error(`[Domain] Timeout waiting for listing cards.`);
       }
 
       const listings = await page.evaluate(() => {
           const results: any[] = [];
-          // Mobile might have different selectors, let's be broad
-          const cards = document.querySelectorAll('[data-testid="listing-card"], .listing-result, [class*="PropertyCard"]');
+          // Domain's structure uses specific wrapper test-ids or <li> elements
+          // Commercial uses [data-testid^="search-card-"]
+          const cards = document.querySelectorAll('li[data-testid^="listing-"], [data-testid^="listing-card-wrapper"], .property-card, [class*="ListingCard"], [data-testid^="search-card-"]');
+          
           cards.forEach(el => {
-              const address = el.querySelector('[data-testid="address-wrapper"], [class*="Address"]')?.textContent?.trim();
+              // The address is typically in an h2, h3 or has an 'address' class
+              const address = el.querySelector('h2, h3, .address, [data-testid="address-wrapper"], [class*="Address"]')?.textContent?.trim();
               const link = el.querySelector('a')?.getAttribute('href');
-              const price = el.querySelector('[data-testid="listing-card-price"], [class*="Price"]')?.textContent?.trim();
+              const price = el.querySelector('[data-testid^="listing-card-price"], [class*="Price"], .price, [data-testid="search-card__price"]')?.textContent?.trim();
               
               if (address && link) {
                   results.push({
                       address,
-                      url: link.startsWith('http') ? link : `https://www.domain.com.au${link}`,
+                      url: link.startsWith('http') ? link : (link.startsWith('/') ? `${window.location.origin}${link}` : link),
                       priceDisplay: price
                   });
               }
