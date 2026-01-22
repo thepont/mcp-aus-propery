@@ -208,12 +208,16 @@ export class DomainScout extends BaseScout {
                                  el.querySelector('.agency-logo img')?.getAttribute('alt') ||
                                  el.querySelector('[class*="AgencyLogo"] img')?.getAttribute('alt');
               
+              // Try to find listing date label
+              const dateLabel = el.querySelector('[class*="Tag-"], [class*="Label-"], .listing-card__tag')?.textContent?.trim();
+              
               if (address && link) {
                   results.push({
                       address,
                       url: link.startsWith('http') ? link : (link.startsWith('/') ? `${window.location.origin}${link}` : link),
                       priceDisplay: price,
-                      agencyName: agencyName?.replace(' logo', '')?.trim()
+                      agencyName: agencyName?.replace(' logo', '')?.trim(),
+                      dateListed: dateLabel?.includes('Listed') ? dateLabel : undefined
                   });
               }
           });

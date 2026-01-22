@@ -8,6 +8,7 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import { ScoutManager } from './ScoutManager.js';
 import { GnafService } from './services/GnafService.js';
+import { MarketService } from './services/MarketService.js';
 import { CbreScout } from './scouts/CbreScout.js';
 import { CameronScout } from './scouts/CameronScout.js';
 import { SearchParams } from './types.js';
@@ -20,6 +21,7 @@ class IndustrialPropertyMcpServer {
   private server: Server;
   private scoutManager: ScoutManager;
   private gnafService: GnafService;
+  private marketService: MarketService;
 
   constructor() {
     this.server = new Server(
@@ -36,6 +38,7 @@ class IndustrialPropertyMcpServer {
 
     this.scoutManager = new ScoutManager();
     this.gnafService = new GnafService();
+    this.marketService = new MarketService();
     
     // Scouts are auto-registered from the scouts directory
     // Manual registration is also supported: this.scoutManager.registerScout(new CbreScout());
@@ -56,7 +59,8 @@ class IndustrialPropertyMcpServer {
           description:
             'Search for properties across multiple Australian real estate agencies. ' +
             'Filter by property type (residential, commercial, industrial) and listing type (sale, rental). ' +
-            'Returns detailed listings including address, zoning, full descriptions, and source URLs. ' +
+            'Returns detailed listings including stable IDs, coordinates (lat/lon), and a full history of agents/sites where the property was seen. ' +
+            'Deduplicates properties using G-NAF IDs. ' +
             'Executes all registered scouts in parallel for comprehensive coverage.',
           inputSchema: {
             type: 'object',
@@ -122,12 +126,44 @@ class IndustrialPropertyMcpServer {
             required: ['suburb'],
           },
         },
+        {
+          name: 'get_suburb_trends',
+          description: 'Get current market trends and median prices for a suburb from Domain and Your Investment Property.',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              suburb: {
+                type: 'string',
+                description: 'Suburb name to analyze (e.g., "Richmond", "Ballarat")',
+              },
+            },
+            required: ['suburb'],
+          },
+        },
       ],
     }));
 
     // Handle tool execution
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const args = request.params.arguments as any;
+
+      if (request.params.name === 'get_suburb_trends') {
+        if (!args.suburb || typeof args.suburb !== 'string') {
+          throw new Error('Missing required parameter: suburb');
+        }
+
+        console.error(`[MCP Server] Fetching trends for: ${args.suburb}`);
+        const trends = await this.marketService.getSuburbTrends(args.suburb);
+
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(trends, null, 2),
+            },
+          ],
+        };
+      }
 
       if (request.params.name === 'find_properties') {
         if (!args.location || typeof args.location !== 'string') {
@@ -208,7 +244,14 @@ class IndustrialPropertyMcpServer {
           price: l.priceDisplay || l.price,
           type: l.propertyType,
           listing: l.listingType,
-          sources: (l as any).all_sources || [{ source: l.source, url: l.sourceUrl }],
+          dateListedOnline: l.dateListed,
+          sources: ((l as any).all_sources || [{ source: l.source, url: l.sourceUrl }]).map((s: any) => ({
+              ...s,
+              scoutFirstSeen: s.scout_first_seen,
+              scoutLastSeen: s.scout_last_seen,
+              scout_first_seen: undefined,
+              scout_last_seen: undefined
+          })),
           description: l.description.substring(0, 200) + '...'
         }));
 

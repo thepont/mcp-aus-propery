@@ -125,6 +125,7 @@ export abstract class VaultREScout extends BaseScout {
         source: this.name,
         propertyType,
         listingType,
+        dateListed: prop.creationTime || prop.publishedTime,
         metadata: { id: prop.id, suburb: prop.suburb, state: prop.state, country: prop.address?.country }
       };
     }).filter(listing => {

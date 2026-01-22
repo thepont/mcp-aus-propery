@@ -43,7 +43,8 @@ export class PropertyService {
         lon REAL,
         source TEXT, -- Principal source
         source_url TEXT, -- Principal URL
-        all_sources TEXT, -- JSON array of { source, url, price }
+        all_sources TEXT, -- JSON array of { source, url, price, agent, scout_first_seen, scout_last_seen, date_listed }
+        date_listed TEXT, -- Best known listing date
         metadata TEXT,
         last_updated TEXT DEFAULT CURRENT_TIMESTAMP
       );
@@ -97,14 +98,17 @@ export class PropertyService {
           url: listing.sourceUrl, 
           price: listing.priceDisplay || listing.price,
           agent: agent,
-          last_seen: now
+          scout_last_seen: now,
+          date_listed: listing.dateListed || null
       };
 
       if (existingIndex >= 0) {
-          sourceInfo.first_seen = allSources[existingIndex].first_seen || allSources[existingIndex].last_seen || now;
+          sourceInfo.scout_first_seen = allSources[existingIndex].scout_first_seen || allSources[existingIndex].scout_last_seen || now;
+          // Keep the earliest date_listed if multiple found for same source
+          sourceInfo.date_listed = listing.dateListed || allSources[existingIndex].date_listed;
           allSources[existingIndex] = sourceInfo;
       } else {
-          sourceInfo.first_seen = now;
+          sourceInfo.scout_first_seen = now;
           allSources.push(sourceInfo);
       }
 
@@ -113,8 +117,8 @@ export class PropertyService {
         INSERT INTO properties (
           id, address, description, price, price_display, 
           area, property_type, listing_type, zoning, lat, lon, 
-          source, source_url, all_sources, metadata, last_updated
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          source, source_url, all_sources, date_listed, metadata, last_updated
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(id) DO UPDATE SET
           address = excluded.address,
           description = excluded.description,
@@ -129,6 +133,7 @@ export class PropertyService {
           source = excluded.source,
           source_url = excluded.source_url,
           all_sources = excluded.all_sources,
+          date_listed = COALESCE(excluded.date_listed, properties.date_listed),
           metadata = excluded.metadata,
           last_updated = excluded.last_updated
       `);
@@ -148,6 +153,7 @@ export class PropertyService {
         listing.source,
         listing.sourceUrl,
         JSON.stringify(allSources),
+        listing.dateListed || null,
         JSON.stringify(listing.metadata || {}),
         new Date().toISOString()
       );
@@ -259,6 +265,7 @@ export class PropertyService {
       area: row.area ? parseFloat(row.area) : undefined,
       propertyType: row.property_type,
       listingType: row.listing_type,
+      dateListed: row.date_listed,
       zoning: row.zoning,
       metadata: typeof row.metadata === 'string' ? JSON.parse(row.metadata) : row.metadata
     }));

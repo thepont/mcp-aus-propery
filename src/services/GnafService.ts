@@ -12,6 +12,9 @@ export class GnafService {
     
     // 1. Create Tables
     db.exec(`
+      -- DROP TABLE IF EXISTS gnaf_reference;
+      -- DROP TABLE IF EXISTS gnaf_fts;
+      
       CREATE TABLE IF NOT EXISTS gnaf_reference (
         id TEXT PRIMARY KEY,
         address_text TEXT,
@@ -245,6 +248,40 @@ export class GnafService {
       };
     }
     return { suburb, total_parcels: 0, active_listings: 0, penetration_pct: 0 };
+  }
+
+  /**
+   * Get metadata for a suburb (state, postcode)
+   */
+  async getSuburbMetadata(suburb: string): Promise<{ suburb: string, state: string, postcode: string } | null> {
+    const db = getConnection();
+    const cleanSuburb = suburb.split(',')[0].trim().toUpperCase();
+    
+    // Try exact match first, then partial
+    let row = db.prepare(`
+      SELECT suburb, state, postcode 
+      FROM gnaf_reference 
+      WHERE suburb = ? 
+      LIMIT 1
+    `).get(cleanSuburb);
+
+    if (!row) {
+        row = db.prepare(`
+          SELECT suburb, state, postcode 
+          FROM gnaf_reference 
+          WHERE suburb LIKE ? 
+          LIMIT 1
+        `).get(`${cleanSuburb}%`);
+    }
+
+    if (row) {
+      return {
+        suburb: row.suburb,
+        state: row.state.toLowerCase(),
+        postcode: row.postcode
+      };
+    }
+    return null;
   }
 
   /**

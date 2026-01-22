@@ -78,6 +78,9 @@ export interface IndustrialListing {
   /** Listing type (sale or rental) */
   listingType?: ListingType;
 
+  /** When the property was actually listed online (if available from source) */
+  dateListed?: string;
+
   /** Additional metadata */
   metadata?: Record<string, any>;
 }
